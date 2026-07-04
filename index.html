@@ -2,26 +2,14 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>埼玉家族旅行プラン案内SPA</title>
+  <title>埼玉家族旅行プラン案内SPA（完成版）</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .fade-enter {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-    .fade-enter-active {
-      opacity: 1;
-      transform: translateY(0);
-      transition: opacity 0.25s ease, transform 0.25s ease;
-    }
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
+    .fade-enter { opacity: 0; transform: translateY(8px); }
+    .fade-enter-active { opacity: 1; transform: translateY(0); transition: opacity 0.25s ease, transform 0.25s ease; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body class="bg-sky-50 text-slate-800">
@@ -30,26 +18,21 @@
     <header class="bg-gradient-to-r from-sky-400 to-teal-400 text-white px-4 pt-4 pb-3 shadow-md">
       <h1 class="text-lg font-semibold">埼玉家族旅行プラン案内</h1>
       <p class="text-xs mt-1">
-        お盆（8/11〜16）の猛暑＆渋滞を避けて、東狭山ヶ丘拠点で家族4人がゆったり楽しむスマホ用スケジュールSPA
+        お盆（8/11〜16）猛暑＆渋滞を避けて、東狭山ヶ丘拠点で家族4人がゆったり楽しむスマホ用スケジュールSPA
       </p>
     </header>
 
-    <!-- 旅の基本戦略パネル（折りたたみ） -->
+    <!-- 旅の基本戦略パネル -->
     <section class="bg-white shadow-md mx-3 mt-3 mb-2 rounded-xl p-3">
-      <button
-        id="strategyToggle"
-        class="w-full text左 text-sm font-semibold text-teal-700 flex items-center justify-between"
-      >
-        <span>旅の基本戦略</span>
-        <span id="strategyIcon">＋</span>
+      <button id="strategyToggle" class="w-full text-left text-sm font-semibold text-teal-700 flex items-center justify-between">
+        <span>旅の基本戦略</span><span id="strategyIcon">＋</span>
       </button>
-
       <div id="strategyContent" class="mt-2 text-[11px] leading-relaxed hidden">
         <ul class="list-disc pl-4">
-          <li>お盆期間（8/11〜16）は<strong>1日1スポット</strong>でゆったり行動。</li>
+          <li>お盆期間（8/11〜16）は<strong>1日1スポット＋詳細モデルコース</strong>でゆったり行動。</li>
           <li>拠点は<strong>東狭山ヶ丘</strong>。秩父・長瀞方面は<strong>朝7時出発＆夜20時以降帰宅</strong>で渋滞回避。</li>
           <li>午前は屋外、午後はミュージアム・鍾乳洞・温泉など<strong>屋内や涼しい場所</strong>へ。</li>
-          <li>各Dayの行き先はプルダウンで変更可能。家族会議で「今日はどこに行く？」を決めながら使える設計。</li>
+          <li>各Dayの行き先はプルダウンで変更可能。モデルコースも自動で切り替わります。</li>
         </ul>
       </div>
     </section>
@@ -61,14 +44,10 @@
 
     <!-- コンテンツ -->
     <main class="flex-1 mx-3 mb-24">
-      <!-- スケジュールカード -->
       <section id="scheduleContainer" class="space-y-3"></section>
-
-      <!-- スポット詳細 -->
       <section id="spotDetailContainer" class="space-y-3 mt-3"></section>
-
-      <!-- 食事処候補 -->
       <section id="foodContainer" class="space-y-3 mt-3"></section>
+      <section id="modelCourseContainer" class="space-y-3 mt-3"></section>
 
       <!-- 家族会議用チェックリスト -->
       <section class="mt-5 mb-4 bg-white rounded-xl shadow-md p-3">
@@ -80,10 +59,7 @@
           事前に確認・予約しておきたいことを家族で話し合うためのメモ。チェック状態はこの端末に保存されます。
         </p>
         <ul id="todoList" class="mt-2 space-y-1 text-[12px]"></ul>
-        <button
-          id="resetTodo"
-          class="mt-3 w-full text-[11px] py-1.5 rounded-lg border border-sky-300 text-sky-700 bg-sky-50 active:bg-sky-100"
-        >
+        <button id="resetTodo" class="mt-3 w-full text-[11px] py-1.5 rounded-lg border border-sky-300 text-sky-700 bg-sky-50 active:bg-sky-100">
           チェックをすべてリセット
         </button>
       </section>
@@ -91,16 +67,11 @@
 
     <!-- フッター -->
     <footer class="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-sky-400 to-teal-400 text-white text-[10px] px-3 py-2">
-      <p>
-        料金・営業時間は必ず公式サイト・現地案内で最新情報を再確認してください。表示は2026年8月頃の参考目安です。
-      </p>
+      <p>料金・営業時間は必ず公式サイト・現地案内で最新情報を再確認してください。表示は2026年8月頃の参考目安です。</p>
     </footer>
   </div>
 
   <script>
-    // ---------------- スポットデータ ----------------
-    // 画像は GitHub Pages 上の /Plan_Guide_2026/images/ に配置してください。
-
     const imgBase = "/Plan_Guide_2026/images";
 
     const spots = [
@@ -108,11 +79,7 @@
         id: "sakura",
         name: "ところざわサクラタウン（角川武蔵野ミュージアム）",
         area: "所沢市 東所沢",
-        images: [
-          `${imgBase}/sakura-1.jpg`,
-          `${imgBase}/sakura-2.jpg`,
-          `${imgBase}/sakura-3.jpg`
-        ],
+        images: [`${imgBase}/sakura-1.jpg`, `${imgBase}/sakura-2.jpg`, `${imgBase}/sakura-3.jpg`],
         description:
           "ポップカルチャーとアートが融合した複合施設。巨大な石造風の外観が特徴的なミュージアムと、ショップ・レストラン・イベントスペースが集まるスポット。",
         highlights: [
@@ -125,11 +92,15 @@
           "屋内中心なので、猛暑日や雨の日の“保険プラン”としても使える",
           "展示内容によっては事前予約制のイベントもあるため、公式サイトを確認"
         ],
-        transport: {
-          type: "電車＋徒歩",
+        transportTrain: {
           route:
             "東狭山ヶ丘 → 狭山ヶ丘駅（西武池袋線）→ 秋津駅…徒歩…新秋津駅（JR武蔵野線）→ 東所沢駅 → 徒歩でサクラタウン",
           time: "約40〜50分＋徒歩10〜15分"
+        },
+        transportCar: {
+          route: "東狭山ヶ丘 → 一般道・関越道等で東所沢方面へ（駐車場利用）",
+          time: "約30〜40分（渋滞状況により変動）",
+          depart: "猛暑日でも比較的自由。午前中到着推奨。"
         },
         feeReservation: [
           {
@@ -143,34 +114,45 @@
             url: "https://kadcul.com/access"
           }
         ],
-        mapUrl:
-          "https://www.google.com/maps/search/?api=1&query=ところざわサクラタウン",
+        mapUrl: "https://www.google.com/maps/search/?api=1&query=ところざわサクラタウン",
         foods: [
           {
             name: "（例）角川食堂",
             description: "館内レストラン。実際に行きたい店をここに設定してください。",
             image: `${imgBase}/sakura-food-1.jpg`,
-            mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=角川食堂 東所沢"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=角川食堂 東所沢"
           },
           {
-            name: "（例）武蔵野うどん店",
-            description: "東所沢周辺のうどん店などを、検索して選んでください。",
+            name: "（例）東所沢周辺カフェ",
+            description: "東所沢駅周辺のカフェなどを、検索して選んでください。",
             image: `${imgBase}/sakura-food-2.jpg`,
-            mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=東所沢 うどん"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=東所沢 カフェ"
           }
-        ]
+        ],
+        modelCourse: [
+          "08:30 東狭山ヶ丘 出発（車または電車）",
+          "09:30 サクラタウン到着・館内散策",
+          "10:00 角川武蔵野ミュージアム入館・本棚劇場など見学",
+          "12:00 館内レストラン・カフェでランチ（検索リンクから店を選ぶ）",
+          "13:30 展示エリア・ショップ巡り",
+          "15:30 カフェで休憩・写真撮影",
+          "17:00 東狭山ヶ丘へ帰宅",
+          "19:00 夕食・翌日の予定確認"
+        ],
+        recommendations: {
+          heat: "屋内中心だが、移動時は暑さ対策（帽子・飲料）を忘れずに。",
+          traffic: "電車利用なら渋滞の心配は少ない。車の場合は午前中到着を意識。",
+          kids: "本棚劇場など暗所もあるので、小さい子は様子を見ながら行動。",
+          rain: "雨天時でもほぼ問題なく楽しめる“保険プラン”として最適。",
+          reservation: "展示によっては事前予約制イベントあり。公式サイトで確認。",
+          packing: "館内は涼しいので、羽織りものがあると温度差対策になる。"
+        }
       },
       {
         id: "seibuen",
         name: "西武園ゆうえんち＆プール",
         area: "所沢市 山口",
-        images: [
-          `${imgBase}/seibuen-1.jpg`,
-          `${imgBase}/seibuen-2.jpg`,
-          `${imgBase}/seibuen-3.jpg`
-        ],
+        images: [`${imgBase}/seibuen-1.jpg`, `${imgBase}/seibuen-2.jpg`, `${imgBase}/seibuen-3.jpg`],
         description:
           "昭和レトロな街並みとアトラクションが楽しめる遊園地。夏季は大型プールがオープンし、家族で一日中遊べるスポット。",
         highlights: [
@@ -183,17 +165,20 @@
           "プール利用時は熱中症対策と日焼け対策をしっかり行う",
           "有料席やチケットは事前予約・事前購入が安心"
         ],
-        transport: {
-          type: "電車",
+        transportTrain: {
           route:
             "東狭山ヶ丘 → 狭山ヶ丘駅（西武池袋線）→ 西所沢駅（西武狭山線）→ 西武球場前駅（レオライナー）→ 西武園ゆうえんち駅",
           time: "約30〜40分"
         },
+        transportCar: {
+          route: "東狭山ヶ丘 → 所沢市山口方面へ一般道で移動（駐車場利用）",
+          time: "約20〜30分（周辺渋滞に注意）",
+          depart: "プール利用なら開園時間前到着を目指して早め出発。"
+        },
         feeReservation: [
           {
             label: "夏満喫切符（プール＋ゆうえんち）",
-            detail:
-              "お盆期間は大人5,000円台・小人4,000円台のセット券が販売されることが多い。詳細は公式サイトで要確認。",
+            detail: "大人5,000円台・小人4,000円台のセット券が多い。詳細は公式サイトで要確認。",
             url: "https://www.seibu-en.jp/"
           },
           {
@@ -202,34 +187,45 @@
             url: "https://www.seibu-en.jp/pool/"
           }
         ],
-        mapUrl:
-          "https://www.google.com/maps/search/?api=1&query=西武園ゆうえんち",
+        mapUrl: "https://www.google.com/maps/search/?api=1&query=西武園ゆうえんち",
         foods: [
           {
             name: "（例）園内レストラン",
             description: "西武園ゆうえんち内の飲食店を、検索して選んでください。",
             image: `${imgBase}/seibuen-food-1.jpg`,
-            mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=西武園ゆうえんち レストラン"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=西武園ゆうえんち レストラン"
           },
           {
             name: "（例）軽食スタンド",
             description: "園内のフードスタンドなど、実際に使う店を設定してください。",
             image: `${imgBase}/seibuen-food-2.jpg`,
-            mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=西武園ゆうえんち フード"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=西武園ゆうえんち フード"
           }
-        ]
+        ],
+        modelCourse: [
+          "08:00 東狭山ヶ丘 出発（車または電車）",
+          "08:30〜09:00 西武園ゆうえんち到着・入園",
+          "09:00〜12:00 プールで遊ぶ（休憩・水分補給をこまめに）",
+          "12:00〜13:00 園内レストラン・軽食でランチ",
+          "13:00〜16:00 昭和レトロ街並み・アトラクションを楽しむ",
+          "16:00〜17:00 お土産購入・写真撮影",
+          "17:30 東狭山ヶ丘へ帰宅",
+          "19:00 夕食・翌日の予定確認"
+        ],
+        recommendations: {
+          heat: "プール利用時は直射日光が強いので、帽子・日焼け止め・ラッシュガードなど必須。",
+          traffic: "お盆期間は周辺道路が混みやすいので、開園前到着を意識した早め出発が安心。",
+          kids: "水遊び中はこまめな休憩と水分補給を徹底。迷子対策として集合場所を決めておく。",
+          rain: "雨天時はプールが厳しい場合あり。屋内中心の別スポット（サクラタウンなど）を代替案に。",
+          reservation: "チケットは事前購入が安心。有料席・ロッカーなども事前情報をチェック。",
+          packing: "水着・タオル・着替え・サンダル・日焼け止め・防水スマホケースなどを準備。"
+        }
       },
       {
         id: "gaikaku",
         name: "首都圏外郭放水路（地下神殿）",
         area: "春日部市",
-        images: [
-          `${imgBase}/gaikaku-1.jpg`,
-          `${imgBase}/gaikaku-2.jpg`,
-          `${imgBase}/gaikaku-3.jpg`
-        ],
+        images: [`${imgBase}/gaikaku-1.jpg`, `${imgBase}/gaikaku-2.jpg`, `${imgBase}/gaikaku-3.jpg`],
         description:
           "世界最大級の地下放水路。高さ約18mの巨大な柱が並ぶ調圧水槽が“地下神殿”と呼ばれる人気スポットで、防災ツーリズムとして見学コースが用意されている。",
         highlights: [
@@ -242,54 +238,67 @@
           "夏でも地下は涼しいが、地上移動は暑いので飲み物を持参",
           "人気コースは早めに予約が埋まるため、1ヶ月前からの予約推奨"
         ],
-        transport: {
-          type: "レンタカー",
+        transportTrain: {
           route:
-            "東狭山ヶ丘 → 関越道・外環道などを利用して春日部市・龍Q館周辺へ",
-          time: "約1時間強"
+            "東狭山ヶ丘 → 狭山ヶ丘駅（西武池袋線）→ 所沢駅 → 池袋駅 → 春日部方面（東武線）→ 南桜井駅など → バス・タクシーで龍Q館へ",
+          time: "約1.5〜2時間＋バス・タクシー"
+        },
+        transportCar: {
+          route: "東狭山ヶ丘 → 関越道・外環道などを利用して春日部市・龍Q館周辺へ",
+          time: "約1〜1.5時間（渋滞状況により変動）",
+          depart: "午前中早め出発で、見学開始時間に余裕を持たせる。"
         },
         feeReservation: [
           {
             label: "地下神殿コース（基本コース）",
-            detail:
-              "約55分・1人1,200円前後。階段約100段の昇り降りあり。事前予約制。",
+            detail: "約55分・1人1,200円前後。階段約100段の昇り降りあり。事前予約制。",
             url: "https://gaikaku.jp/"
           },
           {
             label: "その他コース（立坑体験・ポンプ制覇など）",
-            detail:
-              "所要時間110分・料金3,500〜5,500円前後。詳細は公式サイトのコース一覧を参照。",
+            detail: "所要時間110分・料金3,500〜5,500円前後。詳細は公式サイトのコース一覧を参照。",
             url: "https://gaikaku.jp/"
           }
         ],
-        mapUrl:
-          "https://www.google.com/maps/search/?api=1&query=首都圏外郭放水路 龍Q館",
+        mapUrl: "https://www.google.com/maps/search/?api=1&query=首都圏外郭放水路 龍Q館",
         foods: [
           {
-            name: "（例）龍Q館内軽食",
-            description: "龍Q館や春日部駅周辺の飲食店を、検索して選んでください。",
+            name: "（例）春日部駅周辺ランチ",
+            description: "春日部駅周辺の飲食店を、検索して選んでください。",
             image: `${imgBase}/gaikaku-food-1.jpg`,
-            mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=春日部駅 飲食店"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=春日部駅 ランチ"
           },
           {
-            name: "（例）春日部駅周辺カフェ",
-            description: "帰りに立ち寄りたいカフェなどを、実際の店名で設定してください。",
+            name: "（例）カフェ・軽食",
+            description: "見学前後に立ち寄りたいカフェを、実際の店名で設定してください。",
             image: `${imgBase}/gaikaku-food-2.jpg`,
-            mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=春日部 カフェ"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=春日部 カフェ"
           }
-        ]
+        ],
+        modelCourse: [
+          "07:30 東狭山ヶ丘 出発（レンタカー推奨）",
+          "09:00 龍Q館到着・受付・展示見学",
+          "10:00 地下神殿コース開始（階段約100段の昇り降り）",
+          "11:00 見学終了・写真撮影・防災展示再確認",
+          "12:00 春日部駅周辺へ移動・ランチ（検索リンクから店を選ぶ）",
+          "14:00 周辺散策・カフェ休憩",
+          "16:00 東狭山ヶ丘へ帰宅",
+          "18:00 夕食・翌日の予定確認"
+        ],
+        recommendations: {
+          heat: "地下は涼しいが、地上移動は暑いので飲み物・帽子必須。",
+          traffic: "車利用なら午前中早め出発で、見学開始時間に余裕を持たせる。",
+          kids: "階段が多く足元が暗い場所もあるので、子どもの足元に注意。",
+          rain: "雨天でも見学可能だが、足元が滑りやすくなる場合あり。",
+          reservation: "人気コースは早めに予約が埋まるため、1ヶ月前からの予約推奨。",
+          packing: "歩きやすい靴・飲み物・小さめのバッグ（階段で邪魔にならないもの）がおすすめ。"
+        }
       },
       {
         id: "sakitama",
         name: "さきたま古墳公園＆さきたま史跡の博物館",
         area: "行田市",
-        images: [
-          `${imgBase}/sakitama-1.jpg`,
-          `${imgBase}/sakitama-2.jpg`,
-          `${imgBase}/sakitama-3.jpg`
-        ],
+        images: [`${imgBase}/sakitama-1.jpg`, `${imgBase}/sakitama-2.jpg`, `${imgBase}/sakitama-3.jpg`],
         description:
           "国指定特別史跡「埼玉古墳群」を中心とした歴史公園とミュージアム。古墳出土品や国宝級の資料が展示され、古代ロマンを感じられるスポット。",
         highlights: [
@@ -302,10 +311,15 @@
           "日差しが強いので帽子・日焼け止めを準備",
           "埴輪作り体験は事前予約が必要な場合があるため、公式情報を確認"
         ],
-        transport: {
-          type: "レンタカー",
+        transportTrain: {
+          route:
+            "東狭山ヶ丘 → 狭山ヶ丘駅 → 所沢駅 → 大宮駅 → 行田市方面（JR高崎線など）→ 行田駅 → バス・タクシーで古墳公園へ",
+          time: "約1.5〜2時間＋バス・タクシー"
+        },
+        transportCar: {
           route: "東狭山ヶ丘 → 圏央道などを利用して行田市・さきたま古墳公園へ",
-          time: "約1〜1.5時間"
+          time: "約1〜1.5時間",
+          depart: "午前中早め出発で、古墳散策を涼しい時間帯に。"
         },
         feeReservation: [
           {
@@ -319,34 +333,45 @@
             url: "https://sakitama-museum.jp/"
           }
         ],
-        mapUrl:
-          "https://www.google.com/maps/search/?api=1&query=さきたま古墳公園",
+        mapUrl: "https://www.google.com/maps/search/?api=1&query=さきたま古墳公園",
         foods: [
           {
             name: "（例）行田B級グルメ店",
             description: "ゼリーフライ・ふらいなどの店を、検索して選んでください。",
             image: `${imgBase}/sakitama-food-1.jpg`,
-            mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=行田 ゼリーフライ"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=行田 ゼリーフライ"
           },
           {
             name: "（例）行田市内そば・うどん店",
             description: "軽めのランチに使いたい店を、実際の店名で設定してください。",
             image: `${imgBase}/sakitama-food-2.jpg`,
-            mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=行田 そば うどん"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=行田 そば うどん"
           }
-        ]
+        ],
+        modelCourse: [
+          "08:00 東狭山ヶ丘 出発（レンタカー推奨）",
+          "09:30 さきたま古墳公園到着・丸墓山古墳など散策",
+          "11:00 公園内で休憩・写真撮影",
+          "12:00 行田市内でランチ（ゼリーフライ・ふらいなど）",
+          "13:30 さきたま史跡の博物館見学",
+          "15:00 はにわ作り体験（予約している場合）",
+          "16:30 東狭山ヶ丘へ帰宅",
+          "18:00 夕食・翌日の予定確認"
+        ],
+        recommendations: {
+          heat: "古墳公園は日差しが強いので、帽子・日焼け止め・飲み物必須。",
+          traffic: "車利用なら午前中早め出発で、涼しい時間帯に散策を終えるイメージで。",
+          kids: "古墳の登り降りで足元に注意。はにわ作り体験は子どもに人気。",
+          rain: "雨天時は公園散策を短めにし、博物館中心のプランに切り替え。",
+          reservation: "はにわ作り体験は事前予約が必要な場合あり。公式サイトで確認。",
+          packing: "歩きやすい靴・帽子・タオル・飲み物・虫よけなどを準備。"
+        }
       },
       {
         id: "nagatoro",
         name: "長瀞ラインくだり＆岩畳",
         area: "長瀞町",
-        images: [
-          `${imgBase}/nagatoro-1.jpg`,
-          `${imgBase}/nagatoro-2.jpg`,
-          `${imgBase}/nagatoro-3.jpg`
-        ],
+        images: [`${imgBase}/nagatoro-1.jpg`, `${imgBase}/nagatoro-2.jpg`, `${imgBase}/nagatoro-3.jpg`],
         description:
           "荒川を木造和船で下る川下りと、奇岩が並ぶ岩畳の景観が楽しめる長瀞エリア。夏でも川風が涼しく、家族で自然を満喫できる。",
         highlights: [
@@ -359,10 +384,15 @@
           "増水・渇水時は運休になるため、当日朝に公式情報を確認",
           "川辺は滑りやすい場所もあるので、滑りにくい靴がおすすめ"
         ],
-        transport: {
-          type: "レンタカー",
+        transportTrain: {
+          route:
+            "東狭山ヶ丘 → 狭山ヶ丘駅 → 所沢駅 → 池袋駅 → 熊谷・秩父方面 → 長瀞駅",
+          time: "約2〜2.5時間"
+        },
+        transportCar: {
           route: "東狭山ヶ丘 → 関越道・花園IC経由で長瀞町へ（朝7時台出発推奨）",
-          time: "約1.5時間"
+          time: "約1.5時間（渋滞状況により変動）",
+          depart: "渋滞回避のため、朝7時台出発・夕方以降帰宅が理想。"
         },
         feeReservation: [
           {
@@ -371,34 +401,46 @@
             url: "https://www.chichibu-railway.co.jp/"
           }
         ],
-        mapUrl:
-          "https://www.google.com/maps/search/?api=1&query=長瀞ラインくだり",
+        mapUrl: "https://www.google.com/maps/search/?api=1&query=長瀞ラインくだり",
         foods: [
           {
             name: "（例）かき氷店",
             description: "長瀞駅周辺のかき氷店を、検索して選んでください。",
             image: `${imgBase}/nagatoro-food-1.jpg`,
-            mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=長瀞 かき氷"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=長瀞 かき氷"
           },
           {
             name: "（例）豚みそ丼店",
             description: "秩父名物豚みそ丼の店を、実際の店名で設定してください。",
             image: `${imgBase}/nagatoro-food-2.jpg`,
-            mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=秩父 豚みそ丼"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=秩父 豚みそ丼"
           }
-        ]
+        ],
+        modelCourse: [
+          "07:00 東狭山ヶ丘 出発（レンタカー推奨）",
+          "08:30 長瀞到着・岩畳周辺散策",
+          "09:30 ラインくだり受付・乗船",
+          "10:30 下船後、川辺散策・写真撮影",
+          "11:30 かき氷店などで涼みながら休憩",
+          "12:30 豚みそ丼など秩父グルメでランチ",
+          "14:00 周辺散策・土産物店巡り",
+          "16:00 東狭山ヶ丘へ帰宅（渋滞回避のため少し早め）",
+          "18:00 夕食・翌日の予定確認"
+        ],
+        recommendations: {
+          heat: "川辺は涼しいが、日差しが強い時間帯もあるので帽子・飲み物必須。",
+          traffic: "朝7時台出発・夕方早め帰宅で渋滞を避けるのが理想。",
+          kids: "岩場は滑りやすいので、子どもの足元に注意。ライフジャケット着用など安全第一。",
+          rain: "増水・荒天時はラインくだり運休の可能性あり。代替として鍾乳洞や屋内スポットを検討。",
+          reservation: "ラインくだりは当日受付が基本だが、混雑状況を事前に公式サイトで確認。",
+          packing: "滑りにくい靴・帽子・タオル・飲み物・簡易レインウェア（天候急変対策）を準備。"
+        }
       },
       {
         id: "forest",
         name: "フォレストアドベンチャー・秩父",
         area: "秩父市 ミューズパーク",
-        images: [
-          `${imgBase}/forest-1.jpg`,
-          `${imgBase}/forest-2.jpg`,
-          `${imgBase}/forest-3.jpg`
-        ],
+        images: [`${imgBase}/forest-1.jpg`, `${imgBase}/forest-2.jpg`, `${imgBase}/forest-3.jpg`],
         description:
           "森の中でハーネスを付けて木から木へ渡る本格アスレチック。高さも難易度も高めで、大人も本気で楽しめる国内最大級のコース。",
         highlights: [
@@ -411,10 +453,15 @@
           "動きやすい服装・運動靴・手袋などを準備",
           "夏場は森の中でも暑くなるため、飲み物・帽子必須"
         ],
-        transport: {
-          type: "レンタカー",
+        transportTrain: {
+          route:
+            "東狭山ヶ丘 → 狭山ヶ丘駅 → 所沢駅 → 池袋駅 → 秩父方面 → 秩父駅 → バス・タクシーでミューズパークへ",
+          time: "約2〜2.5時間"
+        },
+        transportCar: {
           route: "東狭山ヶ丘 → 秩父ミューズパーク（朝7〜8時台出発推奨）",
-          time: "約1.5時間"
+          time: "約1.5時間（渋滞状況により変動）",
+          depart: "朝7〜8時台出発で、涼しい時間帯にアスレチックを楽しむ。"
         },
         feeReservation: [
           {
@@ -428,34 +475,45 @@
             url: "https://foret-aventure.jp/park/fa-chichibu/"
           }
         ],
-        mapUrl:
-          "https://www.google.com/maps/search/?api=1&query=フォレストアドベンチャー秩父",
+        mapUrl: "https://www.google.com/maps/search/?api=1&query=フォレストアドベンチャー秩父",
         foods: [
           {
             name: "（例）ミューズパーク内カフェ",
             description: "ミューズパーク内のカフェを、検索して選んでください。",
             image: `${imgBase}/forest-food-1.jpg`,
-            mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=秩父 ミューズパーク カフェ"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=秩父 ミューズパーク カフェ"
           },
           {
             name: "（例）秩父市内レストラン",
             description: "アクティビティ後に立ち寄りたい店を、実際の店名で設定してください。",
             image: `${imgBase}/forest-food-2.jpg`,
-            mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=秩父 レストラン"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=秩父 レストラン"
           }
-        ]
+        ],
+        modelCourse: [
+          "07:30 東狭山ヶ丘 出発（レンタカー推奨）",
+          "09:00 ミューズパーク到着・受付",
+          "09:30 フォレストアドベンチャー開始（安全講習・ハーネス装着）",
+          "11:30 アスレチック終了・休憩・写真撮影",
+          "12:30 ミューズパーク内または秩父市内でランチ",
+          "14:00 ミューズパーク散策・展望台など",
+          "16:00 東狭山ヶ丘へ帰宅",
+          "18:00 夕食・翌日の予定確認"
+        ],
+        recommendations: {
+          heat: "森の中でも汗をかくので、飲み物・帽子・タオル必須。",
+          traffic: "朝7〜8時台出発で、涼しい時間帯にアスレチックを終えるイメージで。",
+          kids: "身長・年齢制限を事前に確認し、無理のないコース選択を。",
+          rain: "雨天時は滑りやすくなるため、状況によっては中止・別プラン検討。",
+          reservation: "予約サイト（じゃらん・asoview等）で希望時間帯を事前予約するのが安心。",
+          packing: "動きやすい服・運動靴・手袋・飲み物・タオル・着替えなどを準備。"
+        }
       },
       {
         id: "hashidate",
         name: "橋立鍾乳洞",
         area: "秩父市 上影森",
-        images: [
-          `${imgBase}/hashidate-1.jpg`,
-          `${imgBase}/hashidate-2.jpg`,
-          `${imgBase}/hashidate-3.jpg`
-        ],
+        images: [`${imgBase}/hashidate-1.jpg`, `${imgBase}/hashidate-2.jpg`, `${imgBase}/hashidate-3.jpg`],
         description:
           "秩父の山中にある鍾乳洞。狭い通路や急な階段を進みながら、自然が作り出した造形を間近で見られるスポット。夏でも洞内はひんやりと涼しい。",
         highlights: [
@@ -468,10 +526,15 @@
           "頭上が低い場所もあるので、子どもは特に注意して歩く",
           "雨の日でも楽しめるが、足元が滑りやすくなる場合あり"
         ],
-        transport: {
-          type: "レンタカー",
+        transportTrain: {
+          route:
+            "東狭山ヶ丘 → 狭山ヶ丘駅 → 所沢駅 → 池袋駅 → 秩父方面 → 秩父駅 → バス・タクシーで橋立鍾乳洞へ",
+          time: "約2〜2.5時間"
+        },
+        transportCar: {
           route: "東狭山ヶ丘 → 秩父市上影森（長瀞・秩父エリアと同方向）",
-          time: "約1.5時間"
+          time: "約1.5時間（渋滞状況により変動）",
+          depart: "朝7〜8時台出発で、涼しい時間帯に洞内探検を。"
         },
         feeReservation: [
           {
@@ -480,34 +543,45 @@
             url: ""
           }
         ],
-        mapUrl:
-          "https://www.google.com/maps/search/?api=1&query=橋立鍾乳洞",
+        mapUrl: "https://www.google.com/maps/search/?api=1&query=橋立鍾乳洞",
         foods: [
           {
             name: "（例）秩父そば店",
             description: "鍾乳洞帰りに立ち寄りたいそば店を、検索して選んでください。",
             image: `${imgBase}/hashidate-food-1.jpg`,
-            mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=秩父 そば"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=秩父 そば"
           },
           {
             name: "（例）秩父市内カフェ",
             description: "休憩に使いたいカフェを、実際の店名で設定してください。",
             image: `${imgBase}/hashidate-food-2.jpg`,
-            mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=秩父 カフェ"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=秩父 カフェ"
           }
-        ]
+        ],
+        modelCourse: [
+          "07:30 東狭山ヶ丘 出発（レンタカー推奨）",
+          "09:00 橋立鍾乳洞到着・入洞",
+          "09:30 洞内探検（階段・狭い通路に注意）",
+          "10:30 出洞・周辺散策・写真撮影",
+          "11:30 秩父市内へ移動・そば店などでランチ",
+          "13:30 カフェ休憩・秩父市内散策",
+          "15:30 東狭山ヶ丘へ帰宅",
+          "17:30 夕食・翌日の予定確認"
+        ],
+        recommendations: {
+          heat: "洞内は涼しいが、外は暑いので移動時の暑さ対策を忘れずに。",
+          traffic: "長瀞・秩父方面と同様、朝早め出発で渋滞を避ける。",
+          kids: "狭い通路・急な階段が多いので、子どもの足元・頭上に注意。",
+          rain: "雨天時でも楽しめるが、足元が滑りやすくなるため慎重に歩く。",
+          reservation: "入洞は基本当日受付だが、混雑状況を事前に確認しておくと安心。",
+          packing: "滑りにくい靴・タオル・飲み物・小さめのバッグ（両手が空くように）を準備。"
+        }
       },
       {
         id: "shinrinkoen",
         name: "国営武蔵丘陵森林公園",
         area: "滑川町",
-        images: [
-          `${imgBase}/shinrinkoen-1.jpg`,
-          `${imgBase}/shinrinkoen-2.jpg`,
-          `${imgBase}/shinrinkoen-3.jpg`
-        ],
+        images: [`${imgBase}/shinrinkoen-1.jpg`, `${imgBase}/shinrinkoen-2.jpg`, `${imgBase}/shinrinkoen-3.jpg`],
         description:
           "広大な敷地に森・花畑・サイクリングコース・アスレチックなどがある国営公園。木陰が多く、夏でも比較的過ごしやすい。",
         highlights: [
@@ -520,10 +594,15 @@
           "園内が広いため、無理せずエリアを絞って回る",
           "サイクリング利用時は水分補給と休憩をこまめに"
         ],
-        transport: {
-          type: "レンタカー",
+        transportTrain: {
+          route:
+            "東狭山ヶ丘 → 狭山ヶ丘駅 → 所沢駅 → 池袋駅 → 東武東上線で森林公園駅 → バスで公園へ",
+          time: "約1.5〜2時間"
+        },
+        transportCar: {
           route: "東狭山ヶ丘 → 関越道東松山IC経由で森林公園へ",
-          time: "約1時間"
+          time: "約1時間（渋滞状況により変動）",
+          depart: "早朝〜午前中到着で、涼しい時間帯に散策・サイクリングを。"
         },
         feeReservation: [
           {
@@ -532,34 +611,45 @@
             url: "https://www.shinrinkoen.jp/"
           }
         ],
-        mapUrl:
-          "https://www.google.com/maps/search/?api=1&query=国営武蔵丘陵森林公園",
+        mapUrl: "https://www.google.com/maps/search/?api=1&query=国営武蔵丘陵森林公園",
         foods: [
           {
             name: "（例）園内レストラン",
             description: "園内のレストラン・売店を、検索して選んでください。",
             image: `${imgBase}/shinrinkoen-food-1.jpg`,
-            mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=武蔵丘陵森林公園 レストラン"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=武蔵丘陵森林公園 レストラン"
           },
           {
             name: "（例）東松山市内ファミレス",
             description: "帰りに立ち寄りたいファミレスを、実際の店名で設定してください。",
             image: `${imgBase}/shinrinkoen-food-2.jpg`,
-            mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=東松山 ファミレス"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=東松山 ファミレス"
           }
-        ]
+        ],
+        modelCourse: [
+          "07:30 東狭山ヶ丘 出発（レンタカー推奨）",
+          "08:30 森林公園到着・入園",
+          "09:00 サイクリング・アスレチックなどで遊ぶ",
+          "11:00 花畑・展望エリアなどを散策",
+          "12:00 園内レストラン・売店でランチ",
+          "13:30 軽く散策・写真撮影",
+          "15:00 東狭山ヶ丘へ帰宅",
+          "17:00 夕食・翌日の予定確認"
+        ],
+        recommendations: {
+          heat: "木陰は多いが、真夏日は暑いので帽子・飲み物・タオル必須。",
+          traffic: "早朝〜午前中到着で、涼しい時間帯にアクティビティを終えるイメージで。",
+          kids: "サイクリング・アスレチックは無理のない範囲で。休憩をこまめに。",
+          rain: "雨天時はサイクリングを控え、屋根付きエリア中心に散策。",
+          reservation: "特別イベントがある場合は事前予約が必要なこともあるため、公式サイトで確認。",
+          packing: "動きやすい服・運動靴・帽子・飲み物・タオル・虫よけなどを準備。"
+        }
       },
       {
         id: "saiboku",
         name: "サイボク天然温泉 花鳥風月",
         area: "日高市",
-        images: [
-          `${imgBase}/saiboku-1.jpg`,
-          `${imgBase}/saiboku-2.jpg`,
-          `${imgBase}/saiboku-3.jpg`
-        ],
+        images: [`${imgBase}/saiboku-1.jpg`, `${imgBase}/saiboku-2.jpg`, `${imgBase}/saiboku-3.jpg`],
         description:
           "豚のテーマパーク「サイボク」敷地内にある日帰り温泉。豊富な湧出量のナトリウム塩化物泉で、温まりの湯・美肌の湯として人気。",
         highlights: [
@@ -572,41 +662,57 @@
           "温泉利用後にサイボクのショップでお土産を購入する流れがおすすめ",
           "長時間の入浴は疲労につながるため、子どもは特に様子を見ながら"
         ],
-        transport: {
-          type: "レンタカー",
+        transportTrain: {
+          route:
+            "東狭山ヶ丘 → 狭山ヶ丘駅 → 所沢駅 → 川越・日高方面 → 最寄り駅からバス・タクシーでサイボクへ",
+          time: "約1.5〜2時間"
+        },
+        transportCar: {
           route: "東狭山ヶ丘 → 日高市サイボク（一般道で約40〜50分）",
-          time: "約40〜50分"
+          time: "約40〜50分（渋滞状況により変動）",
+          depart: "午後〜夕方にかけての温泉利用を想定し、混雑時間帯を避ける。"
         },
         feeReservation: [
           {
             label: "入館料（目安）",
-            detail:
-              "大人平日1,080円・土日祝1,280円／小人平日650円・土日祝750円前後。",
+            detail: "大人平日1,080円・土日祝1,280円／小人平日650円・土日祝750円前後。",
             url: "https://www.saiboku.co.jp/kachofugetsu/"
           }
         ],
-        mapUrl:
-          "https://www.google.com/maps/search/?api=1&query=サイボク天然温泉 花鳥風月",
+        mapUrl: "https://www.google.com/maps/search/?api=1&query=サイボク天然温泉 花鳥風月",
         foods: [
           {
             name: "（例）サイボクレストラン",
             description: "サイボク内のレストランを、検索して選んでください。",
             image: `${imgBase}/saiboku-food-1.jpg`,
-            mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=サイボク レストラン"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=サイボク レストラン"
           },
           {
             name: "（例）サイボク売店",
             description: "ハム・ソーセージなどのお土産購入に使いたい売店を設定してください。",
             image: `${imgBase}/saiboku-food-2.jpg`,
-            mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=サイボク 売店"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=サイボク 売店"
           }
-        ]
+        ],
+        modelCourse: [
+          "13:00 東狭山ヶ丘 出発（レンタカー推奨）",
+          "13:40 サイボク到着・ショップ・売店を見て回る",
+          "14:30 温泉 花鳥風月入館・入浴・サウナなど",
+          "16:30 温泉を出て休憩・ソフトクリームなど",
+          "17:30 サイボクレストランで夕食",
+          "19:00 東狭山ヶ丘へ帰宅",
+          "20:00 旅の振り返り・翌日の準備"
+        ],
+        recommendations: {
+          heat: "温泉施設内は涼しいが、屋外移動時は暑さ対策を忘れずに。",
+          traffic: "一般道利用のため、夕方の渋滞時間帯を避けると快適。",
+          kids: "長時間の入浴は疲労につながるため、子どもの様子を見ながら短めに。",
+          rain: "雨天時でも問題なく楽しめる“癒やしプラン”として最適。",
+          reservation: "混雑状況によっては待ち時間が発生するため、公式サイトやSNSで事前確認。",
+          packing: "タオル・着替え・スキンケア用品・子ども用の入浴グッズなどを準備。"
+        }
       }
     ];
-
-    // ---------------- Dayデータ（初期モデルコース） ----------------
 
     const days = [
       { day: 1, date: "8/11", spotId: "sakura" },
@@ -614,77 +720,40 @@
       { day: 3, date: "8/13", spotId: "gaikaku" },
       { day: 4, date: "8/14", spotId: "sakitama" },
       { day: 5, date: "8/15", spotId: "nagatoro" },
-      { day: 6, date: "8/16", spotId: "forest" }
+      { day: 6, date: "8/16", spotId: "forest" },
+      { day: 7, date: "予備日", spotId: "saiboku" }
     ];
-
-    // ---------------- チェックリスト ----------------
 
     const todoItems = [
-      {
-        id: "todo-forest-limit",
-        text: "フォレストアドベンチャー秩父の身長・年齢制限を公式サイトで確認する"
-      },
-      {
-        id: "todo-forest-reserve",
-        text: "フォレストアドベンチャー秩父の希望時間帯を予約サイト（じゃらん・asoview等）で予約する"
-      },
-      {
-        id: "todo-gaikaku-course",
-        text: "首都圏外郭放水路の見学コース内容・料金を公式サイトで確認する"
-      },
-      {
-        id: "todo-gaikaku-reserve",
-        text: "首都圏外郭放水路見学会の予約ページから希望日時を予約する"
-      },
-      {
-        id: "todo-sakitama-haniwa",
-        text: "さきたま史跡の博物館のはにわ作り体験の実施日・予約方法を確認し、電話予約する"
-      },
-      {
-        id: "todo-seibuen-ticket",
-        text: "西武園ゆうえんちの夏季チケット（夏満喫切符など）の内容・購入方法を確認する"
-      },
-      {
-        id: "todo-nagatoro-line",
-        text: "長瀞ラインくだりの当日営業状況（増水・渇水による運休情報）を公式サイトやSNSで確認する"
-      },
-      {
-        id: "todo-saiboku-coupon",
-        text: "サイボク天然温泉 花鳥風月の割引券・クーポン有無を確認し、必要なら事前購入する"
-      },
-      {
-        id: "todo-rentacar",
-        text: "レンタカーの車種・受け取り場所・保険内容を家族で相談し、8/13〜16の予約を確定する"
-      },
-      {
-        id: "todo-heat-goods",
-        text: "熱中症対策グッズ（帽子・日傘・冷感タオル・飲料・保冷バッグなど）を準備する"
-      }
+      { id: "todo-forest-limit", text: "フォレストアドベンチャー秩父の身長・年齢制限を公式サイトで確認する" },
+      { id: "todo-forest-reserve", text: "フォレストアドベンチャー秩父の希望時間帯を予約サイト（じゃらん・asoview等）で予約する" },
+      { id: "todo-gaikaku-course", text: "首都圏外郭放水路の見学コース内容・料金を公式サイトで確認する" },
+      { id: "todo-gaikaku-reserve", text: "首都圏外郭放水路見学会の予約ページから希望日時を予約する" },
+      { id: "todo-sakitama-haniwa", text: "さきたま史跡の博物館のはにわ作り体験の実施日・予約方法を確認し、電話予約する" },
+      { id: "todo-seibuen-ticket", text: "西武園ゆうえんちの夏季チケット（夏満喫切符など）の内容・購入方法を確認する" },
+      { id: "todo-nagatoro-line", text: "長瀞ラインくだりの当日営業状況（増水・渇水による運休情報）を公式サイトやSNSで確認する" },
+      { id: "todo-saiboku-coupon", text: "サイボク天然温泉 花鳥風月の割引券・クーポン有無を確認し、必要なら事前購入する" },
+      { id: "todo-rentacar", text: "レンタカーの車種・受け取り場所・保険内容を家族で相談し、8/13〜16の予約を確定する" },
+      { id: "todo-heat-goods", text: "熱中症対策グッズ（帽子・日傘・冷感タオル・飲料・保冷バッグなど）を準備する" }
     ];
-
-    // ---------------- DOM参照 ----------------
 
     const dayTabsEl = document.getElementById("dayTabs");
     const scheduleContainerEl = document.getElementById("scheduleContainer");
     const spotDetailContainerEl = document.getElementById("spotDetailContainer");
     const foodContainerEl = document.getElementById("foodContainer");
+    const modelCourseContainerEl = document.getElementById("modelCourseContainer");
     const todoListEl = document.getElementById("todoList");
     const resetTodoBtn = document.getElementById("resetTodo");
-
     const strategyToggle = document.getElementById("strategyToggle");
     const strategyContent = document.getElementById("strategyContent");
     const strategyIcon = document.getElementById("strategyIcon");
 
     let activeDay = 1;
 
-    // ---------------- 旅の基本戦略折りたたみ ----------------
-
     strategyToggle.addEventListener("click", () => {
       const isHidden = strategyContent.classList.toggle("hidden");
       strategyIcon.textContent = isHidden ? "＋" : "－";
     });
-
-    // ---------------- タブ描画 ----------------
 
     function renderTabs() {
       dayTabsEl.innerHTML = "";
@@ -696,7 +765,7 @@
           (d.day === activeDay
             ? "bg-sky-500 border-sky-500 text-white shadow-sm"
             : "bg-white border-sky-200 text-sky-700");
-        btn.textContent = `Day ${d.day} (${d.date})`;
+        btn.textContent = d.day === 7 ? `予備日 (${d.date})` : `Day ${d.day} (${d.date})`;
         btn.addEventListener("click", () => {
           if (activeDay !== d.day) {
             activeDay = d.day;
@@ -707,8 +776,6 @@
         dayTabsEl.appendChild(btn);
       });
     }
-
-    // ---------------- スケジュールカード描画 ----------------
 
     function renderSchedule() {
       const dayData = days.find((d) => d.day === activeDay);
@@ -729,7 +796,7 @@
       const titleEl = document.createElement("div");
       titleEl.innerHTML = `
         <div class="flex justify-between items-center">
-          <h2 class="text-sm font-semibold text-sky-700">Day ${dayData.day}：${spot.name}</h2>
+          <h2 class="text-sm font-semibold text-sky-700">${dayData.day === 7 ? "予備日" : `Day ${dayData.day}`}：${spot.name}</h2>
           <span class="text-[10px] px-2 py-[2px] rounded-full bg-sky-100 text-sky-700">${dayData.date}</span>
         </div>
       `;
@@ -767,12 +834,23 @@
       card.appendChild(destEl);
 
       const transportEl = document.createElement("div");
-      transportEl.innerHTML = `
-        <h3 class="text-xs font-semibold text-slate-700 mt-1">移動手段・乗換経路・所要時間</h3>
-        <p class="mt-1"><span class="font-semibold text-teal-700">${spot.transport.type}</span></p>
-        <p class="mt-1">${spot.transport.route}</p>
-        <p class="mt-1 text-slate-500">所要時間目安：${spot.transport.time}</p>
+      transportEl.innerHTML = `<h3 class="text-xs font-semibold text-slate-700 mt-1">移動手段・乗換経路・所要時間</h3>`;
+      const inner = document.createElement("div");
+      inner.className = "mt-1 space-y-2 text-[11px]";
+      inner.innerHTML = `
+        <div class="border border-sky-100 rounded-lg p-2 bg-sky-50">
+          <p class="font-semibold text-teal-700">【推奨】レンタカー</p>
+          <p class="mt-1">${spot.transportCar.route}</p>
+          <p class="mt-1 text-slate-500">所要時間目安：${spot.transportCar.time}</p>
+          <p class="mt-1 text-slate-500">推奨出発：${spot.transportCar.depart}</p>
+        </div>
+        <div class="border border-slate-100 rounded-lg p-2 bg-slate-50">
+          <p class="font-semibold text-sky-700">電車</p>
+          <p class="mt-1">${spot.transportTrain.route}</p>
+          <p class="mt-1 text-slate-500">所要時間目安：${spot.transportTrain.time}</p>
+        </div>
       `;
+      transportEl.appendChild(inner);
       card.appendChild(transportEl);
 
       const feeEl = document.createElement("div");
@@ -811,8 +889,6 @@
       }, 260);
     }
 
-    // ---------------- スポット詳細描画 ----------------
-
     function renderSpotDetail() {
       const dayData = days.find((d) => d.day === activeDay);
       if (!dayData) return;
@@ -829,7 +905,6 @@
       const card = document.createElement("article");
       card.className = "bg-white rounded-xl shadow-md p-3 text-[12px] space-y-2";
 
-      // 画像カルーセル
       const imgWrap = document.createElement("div");
       imgWrap.className = "flex gap-2 overflow-x-auto no-scrollbar";
       spot.images.forEach((src) => {
@@ -872,9 +947,28 @@
       tipsEl.appendChild(ulT);
       card.appendChild(tipsEl);
 
-      // 周辺飲食店検索リンク
-      const searchEl = document.createElement("div");
+      const rec = spot.recommendations;
+      const recEl = document.createElement("div");
+      recEl.innerHTML = `<h3 class="text-xs font-semibold text-slate-700 mt-1">追加推奨事項（猛暑・渋滞・子ども・雨天・予約・持ち物）</h3>`;
+      const ulR = document.createElement("ul");
+      ulR.className = "mt-1 list-disc pl-4 space-y-1";
+      [
+        { label: "猛暑対策", text: rec.heat },
+        { label: "渋滞・出発時刻", text: rec.traffic },
+        { label: "子ども向け注意点", text: rec.kids },
+        { label: "雨天時の代替・注意", text: rec.rain },
+        { label: "予約のタイミング", text: rec.reservation },
+        { label: "持ち物リスト（要点）", text: rec.packing }
+      ].forEach((r) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<span class="font-semibold">${r.label}：</span>${r.text}`;
+        ulR.appendChild(li);
+      });
+      recEl.appendChild(ulR);
+      card.appendChild(recEl);
+
       const encodedName = encodeURIComponent(spot.name);
+      const searchEl = document.createElement("div");
       searchEl.innerHTML = `
         <h3 class="text-xs font-semibold text-slate-700 mt-2">周辺の飲食店を検索</h3>
         <p class="mt-1 text-[11px] text-slate-600">
@@ -884,15 +978,21 @@
           <a href="https://www.google.com/maps/search/${encodedName}+周辺+飲食店"
              target="_blank"
              rel="noopener noreferrer"
-             class="text-sky-600 underline">Google Mapsで「${spot.name} 周辺 飲食店」を検索</a>
+             class="text-sky-600 underline">
+             Google Mapsで「${spot.name} 周辺 飲食店」を検索
+          </a>
           <a href="https://tabelog.com/saitama/A1100/A110000/RC/cond01/?LstRange=SF&sw=${encodedName}"
              target="_blank"
              rel="noopener noreferrer"
-             class="text-sky-600 underline">食べログで「${spot.name}」周辺を検索</a>
+             class="text-sky-600 underline">
+             食べログで「${spot.name}」周辺を検索
+          </a>
           <a href="https://r.gnavi.co.jp/area/jp/rs/?fw=${encodedName}"
              target="_blank"
              rel="noopener noreferrer"
-             class="text-sky-600 underline">ぐるなびで「${spot.name}」周辺を検索</a>
+             class="text-sky-600 underline">
+             ぐるなびで「${spot.name}」周辺を検索
+          </a>
         </div>
       `;
       card.appendChild(searchEl);
@@ -903,8 +1003,6 @@
         spotDetailContainerEl.classList.remove("fade-enter", "fade-enter-active");
       }, 260);
     }
-
-    // ---------------- 食事処候補描画 ----------------
 
     function renderFood() {
       const dayData = days.find((d) => d.day === activeDay);
@@ -924,7 +1022,7 @@
 
       const titleEl = document.createElement("div");
       titleEl.innerHTML = `
-        <h2 class="text-sm font-semibold text-sky-700">食事処候補（画像付き）</h2>
+        <h2 class="text-sm font-semibold text-sky-700">食事処候補（画像付き・例）</h2>
         <p class="mt-1 text-slate-600">
           ここに表示されている店名・画像は「例」です。実際に行きたい店は、上の検索リンクから探して、
           店名・画像を差し替えて使ってください。
@@ -967,7 +1065,46 @@
       }, 260);
     }
 
-    // ---------------- ToDoリスト（localStorage） ----------------
+    function renderModelCourse() {
+      const dayData = days.find((d) => d.day === activeDay);
+      if (!dayData) return;
+      const spot = spots.find((s) => s.id === dayData.spotId);
+      if (!spot) return;
+
+      modelCourseContainerEl.classList.add("fade-enter");
+      requestAnimationFrame(() => {
+        modelCourseContainerEl.classList.add("fade-enter-active");
+      });
+
+      modelCourseContainerEl.innerHTML = "";
+
+      const card = document.createElement("article");
+      card.className = "bg-white rounded-xl shadow-md p-3 text-[12px] space-y-2";
+
+      const titleEl = document.createElement("div");
+      titleEl.innerHTML = `
+        <h2 class="text-sm font-semibold text-sky-700">詳細モデルコース（東狭山ヶ丘発着）</h2>
+        <p class="mt-1 text-slate-600">
+          家族4人（大人2・中学生1・小学生1）を想定した、迷わない1日の流れです。時間帯は目安なので、当日の状況に合わせて調整してください。
+        </p>
+      `;
+      card.appendChild(titleEl);
+
+      const ul = document.createElement("ul");
+      ul.className = "mt-2 list-disc pl-4 space-y-1";
+      spot.modelCourse.forEach((line) => {
+        const li = document.createElement("li");
+        li.textContent = line;
+        ul.appendChild(li);
+      });
+      card.appendChild(ul);
+
+      modelCourseContainerEl.appendChild(card);
+
+      setTimeout(() => {
+        modelCourseContainerEl.classList.remove("fade-enter", "fade-enter-active");
+      }, 260);
+    }
 
     const TODO_STORAGE_KEY = "saitama-trip-todo";
 
@@ -1023,15 +1160,12 @@
       renderTodoList();
     });
 
-    // ---------------- 全体描画 ----------------
-
     function renderAllForActiveDay() {
       renderSchedule();
       renderSpotDetail();
       renderFood();
+      renderModelCourse();
     }
-
-    // ---------------- 初期化 ----------------
 
     renderTabs();
     renderAllForActiveDay();
