@@ -34,18 +34,24 @@
       </p>
     </header>
 
-    <!-- 旅の基本戦略パネル -->
-    <section class="bg-white shadow-md mx-3 mt-3 mb-2 rounded-xl p-3 sticky top-0 z-20">
-      <h2 class="text-sm font-semibold text-teal-700 flex items-center gap-2">
+    <!-- 旅の基本戦略パネル（折りたたみ） -->
+    <section class="bg-white shadow-md mx-3 mt-3 mb-2 rounded-xl p-3">
+      <button
+        id="strategyToggle"
+        class="w-full text-left text-sm font-semibold text-teal-700 flex items-center justify-between"
+      >
         <span>旅の基本戦略</span>
-        <span class="text-[10px] px-2 py-[2px] rounded-full bg-teal-100 text-teal-700">猛暑＆渋滞回避</span>
-      </h2>
-      <ul class="mt-2 text-[11px] leading-relaxed list-disc pl-4">
-        <li>拠点は<strong>東狭山ヶ丘</strong>。お盆期間（8/11〜16）は<strong>1日1スポット</strong>に絞ってゆったり行動。</li>
-        <li>渋滞回避のため、秩父・長瀞方面は<strong>朝7時台出発</strong>＆<strong>夜20時以降帰宅</strong>のタイムシフトを活用。</li>
-        <li>屋外は<strong>午前中</strong>、午後はミュージアム・鍾乳洞・温泉など<strong>屋内や涼しい場所</strong>へ退避。</li>
-        <li>各Dayの行き先はプルダウンで変更可能。家族会議で「今日はどこに行く？」を決めながら使える設計。</li>
-      </ul>
+        <span id="strategyIcon">＋</span>
+      </button>
+
+      <div id="strategyContent" class="mt-2 text-[11px] leading-relaxed hidden">
+        <ul class="list-disc pl-4">
+          <li>お盆期間（8/11〜16）は<strong>1日1スポット</strong>でゆったり行動。</li>
+          <li>拠点は<strong>東狭山ヶ丘</strong>。秩父・長瀞方面は<strong>朝7時出発＆夜20時以降帰宅</strong>で渋滞回避。</li>
+          <li>午前は屋外、午後はミュージアム・鍾乳洞・温泉など<strong>屋内や涼しい場所</strong>へ。</li>
+          <li>各Dayの行き先はプルダウンで変更可能。家族会議で「今日はどこに行く？」を決めながら使える設計。</li>
+        </ul>
+      </div>
     </section>
 
     <!-- タブ -->
@@ -93,20 +99,29 @@
 
   <script>
     // ---------------- スポットデータ ----------------
+    // 画像URLはダミーです。実運用時は自分の画像に差し替えてください。
 
     const spots = [
       {
         id: "sakura",
         name: "ところざわサクラタウン（角川武蔵野ミュージアム）",
         area: "所沢市 東所沢",
-        image:
-          "https://images.unsplash.com/photo-1526481280695-3c687fd543c0?auto=format&fit=crop&w=800&q=80",
+        images: [
+          "https://source.unsplash.com/featured/?tokorozawa",
+          "https://source.unsplash.com/featured/?museum",
+          "https://source.unsplash.com/featured/?books"
+        ],
         description:
           "ポップカルチャーとアートが融合した複合施設。巨大な石造風の外観が特徴的なミュージアムと、ショップ・レストラン・イベントスペースが集まるスポット。",
         highlights: [
           "本棚劇場など写真映えする空間が多く、子どもも大人も楽しめる",
           "ほぼ完全屋内で、猛暑日でも涼しく過ごせる",
           "角川食堂やカフェでランチ・休憩がしやすい"
+        ],
+        tips: [
+          "午前〜午後どの時間帯でも楽しめるが、混雑を避けるなら午前中がおすすめ",
+          "屋内中心なので、猛暑日や雨の日の“保険プラン”としても使える",
+          "展示内容によっては事前予約制のイベントもあるため、公式サイトを確認"
         ],
         transport: {
           type: "電車＋徒歩",
@@ -132,18 +147,23 @@
           {
             name: "角川食堂",
             description: "館内レストラン。和洋折衷のメニューで家族向け。",
-            image:
-              "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80",
+            image: "https://source.unsplash.com/featured/?restaurant",
             mapUrl:
               "https://www.google.com/maps/search/?api=1&query=角川食堂 東所沢"
           },
           {
             name: "武蔵野うどん うどきち",
             description: "コシの強い武蔵野うどんが人気。子どもも食べやすい味。",
-            image:
-              "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+            image: "https://source.unsplash.com/featured/?udon",
             mapUrl:
               "https://www.google.com/maps/search/?api=1&query=うどきち 所沢"
+          },
+          {
+            name: "三丁目の手打うどん",
+            description: "地元で人気の武蔵野うどん店。ランチに最適。",
+            image: "https://source.unsplash.com/featured/?noodles",
+            mapUrl:
+              "https://www.google.com/maps/search/?api=1&query=三丁目の手打うどん 所沢"
           }
         ]
       },
@@ -151,14 +171,22 @@
         id: "seibuen",
         name: "西武園ゆうえんち＆プール",
         area: "所沢市 山口",
-        image:
-          "https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf?auto=format&fit=crop&w=800&q=80",
+        images: [
+          "https://source.unsplash.com/featured/?amusement-park",
+          "https://source.unsplash.com/featured/?pool",
+          "https://source.unsplash.com/featured/?water-park"
+        ],
         description:
           "昭和レトロな街並みとアトラクションが楽しめる遊園地。夏季は大型プールがオープンし、家族で一日中遊べるスポット。",
         highlights: [
           "プールと遊園地をセットで楽しめる夏休み定番スポット",
           "所沢から近く、移動時間が短いので子ども連れに優しい",
           "夕方のショーやライトアップで納涼気分を味わえる"
+        ],
+        tips: [
+          "お盆期間は非常に混雑するため、開園時間に合わせて早めに入園するのがおすすめ",
+          "プール利用時は熱中症対策と日焼け対策をしっかり行う",
+          "有料席やチケットは事前予約・事前購入が安心"
         ],
         transport: {
           type: "電車",
@@ -185,18 +213,16 @@
           {
             name: "喫茶ビクトリヤ",
             description: "昭和レトロな雰囲気の喫茶店。ナポリタンやプリンなどが人気。",
-            image:
-              "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=800&q=80",
+            image: "https://source.unsplash.com/featured/?coffee-shop",
             mapUrl:
               "https://www.google.com/maps/search/?api=1&query=喫茶ビクトリヤ 西武園"
           },
           {
-            name: "夕陽の丘プレイランド周辺の屋台",
+            name: "園内フードスタンド",
             description: "軽食やスナック類が多く、子どもと食べ歩きにぴったり。",
-            image:
-              "https://images.unsplash.com/photo-1504753791519-9c054b0475b9?auto=format&fit=crop&w=800&q=80",
+            image: "https://source.unsplash.com/featured/?snacks",
             mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=西武園ゆうえんち 夕陽の丘"
+              "https://www.google.com/maps/search/?api=1&query=西武園ゆうえんち フード"
           }
         ]
       },
@@ -204,14 +230,22 @@
         id: "gaikaku",
         name: "首都圏外郭放水路（地下神殿）",
         area: "春日部市",
-        image:
-          "https://images.unsplash.com/photo-1526481280695-3c687fd543c0?auto=format&fit=crop&w=800&q=80",
+        images: [
+          "https://source.unsplash.com/featured/?underground",
+          "https://source.unsplash.com/featured/?tunnel",
+          "https://source.unsplash.com/featured/?architecture"
+        ],
         description:
           "世界最大級の地下放水路。高さ約18mの巨大な柱が並ぶ調圧水槽が“地下神殿”と呼ばれる人気スポットで、防災ツーリズムとして見学コースが用意されている。",
         highlights: [
           "調圧水槽の圧倒的スケール感を間近で体感できる",
           "地下は気温約20℃で非常に涼しく、猛暑日に最適",
           "防災コンシェルジュによる解説で、首都圏を守る仕組みが学べる"
+        ],
+        tips: [
+          "階段約100段の昇り降りがあるため、歩きやすい靴必須",
+          "夏でも地下は涼しいが、地上移動は暑いので飲み物を持参",
+          "人気コースは早めに予約が埋まるため、1ヶ月前からの予約推奨"
         ],
         transport: {
           type: "レンタカー",
@@ -225,6 +259,12 @@
             detail:
               "約55分・1人1,200円前後。階段約100段の昇り降りあり。事前予約制。",
             url: "https://gaikaku.jp/"
+          },
+          {
+            label: "その他コース（立坑体験・ポンプ制覇など）",
+            detail:
+              "所要時間110分・料金3,500〜5,500円前後。詳細は公式サイトのコース一覧を参照。",
+            url: "https://gaikaku.jp/"
           }
         ],
         mapUrl:
@@ -233,16 +273,14 @@
           {
             name: "地下神殿カレー（龍Q館）",
             description: "見学施設内で提供されるご当地カレー。防災ツーリズムの記念に。",
-            image:
-              "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80",
+            image: "https://source.unsplash.com/featured/?curry",
             mapUrl:
               "https://www.google.com/maps/search/?api=1&query=龍Q館 春日部 カレー"
           },
           {
             name: "春日部駅周辺のカフェ・定食屋",
             description: "駅近くに家族向けの飲食店が多数。ランチに便利。",
-            image:
-              "https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=800&q=80",
+            image: "https://source.unsplash.com/featured/?lunch",
             mapUrl:
               "https://www.google.com/maps/search/?api=1&query=春日部駅 カフェ"
           }
@@ -252,14 +290,22 @@
         id: "sakitama",
         name: "さきたま古墳公園＆さきたま史跡の博物館",
         area: "行田市",
-        image:
-          "https://images.unsplash.com/photo-1526481280695-3c687fd543c0?auto=format&fit=crop&w=800&q=80",
+        images: [
+          "https://source.unsplash.com/featured/?kofun",
+          "https://source.unsplash.com/featured/?museum-japan",
+          "https://source.unsplash.com/featured/?history"
+        ],
         description:
           "国指定特別史跡「埼玉古墳群」を中心とした歴史公園とミュージアム。古墳出土品や国宝級の資料が展示され、古代ロマンを感じられるスポット。",
         highlights: [
           "丸墓山古墳に登って古墳群を一望できる",
           "博物館は空調が効いており、夏でも快適に見学可能",
           "埴輪作り体験など、子ども向けの体験プログラムもある"
+        ],
+        tips: [
+          "午前中に古墳公園を散策し、午後は博物館で涼みながら展示鑑賞する流れがおすすめ",
+          "日差しが強いので帽子・日焼け止めを準備",
+          "埴輪作り体験は事前予約が必要な場合があるため、公式情報を確認"
         ],
         transport: {
           type: "レンタカー",
@@ -271,6 +317,11 @@
             label: "博物館観覧料（目安）",
             detail: "一般200円・高校生・学生100円・中学生以下無料。",
             url: "https://sakitama-museum.jp/"
+          },
+          {
+            label: "はにわ作り体験",
+            detail: "約700円前後。電話予約などが必要な場合あり。",
+            url: "https://sakitama-museum.jp/"
           }
         ],
         mapUrl:
@@ -279,10 +330,16 @@
           {
             name: "かねつき堂",
             description: "ゼリーフライ・ふらい焼きそばなど行田B級グルメの名店。",
-            image:
-              "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80",
+            image: "https://source.unsplash.com/featured/?fried-food",
             mapUrl:
               "https://www.google.com/maps/search/?api=1&query=かねつき堂 行田"
+          },
+          {
+            name: "行田市内のうどん・そば店",
+            description: "古墳散策後の軽めのランチにぴったり。",
+            image: "https://source.unsplash.com/featured/?soba",
+            mapUrl:
+              "https://www.google.com/maps/search/?api=1&query=行田 そば うどん"
           }
         ]
       },
@@ -290,14 +347,22 @@
         id: "nagatoro",
         name: "長瀞ラインくだり＆岩畳",
         area: "長瀞町",
-        image:
-          "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80",
+        images: [
+          "https://source.unsplash.com/featured/?river",
+          "https://source.unsplash.com/featured/?boat",
+          "https://source.unsplash.com/featured/?valley"
+        ],
         description:
           "荒川を木造和船で下る川下りと、奇岩が並ぶ岩畳の景観が楽しめる長瀞エリア。夏でも川風が涼しく、家族で自然を満喫できる。",
         highlights: [
           "船頭さんのガイド付きで、渓谷美とスリルを楽しめる",
           "岩畳の上を歩きながら、川辺で涼むことができる",
           "かき氷や豚みそ丼など、秩父グルメも豊富"
+        ],
+        tips: [
+          "朝9〜11時台の乗船が比較的涼しく、混雑も少し落ち着くことが多い",
+          "増水・渇水時は運休になるため、当日朝に公式情報を確認",
+          "川辺は滑りやすい場所もあるので、滑りにくい靴がおすすめ"
         ],
         transport: {
           type: "レンタカー",
@@ -317,16 +382,14 @@
           {
             name: "阿佐美冷蔵",
             description: "天然氷のかき氷で有名な老舗。夏の定番スポット。",
-            image:
-              "https://images.unsplash.com/photo-1504753791519-9c054b0475b9?auto=format&fit=crop&w=800&q=80",
+            image: "https://source.unsplash.com/featured/?shaved-ice",
             mapUrl:
               "https://www.google.com/maps/search/?api=1&query=阿佐美冷蔵 長瀞"
           },
           {
             name: "豚みそ丼専門店 有隣",
             description: "秩父名物豚みそ丼の人気店。ボリューム満点で家族向け。",
-            image:
-              "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80",
+            image: "https://source.unsplash.com/featured/?pork",
             mapUrl:
               "https://www.google.com/maps/search/?api=1&query=豚みそ丼 有隣 秩父"
           }
@@ -336,14 +399,22 @@
         id: "forest",
         name: "フォレストアドベンチャー・秩父",
         area: "秩父市 ミューズパーク",
-        image:
-          "https://images.unsplash.com/photo-1500534314211-0a24cd03f2c0?auto=format&fit=crop&w=800&q=80",
+        images: [
+          "https://source.unsplash.com/featured/?zipline",
+          "https://source.unsplash.com/featured/?forest",
+          "https://source.unsplash.com/featured/?adventure"
+        ],
         description:
           "森の中でハーネスを付けて木から木へ渡る本格アスレチック。高さも難易度も高めで、大人も本気で楽しめる国内最大級のコース。",
         highlights: [
           "最長約100m超のジップスライドで森の上を滑走できる",
           "森の中なので直射日光を避けつつアクティブに遊べる",
           "秩父ミューズパーク内にあり、周辺散策もセットで楽しめる"
+        ],
+        tips: [
+          "小学1年生以上・身長110cm以上（一部コースは小学4年生・140cm以上）などの条件を事前に確認",
+          "動きやすい服装・運動靴・手袋などを準備",
+          "夏場は森の中でも暑くなるため、飲み物・帽子必須"
         ],
         transport: {
           type: "レンタカー",
@@ -368,10 +439,16 @@
           {
             name: "PICA秩父 BBQレストラン",
             description: "BBQスタイルでしっかり食べられる。アクティビティ後のランチに最適。",
-            image:
-              "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+            image: "https://source.unsplash.com/featured/?bbq",
             mapUrl:
               "https://www.google.com/maps/search/?api=1&query=PICA秩父"
+          },
+          {
+            name: "ミューズパーク内カフェ",
+            description: "軽食やドリンクで一息つけるスポット。",
+            image: "https://source.unsplash.com/featured/?cafe",
+            mapUrl:
+              "https://www.google.com/maps/search/?api=1&query=秩父 ミューズパーク カフェ"
           }
         ]
       },
@@ -379,14 +456,22 @@
         id: "hashidate",
         name: "橋立鍾乳洞",
         area: "秩父市 上影森",
-        image:
-          "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80",
+        images: [
+          "https://source.unsplash.com/featured/?cave",
+          "https://source.unsplash.com/featured/?stalactite",
+          "https://source.unsplash.com/featured/?rock"
+        ],
         description:
           "秩父の山中にある鍾乳洞。狭い通路や急な階段を進みながら、自然が作り出した造形を間近で見られるスポット。夏でも洞内はひんやりと涼しい。",
         highlights: [
           "天然のクーラーのような涼しさで、猛暑日にぴったり",
           "鍾乳石や独特の地形を探検気分で楽しめる",
           "長瀞・秩父エリアの他スポットと組み合わせやすい立地"
+        ],
+        tips: [
+          "洞内は狭い通路・急な階段が多いため、滑りにくい靴がおすすめ",
+          "頭上が低い場所もあるので、子どもは特に注意して歩く",
+          "雨の日でも楽しめるが、足元が滑りやすくなる場合あり"
         ],
         transport: {
           type: "レンタカー",
@@ -406,10 +491,16 @@
           {
             name: "秩父そば店（こぶしやなど）",
             description: "秩父市内のそば店で、山の幸を使ったメニューが楽しめる。",
-            image:
-              "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=800&q=80",
+            image: "https://source.unsplash.com/featured/?soba",
             mapUrl:
               "https://www.google.com/maps/search/?api=1&query=秩父 そば こぶしや"
+          },
+          {
+            name: "秩父市内のカフェ",
+            description: "鍾乳洞帰りに立ち寄れる休憩スポット。",
+            image: "https://source.unsplash.com/featured/?coffee",
+            mapUrl:
+              "https://www.google.com/maps/search/?api=1&query=秩父 カフェ"
           }
         ]
       },
@@ -417,14 +508,22 @@
         id: "shinrinkoen",
         name: "国営武蔵丘陵森林公園",
         area: "滑川町",
-        image:
-          "https://images.unsplash.com/photo-1500534314211-0a24cd03f2c0?auto=format&fit=crop&w=800&q=80",
+        images: [
+          "https://source.unsplash.com/featured/?park",
+          "https://source.unsplash.com/featured/?cycling",
+          "https://source.unsplash.com/featured/?flowers"
+        ],
         description:
           "広大な敷地に森・花畑・サイクリングコース・アスレチックなどがある国営公園。木陰が多く、夏でも比較的過ごしやすい。",
         highlights: [
           "サイクリングやアスレチックで子どもと一緒に体を動かせる",
           "季節の花畑が美しく、写真撮影にも向いている",
           "早朝開園日には涼しい時間帯に散策できる"
+        ],
+        tips: [
+          "お盆期間は暑さが厳しいため、早朝〜午前中の散策がおすすめ",
+          "園内が広いため、無理せずエリアを絞って回る",
+          "サイクリング利用時は水分補給と休憩をこまめに"
         ],
         transport: {
           type: "レンタカー",
@@ -444,10 +543,16 @@
           {
             name: "園内レストラン・売店",
             description: "軽食やソフトクリームなど、散策の合間に立ち寄れる。",
-            image:
-              "https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=800&q=80",
+            image: "https://source.unsplash.com/featured/?ice-cream",
             mapUrl:
               "https://www.google.com/maps/search/?api=1&query=武蔵丘陵森林公園 レストラン"
+          },
+          {
+            name: "東松山市内のファミレス",
+            description: "帰り道に立ち寄りやすい家族向け飲食店。",
+            image: "https://source.unsplash.com/featured/?family-restaurant",
+            mapUrl:
+              "https://www.google.com/maps/search/?api=1&query=東松山 ファミレス"
           }
         ]
       },
@@ -455,14 +560,22 @@
         id: "saiboku",
         name: "サイボク天然温泉 花鳥風月",
         area: "日高市",
-        image:
-          "https://images.unsplash.com/photo-1519821172141-b5d8cbd123f2?auto=format&fit=crop&w=800&q=80",
+        images: [
+          "https://source.unsplash.com/featured/?onsen",
+          "https://source.unsplash.com/featured/?spa",
+          "https://source.unsplash.com/featured/?hot-spring"
+        ],
         description:
           "豚のテーマパーク「サイボク」敷地内にある日帰り温泉。豊富な湧出量のナトリウム塩化物泉で、温まりの湯・美肌の湯として人気。",
         highlights: [
           "大露天風呂・炭酸泉・サウナなど設備が充実",
           "温泉とサイボクのレストラン・ショップをセットで楽しめる",
           "帰路前に立ち寄れば、旅の疲れをしっかり癒せる"
+        ],
+        tips: [
+          "お盆期間は夕方〜夜に混雑しやすいため、少し早めの時間帯も検討",
+          "温泉利用後にサイボクのショップでお土産を購入する流れがおすすめ",
+          "長時間の入浴は疲労につながるため、子どもは特に様子を見ながら"
         ],
         transport: {
           type: "レンタカー",
@@ -483,10 +596,16 @@
           {
             name: "サイボクレストラン",
             description: "銘柄豚を使ったとんかつ・ハム・ソーセージなどが楽しめる。",
-            image:
-              "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+            image: "https://source.unsplash.com/featured/?tonkatsu",
             mapUrl:
               "https://www.google.com/maps/search/?api=1&query=サイボク レストラン"
+          },
+          {
+            name: "サイボク売店",
+            description: "ハム・ソーセージ・ベーコンなどのお土産購入に最適。",
+            image: "https://source.unsplash.com/featured/?ham",
+            mapUrl:
+              "https://www.google.com/maps/search/?api=1&query=サイボク 売店"
           }
         ]
       }
@@ -557,7 +676,18 @@
     const todoListEl = document.getElementById("todoList");
     const resetTodoBtn = document.getElementById("resetTodo");
 
+    const strategyToggle = document.getElementById("strategyToggle");
+    const strategyContent = document.getElementById("strategyContent");
+    const strategyIcon = document.getElementById("strategyIcon");
+
     let activeDay = 1;
+
+    // ---------------- 旅の基本戦略折りたたみ ----------------
+
+    strategyToggle.addEventListener("click", () => {
+      const isHidden = strategyContent.classList.toggle("hidden");
+      strategyIcon.textContent = isHidden ? "＋" : "－";
+    });
 
     // ---------------- タブ描画 ----------------
 
@@ -651,19 +781,20 @@
       card.appendChild(transportEl);
 
       const feeEl = document.createElement("div");
-      feeEl.innerHTML = `
-        <h3 class="text-xs font-semibold text-slate-700 mt-1">料金・事前予約情報（要最新確認）</h3>
-      `;
+      feeEl.innerHTML = `<h3 class="text-xs font-semibold text-slate-700 mt-1">料金・事前予約情報（要最新確認）</h3>`;
       const ulF = document.createElement("ul");
       ulF.className = "mt-1 list-disc pl-4 space-y-1";
       spot.feeReservation.forEach((f) => {
         const li = document.createElement("li");
-        const linkPart = f.url
-          ? `<a href="${f.url}" target="_blank" rel="noopener noreferrer" class="text-sky-600 underline">公式サイト</a>`
-          : "";
-        li.innerHTML = `<span class="font-semibold">${f.label}：</span>${f.detail}${
-          linkPart ? "（" + linkPart + "）" : ""
-        }`;
+        li.innerHTML = `
+          <span class="font-semibold">${f.label}</span><br>
+          <span>${f.detail}</span><br>
+          ${
+            f.url
+              ? `<a href="${f.url}" target="_blank" rel="noopener noreferrer" class="text-sky-600 underline text-[11px]">公式サイト</a>`
+              : ""
+          }
+        `;
         ulF.appendChild(li);
       });
       feeEl.appendChild(ulF);
@@ -703,11 +834,17 @@
       const card = document.createElement("article");
       card.className = "bg-white rounded-xl shadow-md p-3 text-[12px] space-y-2";
 
-      const img = document.createElement("img");
-      img.src = spot.image;
-      img.alt = spot.name;
-      img.className = "w-full h-40 object-cover rounded-lg";
-      card.appendChild(img);
+      // 画像カルーセル
+      const imgWrap = document.createElement("div");
+      imgWrap.className = "flex gap-2 overflow-x-auto no-scrollbar";
+      spot.images.forEach((src) => {
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = spot.name;
+        img.className = "w-48 h-32 object-cover rounded-lg flex-shrink-0";
+        imgWrap.appendChild(img);
+      });
+      card.appendChild(imgWrap);
 
       const titleEl = document.createElement("div");
       titleEl.innerHTML = `
@@ -727,6 +864,18 @@
       });
       hlEl.appendChild(ul);
       card.appendChild(hlEl);
+
+      const tipsEl = document.createElement("div");
+      tipsEl.innerHTML = `<h3 class="text-xs font-semibold text-slate-700 mt-1">訪問のコツ・注意点</h3>`;
+      const ulT = document.createElement("ul");
+      ulT.className = "mt-1 list-disc pl-4 space-y-1";
+      spot.tips.forEach((t) => {
+        const li = document.createElement("li");
+        li.textContent = t;
+        ulT.appendChild(li);
+      });
+      tipsEl.appendChild(ulT);
+      card.appendChild(tipsEl);
 
       spotDetailContainerEl.appendChild(card);
 
@@ -765,7 +914,7 @@
 
       spot.foods.forEach((f) => {
         const item = document.createElement("div");
-        item.className = "flex gap-2";
+        item.className = "flex gap-2 bg-sky-50 p-2 rounded-lg";
 
         const img = document.createElement("img");
         img.src = f.image;
@@ -776,7 +925,7 @@
         info.className = "flex-1";
         info.innerHTML = `
           <h3 class="text-xs font-semibold text-slate-700">${f.name}</h3>
-          <p class="mt-1">${f.description}</p>
+          <p class="mt-1 text-[11px]">${f.description}</p>
           <a href="${f.mapUrl}" target="_blank" rel="noopener noreferrer" class="mt-1 inline-flex items-center text-sky-600 underline text-[11px]">
             Google Mapで場所を確認
           </a>
