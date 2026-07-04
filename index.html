@@ -38,7 +38,7 @@
     <section class="bg-white shadow-md mx-3 mt-3 mb-2 rounded-xl p-3">
       <button
         id="strategyToggle"
-        class="w-full text-left text-sm font-semibold text-teal-700 flex items-center justify-between"
+        class="w-full text左 text-sm font-semibold text-teal-700 flex items-center justify-between"
       >
         <span>旅の基本戦略</span>
         <span id="strategyIcon">＋</span>
@@ -99,7 +99,9 @@
 
   <script>
     // ---------------- スポットデータ ----------------
-    // 画像URLはダミーです。実運用時は自分の画像に差し替えてください。
+    // 画像は GitHub Pages 上の /Plan_Guide_2026/images/ に配置してください。
+
+    const imgBase = "/Plan_Guide_2026/images";
 
     const spots = [
       {
@@ -107,9 +109,9 @@
         name: "ところざわサクラタウン（角川武蔵野ミュージアム）",
         area: "所沢市 東所沢",
         images: [
-          "https://source.unsplash.com/featured/?tokorozawa",
-          "https://source.unsplash.com/featured/?museum",
-          "https://source.unsplash.com/featured/?books"
+          `${imgBase}/sakura-1.jpg`,
+          `${imgBase}/sakura-2.jpg`,
+          `${imgBase}/sakura-3.jpg`
         ],
         description:
           "ポップカルチャーとアートが融合した複合施設。巨大な石造風の外観が特徴的なミュージアムと、ショップ・レストラン・イベントスペースが集まるスポット。",
@@ -145,25 +147,18 @@
           "https://www.google.com/maps/search/?api=1&query=ところざわサクラタウン",
         foods: [
           {
-            name: "角川食堂",
-            description: "館内レストラン。和洋折衷のメニューで家族向け。",
-            image: "https://source.unsplash.com/featured/?restaurant",
+            name: "（例）角川食堂",
+            description: "館内レストラン。実際に行きたい店をここに設定してください。",
+            image: `${imgBase}/sakura-food-1.jpg`,
             mapUrl:
               "https://www.google.com/maps/search/?api=1&query=角川食堂 東所沢"
           },
           {
-            name: "武蔵野うどん うどきち",
-            description: "コシの強い武蔵野うどんが人気。子どもも食べやすい味。",
-            image: "https://source.unsplash.com/featured/?udon",
+            name: "（例）武蔵野うどん店",
+            description: "東所沢周辺のうどん店などを、検索して選んでください。",
+            image: `${imgBase}/sakura-food-2.jpg`,
             mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=うどきち 所沢"
-          },
-          {
-            name: "三丁目の手打うどん",
-            description: "地元で人気の武蔵野うどん店。ランチに最適。",
-            image: "https://source.unsplash.com/featured/?noodles",
-            mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=三丁目の手打うどん 所沢"
+              "https://www.google.com/maps/search/?api=1&query=東所沢 うどん"
           }
         ]
       },
@@ -172,9 +167,9 @@
         name: "西武園ゆうえんち＆プール",
         area: "所沢市 山口",
         images: [
-          "https://source.unsplash.com/featured/?amusement-park",
-          "https://source.unsplash.com/featured/?pool",
-          "https://source.unsplash.com/featured/?water-park"
+          `${imgBase}/seibuen-1.jpg`,
+          `${imgBase}/seibuen-2.jpg`,
+          `${imgBase}/seibuen-3.jpg`
         ],
         description:
           "昭和レトロな街並みとアトラクションが楽しめる遊園地。夏季は大型プールがオープンし、家族で一日中遊べるスポット。",
@@ -211,16 +206,16 @@
           "https://www.google.com/maps/search/?api=1&query=西武園ゆうえんち",
         foods: [
           {
-            name: "喫茶ビクトリヤ",
-            description: "昭和レトロな雰囲気の喫茶店。ナポリタンやプリンなどが人気。",
-            image: "https://source.unsplash.com/featured/?coffee-shop",
+            name: "（例）園内レストラン",
+            description: "西武園ゆうえんち内の飲食店を、検索して選んでください。",
+            image: `${imgBase}/seibuen-food-1.jpg`,
             mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=喫茶ビクトリヤ 西武園"
+              "https://www.google.com/maps/search/?api=1&query=西武園ゆうえんち レストラン"
           },
           {
-            name: "園内フードスタンド",
-            description: "軽食やスナック類が多く、子どもと食べ歩きにぴったり。",
-            image: "https://source.unsplash.com/featured/?snacks",
+            name: "（例）軽食スタンド",
+            description: "園内のフードスタンドなど、実際に使う店を設定してください。",
+            image: `${imgBase}/seibuen-food-2.jpg`,
             mapUrl:
               "https://www.google.com/maps/search/?api=1&query=西武園ゆうえんち フード"
           }
@@ -231,9 +226,9 @@
         name: "首都圏外郭放水路（地下神殿）",
         area: "春日部市",
         images: [
-          "https://source.unsplash.com/featured/?underground",
-          "https://source.unsplash.com/featured/?tunnel",
-          "https://source.unsplash.com/featured/?architecture"
+          `${imgBase}/gaikaku-1.jpg`,
+          `${imgBase}/gaikaku-2.jpg`,
+          `${imgBase}/gaikaku-3.jpg`
         ],
         description:
           "世界最大級の地下放水路。高さ約18mの巨大な柱が並ぶ調圧水槽が“地下神殿”と呼ばれる人気スポットで、防災ツーリズムとして見学コースが用意されている。",
@@ -271,18 +266,18 @@
           "https://www.google.com/maps/search/?api=1&query=首都圏外郭放水路 龍Q館",
         foods: [
           {
-            name: "地下神殿カレー（龍Q館）",
-            description: "見学施設内で提供されるご当地カレー。防災ツーリズムの記念に。",
-            image: "https://source.unsplash.com/featured/?curry",
+            name: "（例）龍Q館内軽食",
+            description: "龍Q館や春日部駅周辺の飲食店を、検索して選んでください。",
+            image: `${imgBase}/gaikaku-food-1.jpg`,
             mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=龍Q館 春日部 カレー"
+              "https://www.google.com/maps/search/?api=1&query=春日部駅 飲食店"
           },
           {
-            name: "春日部駅周辺のカフェ・定食屋",
-            description: "駅近くに家族向けの飲食店が多数。ランチに便利。",
-            image: "https://source.unsplash.com/featured/?lunch",
+            name: "（例）春日部駅周辺カフェ",
+            description: "帰りに立ち寄りたいカフェなどを、実際の店名で設定してください。",
+            image: `${imgBase}/gaikaku-food-2.jpg`,
             mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=春日部駅 カフェ"
+              "https://www.google.com/maps/search/?api=1&query=春日部 カフェ"
           }
         ]
       },
@@ -291,9 +286,9 @@
         name: "さきたま古墳公園＆さきたま史跡の博物館",
         area: "行田市",
         images: [
-          "https://source.unsplash.com/featured/?kofun",
-          "https://source.unsplash.com/featured/?museum-japan",
-          "https://source.unsplash.com/featured/?history"
+          `${imgBase}/sakitama-1.jpg`,
+          `${imgBase}/sakitama-2.jpg`,
+          `${imgBase}/sakitama-3.jpg`
         ],
         description:
           "国指定特別史跡「埼玉古墳群」を中心とした歴史公園とミュージアム。古墳出土品や国宝級の資料が展示され、古代ロマンを感じられるスポット。",
@@ -328,16 +323,16 @@
           "https://www.google.com/maps/search/?api=1&query=さきたま古墳公園",
         foods: [
           {
-            name: "かねつき堂",
-            description: "ゼリーフライ・ふらい焼きそばなど行田B級グルメの名店。",
-            image: "https://source.unsplash.com/featured/?fried-food",
+            name: "（例）行田B級グルメ店",
+            description: "ゼリーフライ・ふらいなどの店を、検索して選んでください。",
+            image: `${imgBase}/sakitama-food-1.jpg`,
             mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=かねつき堂 行田"
+              "https://www.google.com/maps/search/?api=1&query=行田 ゼリーフライ"
           },
           {
-            name: "行田市内のうどん・そば店",
-            description: "古墳散策後の軽めのランチにぴったり。",
-            image: "https://source.unsplash.com/featured/?soba",
+            name: "（例）行田市内そば・うどん店",
+            description: "軽めのランチに使いたい店を、実際の店名で設定してください。",
+            image: `${imgBase}/sakitama-food-2.jpg`,
             mapUrl:
               "https://www.google.com/maps/search/?api=1&query=行田 そば うどん"
           }
@@ -348,9 +343,9 @@
         name: "長瀞ラインくだり＆岩畳",
         area: "長瀞町",
         images: [
-          "https://source.unsplash.com/featured/?river",
-          "https://source.unsplash.com/featured/?boat",
-          "https://source.unsplash.com/featured/?valley"
+          `${imgBase}/nagatoro-1.jpg`,
+          `${imgBase}/nagatoro-2.jpg`,
+          `${imgBase}/nagatoro-3.jpg`
         ],
         description:
           "荒川を木造和船で下る川下りと、奇岩が並ぶ岩畳の景観が楽しめる長瀞エリア。夏でも川風が涼しく、家族で自然を満喫できる。",
@@ -380,18 +375,18 @@
           "https://www.google.com/maps/search/?api=1&query=長瀞ラインくだり",
         foods: [
           {
-            name: "阿佐美冷蔵",
-            description: "天然氷のかき氷で有名な老舗。夏の定番スポット。",
-            image: "https://source.unsplash.com/featured/?shaved-ice",
+            name: "（例）かき氷店",
+            description: "長瀞駅周辺のかき氷店を、検索して選んでください。",
+            image: `${imgBase}/nagatoro-food-1.jpg`,
             mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=阿佐美冷蔵 長瀞"
+              "https://www.google.com/maps/search/?api=1&query=長瀞 かき氷"
           },
           {
-            name: "豚みそ丼専門店 有隣",
-            description: "秩父名物豚みそ丼の人気店。ボリューム満点で家族向け。",
-            image: "https://source.unsplash.com/featured/?pork",
+            name: "（例）豚みそ丼店",
+            description: "秩父名物豚みそ丼の店を、実際の店名で設定してください。",
+            image: `${imgBase}/nagatoro-food-2.jpg`,
             mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=豚みそ丼 有隣 秩父"
+              "https://www.google.com/maps/search/?api=1&query=秩父 豚みそ丼"
           }
         ]
       },
@@ -400,9 +395,9 @@
         name: "フォレストアドベンチャー・秩父",
         area: "秩父市 ミューズパーク",
         images: [
-          "https://source.unsplash.com/featured/?zipline",
-          "https://source.unsplash.com/featured/?forest",
-          "https://source.unsplash.com/featured/?adventure"
+          `${imgBase}/forest-1.jpg`,
+          `${imgBase}/forest-2.jpg`,
+          `${imgBase}/forest-3.jpg`
         ],
         description:
           "森の中でハーネスを付けて木から木へ渡る本格アスレチック。高さも難易度も高めで、大人も本気で楽しめる国内最大級のコース。",
@@ -437,18 +432,18 @@
           "https://www.google.com/maps/search/?api=1&query=フォレストアドベンチャー秩父",
         foods: [
           {
-            name: "PICA秩父 BBQレストラン",
-            description: "BBQスタイルでしっかり食べられる。アクティビティ後のランチに最適。",
-            image: "https://source.unsplash.com/featured/?bbq",
-            mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=PICA秩父"
-          },
-          {
-            name: "ミューズパーク内カフェ",
-            description: "軽食やドリンクで一息つけるスポット。",
-            image: "https://source.unsplash.com/featured/?cafe",
+            name: "（例）ミューズパーク内カフェ",
+            description: "ミューズパーク内のカフェを、検索して選んでください。",
+            image: `${imgBase}/forest-food-1.jpg`,
             mapUrl:
               "https://www.google.com/maps/search/?api=1&query=秩父 ミューズパーク カフェ"
+          },
+          {
+            name: "（例）秩父市内レストラン",
+            description: "アクティビティ後に立ち寄りたい店を、実際の店名で設定してください。",
+            image: `${imgBase}/forest-food-2.jpg`,
+            mapUrl:
+              "https://www.google.com/maps/search/?api=1&query=秩父 レストラン"
           }
         ]
       },
@@ -457,9 +452,9 @@
         name: "橋立鍾乳洞",
         area: "秩父市 上影森",
         images: [
-          "https://source.unsplash.com/featured/?cave",
-          "https://source.unsplash.com/featured/?stalactite",
-          "https://source.unsplash.com/featured/?rock"
+          `${imgBase}/hashidate-1.jpg`,
+          `${imgBase}/hashidate-2.jpg`,
+          `${imgBase}/hashidate-3.jpg`
         ],
         description:
           "秩父の山中にある鍾乳洞。狭い通路や急な階段を進みながら、自然が作り出した造形を間近で見られるスポット。夏でも洞内はひんやりと涼しい。",
@@ -489,16 +484,16 @@
           "https://www.google.com/maps/search/?api=1&query=橋立鍾乳洞",
         foods: [
           {
-            name: "秩父そば店（こぶしやなど）",
-            description: "秩父市内のそば店で、山の幸を使ったメニューが楽しめる。",
-            image: "https://source.unsplash.com/featured/?soba",
+            name: "（例）秩父そば店",
+            description: "鍾乳洞帰りに立ち寄りたいそば店を、検索して選んでください。",
+            image: `${imgBase}/hashidate-food-1.jpg`,
             mapUrl:
-              "https://www.google.com/maps/search/?api=1&query=秩父 そば こぶしや"
+              "https://www.google.com/maps/search/?api=1&query=秩父 そば"
           },
           {
-            name: "秩父市内のカフェ",
-            description: "鍾乳洞帰りに立ち寄れる休憩スポット。",
-            image: "https://source.unsplash.com/featured/?coffee",
+            name: "（例）秩父市内カフェ",
+            description: "休憩に使いたいカフェを、実際の店名で設定してください。",
+            image: `${imgBase}/hashidate-food-2.jpg`,
             mapUrl:
               "https://www.google.com/maps/search/?api=1&query=秩父 カフェ"
           }
@@ -509,9 +504,9 @@
         name: "国営武蔵丘陵森林公園",
         area: "滑川町",
         images: [
-          "https://source.unsplash.com/featured/?park",
-          "https://source.unsplash.com/featured/?cycling",
-          "https://source.unsplash.com/featured/?flowers"
+          `${imgBase}/shinrinkoen-1.jpg`,
+          `${imgBase}/shinrinkoen-2.jpg`,
+          `${imgBase}/shinrinkoen-3.jpg`
         ],
         description:
           "広大な敷地に森・花畑・サイクリングコース・アスレチックなどがある国営公園。木陰が多く、夏でも比較的過ごしやすい。",
@@ -541,16 +536,16 @@
           "https://www.google.com/maps/search/?api=1&query=国営武蔵丘陵森林公園",
         foods: [
           {
-            name: "園内レストラン・売店",
-            description: "軽食やソフトクリームなど、散策の合間に立ち寄れる。",
-            image: "https://source.unsplash.com/featured/?ice-cream",
+            name: "（例）園内レストラン",
+            description: "園内のレストラン・売店を、検索して選んでください。",
+            image: `${imgBase}/shinrinkoen-food-1.jpg`,
             mapUrl:
               "https://www.google.com/maps/search/?api=1&query=武蔵丘陵森林公園 レストラン"
           },
           {
-            name: "東松山市内のファミレス",
-            description: "帰り道に立ち寄りやすい家族向け飲食店。",
-            image: "https://source.unsplash.com/featured/?family-restaurant",
+            name: "（例）東松山市内ファミレス",
+            description: "帰りに立ち寄りたいファミレスを、実際の店名で設定してください。",
+            image: `${imgBase}/shinrinkoen-food-2.jpg`,
             mapUrl:
               "https://www.google.com/maps/search/?api=1&query=東松山 ファミレス"
           }
@@ -561,9 +556,9 @@
         name: "サイボク天然温泉 花鳥風月",
         area: "日高市",
         images: [
-          "https://source.unsplash.com/featured/?onsen",
-          "https://source.unsplash.com/featured/?spa",
-          "https://source.unsplash.com/featured/?hot-spring"
+          `${imgBase}/saiboku-1.jpg`,
+          `${imgBase}/saiboku-2.jpg`,
+          `${imgBase}/saiboku-3.jpg`
         ],
         description:
           "豚のテーマパーク「サイボク」敷地内にある日帰り温泉。豊富な湧出量のナトリウム塩化物泉で、温まりの湯・美肌の湯として人気。",
@@ -594,16 +589,16 @@
           "https://www.google.com/maps/search/?api=1&query=サイボク天然温泉 花鳥風月",
         foods: [
           {
-            name: "サイボクレストラン",
-            description: "銘柄豚を使ったとんかつ・ハム・ソーセージなどが楽しめる。",
-            image: "https://source.unsplash.com/featured/?tonkatsu",
+            name: "（例）サイボクレストラン",
+            description: "サイボク内のレストランを、検索して選んでください。",
+            image: `${imgBase}/saiboku-food-1.jpg`,
             mapUrl:
               "https://www.google.com/maps/search/?api=1&query=サイボク レストラン"
           },
           {
-            name: "サイボク売店",
-            description: "ハム・ソーセージ・ベーコンなどのお土産購入に最適。",
-            image: "https://source.unsplash.com/featured/?ham",
+            name: "（例）サイボク売店",
+            description: "ハム・ソーセージなどのお土産購入に使いたい売店を設定してください。",
+            image: `${imgBase}/saiboku-food-2.jpg`,
             mapUrl:
               "https://www.google.com/maps/search/?api=1&query=サイボク 売店"
           }
@@ -866,7 +861,7 @@
       card.appendChild(hlEl);
 
       const tipsEl = document.createElement("div");
-      tipsEl.innerHTML = `<h3 class="text-xs font-semibold text-slate-700 mt-1">訪問のコツ・注意点</h3>`;
+      tipsEl.innerHTML = `<h3 class="text-xs font-semibold text-slate-700 mt-1">訪問のコツ・注意点（推奨事項）</h3>`;
       const ulT = document.createElement("ul");
       ulT.className = "mt-1 list-disc pl-4 space-y-1";
       spot.tips.forEach((t) => {
@@ -876,6 +871,31 @@
       });
       tipsEl.appendChild(ulT);
       card.appendChild(tipsEl);
+
+      // 周辺飲食店検索リンク
+      const searchEl = document.createElement("div");
+      const encodedName = encodeURIComponent(spot.name);
+      searchEl.innerHTML = `
+        <h3 class="text-xs font-semibold text-slate-700 mt-2">周辺の飲食店を検索</h3>
+        <p class="mt-1 text-[11px] text-slate-600">
+          実際に行きたい食事処は、以下のリンクから検索して店名・画像を確認してください。
+        </p>
+        <div class="flex flex-col gap-1 mt-1 text-[11px]">
+          <a href="https://www.google.com/maps/search/${encodedName}+周辺+飲食店"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="text-sky-600 underline">Google Mapsで「${spot.name} 周辺 飲食店」を検索</a>
+          <a href="https://tabelog.com/saitama/A1100/A110000/RC/cond01/?LstRange=SF&sw=${encodedName}"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="text-sky-600 underline">食べログで「${spot.name}」周辺を検索</a>
+          <a href="https://r.gnavi.co.jp/area/jp/rs/?fw=${encodedName}"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="text-sky-600 underline">ぐるなびで「${spot.name}」周辺を検索</a>
+        </div>
+      `;
+      card.appendChild(searchEl);
 
       spotDetailContainerEl.appendChild(card);
 
@@ -905,7 +925,10 @@
       const titleEl = document.createElement("div");
       titleEl.innerHTML = `
         <h2 class="text-sm font-semibold text-sky-700">食事処候補（画像付き）</h2>
-        <p class="mt-1 text-slate-600">各スポット周辺で立ち寄りやすい飲食店の候補です。混雑状況や営業時間は事前に確認してください。</p>
+        <p class="mt-1 text-slate-600">
+          ここに表示されている店名・画像は「例」です。実際に行きたい店は、上の検索リンクから探して、
+          店名・画像を差し替えて使ってください。
+        </p>
       `;
       card.appendChild(titleEl);
 
@@ -927,7 +950,7 @@
           <h3 class="text-xs font-semibold text-slate-700">${f.name}</h3>
           <p class="mt-1 text-[11px]">${f.description}</p>
           <a href="${f.mapUrl}" target="_blank" rel="noopener noreferrer" class="mt-1 inline-flex items-center text-sky-600 underline text-[11px]">
-            Google Mapで場所を確認
+            Google Mapで場所を確認（例）
           </a>
         `;
 
