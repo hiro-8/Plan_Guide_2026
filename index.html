@@ -1,597 +1,869 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>埼玉家族旅行 進行管理＆パーフェクトガイド</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-    <style>
-        body { font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif; }
-        /* チェック状態のスタイル */
-        input[type="checkbox"]:checked ~.content-wrap.content-text { text-decoration: line-through; color: #9ca3af; }
-        input[type="checkbox"]:checked ~.content-wrap.time-text { opacity: 0.5; }
-        /* アコーディオンのアイコン動作 */
-        details > summary { list-style: none; }
-        details > summary::-webkit-details-marker { display: none; }
-        details[open] summary.arrow { transform: rotate(180deg); }
-        /* 編集可能領域のフォーカス */
-       .editable-text:hover { background-color: #f3f4f6; border-radius: 4px; }
-       .editable-text:focus { background-color: #fff; outline: 2px solid #0d9488; border-radius: 4px; }
-        /* プログレスバーのトランジション */
-       .progress-fill { transition: width 0.3s ease; }
-    </style>
+  <meta charset="UTF-8" />
+  <title>埼玉家族旅行プラン案内SPA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .fade-enter {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    .fade-enter-active {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
 </head>
-<body class="bg-slate-100 text-gray-800 pb-24">
-
-    <header class="bg-teal-700 text-white p-4 text-center shadow-md sticky top-0 z-50">
-        <h1 class="text-xl md:text-2xl font-bold mb-1">埼玉満喫！家族旅行ナビ</h1>
-        <p class="text-xs md:text-sm opacity-90">拠点：東狭山ヶ丘 | 渋滞・猛暑回避プラン</p>
-        <div class="mt-2 text-xs bg-teal-800 p-2 rounded text-teal-100 text-left">
-            💡 予定の文字をタップで編集。各行の右端(☰)で順序入替、各Day全体の上下入替にも対応。入力内容は自動保存されます。
-        </div>
+<body class="bg-sky-50 text-slate-800">
+  <div class="min-h-screen flex flex-col">
+    <!-- ヘッダー -->
+    <header class="bg-gradient-to-r from-sky-400 to-teal-400 text-white px-4 pt-4 pb-3 shadow-md">
+      <h1 class="text-lg font-semibold">埼玉家族旅行プラン案内</h1>
+      <p class="text-xs mt-1">
+        お盆（8/11〜16）の猛暑＆渋滞を避けて、東狭山ヶ丘拠点で家族4人がゆったり楽しむスマホ用スケジュールSPA
+      </p>
     </header>
 
-    <main class="max-w-3xl mx-auto p-4 mt-2">
+    <!-- 旅の基本戦略パネル -->
+    <section class="bg-white shadow-md mx-3 mt-3 mb-2 rounded-xl p-3 sticky top-0 z-20">
+      <h2 class="text-sm font-semibold text-teal-700 flex items-center gap-2">
+        <span>旅の基本戦略</span>
+        <span class="text-[10px] px-2 py-[2px] rounded-full bg-teal-100 text-teal-700">猛暑＆渋滞回避</span>
+      </h2>
+      <ul class="mt-2 text-[11px] leading-relaxed list-disc pl-4">
+        <li>拠点は<strong>東狭山ヶ丘</strong>。お盆期間（8/11〜16）は<strong>1日1スポット</strong>に絞ってゆったり行動。</li>
+        <li>渋滞回避のため、秩父・長瀞方面は<strong>朝7時台出発</strong>＆<strong>夜20時以降帰宅</strong>のタイムシフトを活用。</li>
+        <li>屋外は<strong>午前中</strong>、午後はミュージアム・鍾乳洞・温泉など<strong>屋内や涼しい場所</strong>へ退避。</li>
+        <li>各Dayの行き先はプルダウンで変更可能。家族会議で「今日はどこに行く？」を決めながら使える設計。</li>
+      </ul>
+    </section>
 
-        <div class="flex flex-wrap gap-2 mb-6">
-            <a href="https://www.jartic.or.jp/" target="_blank" class="flex-1 bg-red-600 text-white text-center py-2 rounded-lg font-bold text-sm shadow-sm hover:bg-red-700">🚗 渋滞情報</a>
-            <a href="https://weather.yahoo.co.jp/weather/jp/11/" target="_blank" class="flex-1 bg-blue-500 text-white text-center py-2 rounded-lg font-bold text-sm shadow-sm hover:bg-blue-600">☀️ 天気予報</a>
-            <button onclick="resetSchedule()" class="flex-1 bg-gray-500 text-white text-center py-2 rounded-lg font-bold text-sm shadow-sm hover:bg-gray-600">🔄 初期化</button>
-        </div>
+    <!-- タブ -->
+    <nav class="mx-3 mt-1 mb-2">
+      <div id="dayTabs" class="flex gap-1 overflow-x-auto no-scrollbar text-xs"></div>
+    </nav>
 
-        <div id="days-wrapper" class="space-y-5">
-            <details class="day-section bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden" open>
-                <summary class="p-4 bg-teal-50 font-bold cursor-pointer flex justify-between items-center select-none group">
-                    <div class="flex items-center gap-3">
-                        <span class="day-drag-handle text-teal-600 cursor-grab text-xl pr-2">↕</span>
-                        <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">電車</span>
-                        <span class="text-lg text-teal-900"><span class="day-label">Day 1</span>: <span class="day-title editable-text" contenteditable="true">サクラタウン</span></span>
-                    </div>
-                    <span class="arrow transition-transform duration-200 text-teal-600">▼</span>
-                </summary>
-                <div class="p-4">
-                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-3">
-                        <div class="progress-fill bg-teal-600 h-2.5 rounded-full" style="width: 0%"></div>
-                    </div>
-                    <textarea class="w-full text-sm border border-gray-300 rounded p-2 mb-4 bg-yellow-50 focus:outline-none focus:ring-2 focus:ring-teal-500 save-target" rows="2" placeholder="📝 持ち物や予約番号のメモ..."></textarea>
-                    
-                    <div class="bg-gray-50 border border-gray-100 p-3 rounded-lg text-xs md:text-sm mb-4">
-                        <p class="font-bold text-teal-800 mb-1">ℹ️ 詳細情報</p>
-                        <ul class="list-disc list-inside text-gray-600 space-y-1">
-                            <li><strong>駐車場:</strong> 最初30分無料。以降200円/30分(第1最大800円、第2・3最大600円)。</li>
-                            <li><strong>展示予約:</strong> 本棚劇場等へは公式サイトで事前チケット購入推奨。</li>
-                        </ul>
-                    </div>
-                    
-                    <ul class="sortable-list space-y-2 text-sm" id="day1-list">
-                        <li class="flex items-start gap-2 group/item bg-white p-2 rounded border border-gray-100 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-teal-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-teal-700 mr-2">09:30</strong><span contenteditable="true" class="content-text editable-text">狭山ヶ丘駅 出発 (秋津乗換)</span></div>
-                            </div>
-                            <a href="https://maps.google.com/?q=狭山ヶ丘駅" target="_blank" class="text-xs bg-gray-100 text-gray-600 border border-gray-300 px-2 py-1 rounded shadow-sm">📍ナビ</a>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg">☰</span>
-                        </li>
-                        <li class="move-time-item flex items-center gap-2 text-xs text-gray-400 pl-8">
-                            <span contenteditable="true" class="editable-text">⬇️ 移動：電車と徒歩で約40分</span>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg ml-auto">☰</span>
-                        </li>
-                        <li class="flex items-start gap-2 group/item bg-white p-2 rounded border border-gray-100 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-teal-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-teal-700 mr-2">10:10</strong><span contenteditable="true" class="content-text editable-text">東所沢駅着。LEDマンホールを見ながら徒歩</span></div>
-                            </div>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg ml-auto">☰</span>
-                        </li>
-                        <li class="flex items-start gap-2 group/item bg-white p-2 rounded border border-gray-100 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-teal-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-teal-700 mr-2">10:30</strong><span contenteditable="true" class="content-text editable-text">角川武蔵野ミュージアム「本棚劇場」見学</span></div>
-                            </div>
-                            <a href="https://maps.google.com/?q=ところざわサクラタウン" target="_blank" class="text-xs bg-gray-100 text-gray-600 border border-gray-300 px-2 py-1 rounded shadow-sm">📍ナビ</a>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg">☰</span>
-                        </li>
-                        <li class="flex items-start gap-2 group/item bg-orange-50 p-2 rounded border border-orange-200 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-orange-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-orange-700 mr-2">12:30</strong><span contenteditable="true" class="content-text editable-text font-bold">🍽️ 角川食堂でランチ (限定の茶うどん等)</span></div>
-                            </div>
-                            <a href="https://maps.google.com/?q=角川食堂" target="_blank" class="text-xs bg-white text-orange-600 border border-orange-300 px-2 py-1 rounded shadow-sm">📍ナビ</a>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg">☰</span>
-                        </li>
-                        <li class="flex items-start gap-2 group/item bg-white p-2 rounded border border-gray-100 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-teal-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-teal-700 mr-2">16:30</strong><span contenteditable="true" class="content-text editable-text">帰路へ（東所沢駅 → 狭山ヶ丘駅）</span></div>
-                            </div>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg ml-auto">☰</span>
-                        </li>
-                    </ul>
-                    <button onclick="addItem('day1-list')" class="mt-3 text-xs font-bold text-teal-600 bg-white px-3 py-2 rounded w-full border border-teal-200 hover:bg-teal-50">+ 行を追加</button>
-                </div>
-            </details>
+    <!-- コンテンツ -->
+    <main class="flex-1 mx-3 mb-24">
+      <!-- スケジュールカード -->
+      <section id="scheduleContainer" class="space-y-3"></section>
 
-            <details class="day-section bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <summary class="p-4 bg-teal-50 font-bold cursor-pointer flex justify-between items-center select-none group">
-                    <div class="flex items-center gap-3">
-                        <span class="day-drag-handle text-teal-600 cursor-grab text-xl pr-2">↕</span>
-                        <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">電車</span>
-                        <span class="text-lg text-teal-900"><span class="day-label">Day 2</span>: <span class="day-title editable-text" contenteditable="true">西武園プール</span></span>
-                    </div>
-                    <span class="arrow transition-transform duration-200 text-teal-600">▼</span>
-                </summary>
-                <div class="p-4">
-                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-3"><div class="progress-fill bg-teal-600 h-2.5 rounded-full" style="width: 0%"></div></div>
-                    <textarea class="w-full text-sm border border-gray-300 rounded p-2 mb-4 bg-yellow-50 focus:outline-none focus:ring-2 focus:ring-teal-500 save-target" rows="2" placeholder="📝 持ち物や予約番号のメモ..."></textarea>
-                    
-                    <div class="bg-gray-50 border border-gray-100 p-3 rounded-lg text-xs md:text-sm mb-4">
-                        <p class="font-bold text-teal-800 mb-1">ℹ️ 詳細情報</p>
-                        <ul class="list-disc list-inside text-gray-600 space-y-1">
-                            <li><strong>料金(2026年):</strong> 1日レヂャー切符 大人4,900円/中高生4,200円/小学生3,600円。</li>
-                            <li><strong>注意:</strong> 園内通貨は廃止され日本円支払いに。</li>
-                        </ul>
-                    </div>
-                    
-                    <ul class="sortable-list space-y-2 text-sm" id="day2-list">
-                        <li class="flex items-start gap-2 group/item bg-white p-2 rounded border border-gray-100 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-teal-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-teal-700 mr-2">09:00</strong><span contenteditable="true" class="content-text editable-text">狭山ヶ丘駅 出発 (西所沢乗換)</span></div>
-                            </div>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg ml-auto">☰</span>
-                        </li>
-                        <li class="move-time-item flex items-center gap-2 text-xs text-gray-400 pl-8">
-                            <span contenteditable="true" class="editable-text">⬇️ 移動：電車で約30分</span>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg ml-auto">☰</span>
-                        </li>
-                        <li class="flex items-start gap-2 group/item bg-white p-2 rounded border border-gray-100 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-teal-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-teal-700 mr-2">09:30</strong><span contenteditable="true" class="content-text editable-text">西武園ゆうえんち到着。プールで遊泳</span></div>
-                            </div>
-                            <a href="https://maps.google.com/?q=西武園ゆうえんち" target="_blank" class="text-xs bg-gray-100 text-gray-600 border border-gray-300 px-2 py-1 rounded shadow-sm">📍ナビ</a>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg">☰</span>
-                        </li>
-                        <li class="flex items-start gap-2 group/item bg-orange-50 p-2 rounded border border-orange-200 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-orange-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-orange-700 mr-2">12:00</strong><span contenteditable="true" class="content-text editable-text font-bold">🍽️ 喫茶ビクトリヤでランチ・ゼリーポンチ</span></div>
-                            </div>
-                            <a href="https://maps.google.com/?q=西武園ゆうえんち+喫茶ビクトリヤ" target="_blank" class="text-xs bg-white text-orange-600 border border-orange-300 px-2 py-1 rounded shadow-sm">📍ナビ</a>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg">☰</span>
-                        </li>
-                        <li class="flex items-start gap-2 group/item bg-white p-2 rounded border border-gray-100 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-teal-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-teal-700 mr-2">13:30</strong><span contenteditable="true" class="content-text editable-text">「超納涼 夕日の丘ライブ！」参加</span></div>
-                            </div>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg ml-auto">☰</span>
-                        </li>
-                    </ul>
-                    <button onclick="addItem('day2-list')" class="mt-3 text-xs font-bold text-teal-600 bg-white px-3 py-2 rounded w-full border border-teal-200 hover:bg-teal-50">+ 行を追加</button>
-                </div>
-            </details>
+      <!-- スポット詳細 -->
+      <section id="spotDetailContainer" class="space-y-3 mt-3"></section>
 
-            <details class="day-section bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <summary class="p-4 bg-orange-50 font-bold cursor-pointer flex justify-between items-center select-none group">
-                    <div class="flex items-center gap-3">
-                        <span class="day-drag-handle text-orange-600 cursor-grab text-xl pr-2">↕</span>
-                        <span class="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded">車</span>
-                        <span class="text-lg text-orange-900"><span class="day-label">Day 3</span>: <span class="day-title editable-text" contenteditable="true">地下神殿(春日部)</span></span>
-                    </div>
-                    <span class="arrow transition-transform duration-200 text-orange-600">▼</span>
-                </summary>
-                <div class="p-4">
-                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-3"><div class="progress-fill bg-orange-500 h-2.5 rounded-full" style="width: 0%"></div></div>
-                    <textarea class="w-full text-sm border border-gray-300 rounded p-2 mb-4 bg-yellow-50 focus:outline-none focus:ring-2 focus:ring-orange-400 save-target" rows="2" placeholder="📝 持ち物や予約番号のメモ..."></textarea>
-                    
-                    <div class="bg-gray-50 border border-gray-100 p-3 rounded-lg text-xs md:text-sm mb-4">
-                        <p class="font-bold text-orange-800 mb-1">ℹ️ 詳細情報</p>
-                        <ul class="list-disc list-inside text-gray-600 space-y-1">
-                            <li><strong>参加条件:</strong> 約100段の階段を自力歩行。未就学児不可。中学生以下は大人同伴必須(1名につき子5名まで)。</li>
-                        </ul>
-                    </div>
-                    
-                    <ul class="sortable-list space-y-2 text-sm" id="day3-list">
-                        <li class="flex items-start gap-2 group/item bg-white p-2 rounded border border-gray-100 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-orange-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-orange-700 mr-2">08:00</strong><span contenteditable="true" class="content-text editable-text">レンタカー調達＆出発</span></div>
-                            </div>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg ml-auto">☰</span>
-                        </li>
-                        <li class="move-time-item flex items-center gap-2 text-xs text-gray-400 pl-8">
-                            <span contenteditable="true" class="editable-text">⬇️ 移動：車で約1時間10分</span>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg ml-auto">☰</span>
-                        </li>
-                        <li class="flex items-start gap-2 group/item bg-white p-2 rounded border border-gray-100 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-orange-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-orange-700 mr-2">09:30</strong><span contenteditable="true" class="content-text editable-text">龍Q館 到着 (※見学10分前受付必須)</span></div>
-                            </div>
-                            <a href="https://maps.google.com/?q=首都圏外郭放水路+龍Q館" target="_blank" class="text-xs bg-gray-100 text-gray-600 border border-gray-300 px-2 py-1 rounded shadow-sm">📍ナビ</a>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg">☰</span>
-                        </li>
-                        <li class="flex items-start gap-2 group/item bg-white p-2 rounded border border-gray-100 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-orange-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-orange-700 mr-2">10:00</strong><span contenteditable="true" class="content-text editable-text">地下神殿 見学会参加</span></div>
-                            </div>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg ml-auto">☰</span>
-                        </li>
-                        <li class="flex items-start gap-2 group/item bg-red-50 p-2 rounded border border-red-200 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-red-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-red-700 mr-2">12:30</strong><span contenteditable="true" class="content-text editable-text font-bold">🍽️ たつ吉等で「地下神殿カレー」</span></div>
-                            </div>
-                            <a href="https://maps.google.com/?q=たつ吉+春日部" target="_blank" class="text-xs bg-white text-red-600 border border-red-300 px-2 py-1 rounded shadow-sm">📍ナビ</a>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg">☰</span>
-                        </li>
-                    </ul>
-                    <button onclick="addItem('day3-list')" class="mt-3 text-xs font-bold text-orange-600 bg-white px-3 py-2 rounded w-full border border-orange-200 hover:bg-orange-50">+ 行を追加</button>
-                </div>
-            </details>
+      <!-- 食事処候補 -->
+      <section id="foodContainer" class="space-y-3 mt-3"></section>
 
-            <details class="day-section bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <summary class="p-4 bg-orange-50 font-bold cursor-pointer flex justify-between items-center select-none group">
-                    <div class="flex items-center gap-3">
-                        <span class="day-drag-handle text-orange-600 cursor-grab text-xl pr-2">↕</span>
-                        <span class="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded">車</span>
-                        <span class="text-lg text-orange-900"><span class="day-label">Day 4</span>: <span class="day-title editable-text" contenteditable="true">古墳＆はにわ</span></span>
-                    </div>
-                    <span class="arrow transition-transform duration-200 text-orange-600">▼</span>
-                </summary>
-                <div class="p-4">
-                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-3"><div class="progress-fill bg-orange-500 h-2.5 rounded-full" style="width: 0%"></div></div>
-                    <textarea class="w-full text-sm border border-gray-300 rounded p-2 mb-4 bg-yellow-50 focus:outline-none focus:ring-2 focus:ring-orange-400 save-target" rows="2" placeholder="📝 持ち物や予約番号のメモ..."></textarea>
-                    
-                    <div class="bg-gray-50 border border-gray-100 p-3 rounded-lg text-xs md:text-sm mb-4">
-                        <p class="font-bold text-orange-800 mb-1">ℹ️ 詳細情報</p>
-                        <ul class="list-disc list-inside text-gray-600 space-y-1">
-                            <li><strong>はにわ作り(はにわの館):</strong> 粘土1kg700円〜。約1ヶ月後に焼き上がり(自宅配送可)。</li>
-                            <li><strong>グルメ(かねつき堂):</strong> 11:00〜17:00営業、月曜・第3火曜定休。</li>
-                        </ul>
-                    </div>
-                    
-                    <ul class="sortable-list space-y-2 text-sm" id="day4-list">
-                        <li class="flex items-start gap-2 group/item bg-white p-2 rounded border border-gray-100 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-orange-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-orange-700 mr-2">08:30</strong><span contenteditable="true" class="content-text editable-text">行田方面へ向けて出発</span></div>
-                            </div>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg ml-auto">☰</span>
-                        </li>
-                        <li class="move-time-item flex items-center gap-2 text-xs text-gray-400 pl-8">
-                            <span contenteditable="true" class="editable-text">⬇️ 移動：車で約1時間20分</span>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg ml-auto">☰</span>
-                        </li>
-                        <li class="flex items-start gap-2 group/item bg-white p-2 rounded border border-gray-100 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-orange-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-orange-700 mr-2">10:00</strong><span contenteditable="true" class="content-text editable-text">さきたま古墳公園・丸墓山散策</span></div>
-                            </div>
-                            <a href="https://maps.google.com/?q=さきたま古墳公園" target="_blank" class="text-xs bg-gray-100 text-gray-600 border border-gray-300 px-2 py-1 rounded shadow-sm">📍ナビ</a>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg">☰</span>
-                        </li>
-                        <li class="flex items-start gap-2 group/item bg-white p-2 rounded border border-gray-100 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-orange-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-orange-700 mr-2">11:00</strong><span contenteditable="true" class="content-text editable-text">「はにわの館」ではにわ作り体験</span></div>
-                            </div>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg ml-auto">☰</span>
-                        </li>
-                        <li class="flex items-start gap-2 group/item bg-red-50 p-2 rounded border border-red-200 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-red-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-red-700 mr-2">13:30</strong><span contenteditable="true" class="content-text editable-text font-bold">🍽️ かねつき堂でゼリーフライ昼食</span></div>
-                            </div>
-                            <a href="https://maps.google.com/?q=かねつき堂" target="_blank" class="text-xs bg-white text-red-600 border border-red-300 px-2 py-1 rounded shadow-sm">📍ナビ</a>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg">☰</span>
-                        </li>
-                    </ul>
-                    <button onclick="addItem('day4-list')" class="mt-3 text-xs font-bold text-orange-600 bg-white px-3 py-2 rounded w-full border border-orange-200 hover:bg-orange-50">+ 行を追加</button>
-                </div>
-            </details>
-
-            <details class="day-section bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <summary class="p-4 bg-orange-50 font-bold cursor-pointer flex justify-between items-center select-none group">
-                    <div class="flex items-center gap-3">
-                        <span class="day-drag-handle text-orange-600 cursor-grab text-xl pr-2">↕</span>
-                        <span class="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded">車</span>
-                        <span class="text-lg text-orange-900"><span class="day-label">Day 5</span>: <span class="day-title editable-text" contenteditable="true">長瀞ライン下り</span></span>
-                    </div>
-                    <span class="arrow transition-transform duration-200 text-orange-600">▼</span>
-                </summary>
-                <div class="p-4">
-                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-3"><div class="progress-fill bg-orange-500 h-2.5 rounded-full" style="width: 0%"></div></div>
-                    <textarea class="w-full text-sm border border-gray-300 rounded p-2 mb-4 bg-yellow-50 focus:outline-none focus:ring-2 focus:ring-orange-400 save-target" rows="2" placeholder="📝 持ち物や予約番号のメモ..."></textarea>
-                    
-                    <div class="bg-gray-50 border border-gray-100 p-3 rounded-lg text-xs md:text-sm mb-4">
-                        <p class="font-bold text-orange-800 mb-1">ℹ️ 詳細情報</p>
-                        <ul class="list-disc list-inside text-gray-600 space-y-1">
-                            <li><strong>戦略:</strong> 関越道・国道299号の渋滞回避のため、朝7時前の出発が必須です。</li>
-                        </ul>
-                    </div>
-                    
-                    <ul class="sortable-list space-y-2 text-sm" id="day5-list">
-                        <li class="flex items-start gap-2 group/item bg-white p-2 rounded border border-gray-100 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-orange-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-orange-700 mr-2">07:00</strong><span contenteditable="true" class="content-text editable-text">アーリーバード出発</span></div>
-                            </div>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg ml-auto">☰</span>
-                        </li>
-                        <li class="move-time-item flex items-center gap-2 text-xs text-gray-400 pl-8">
-                            <span contenteditable="true" class="editable-text">⬇️ 移動：車で約1時間12分</span>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg ml-auto">☰</span>
-                        </li>
-                        <li class="flex items-start gap-2 group/item bg-red-50 p-2 rounded border border-red-200 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-red-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-red-700 mr-2">08:30</strong><span contenteditable="true" class="content-text editable-text font-bold">🍽️ 混雑前に「阿左美冷蔵」でかき氷</span></div>
-                            </div>
-                            <a href="https://maps.google.com/?q=阿左美冷蔵" target="_blank" class="text-xs bg-white text-red-600 border border-red-300 px-2 py-1 rounded shadow-sm">📍ナビ</a>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg">☰</span>
-                        </li>
-                        <li class="flex items-start gap-2 group/item bg-white p-2 rounded border border-gray-100 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-orange-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-orange-700 mr-2">10:30</strong><span contenteditable="true" class="content-text editable-text">長瀞ライン下り乗船</span></div>
-                            </div>
-                            <a href="https://maps.google.com/?q=長瀞ライン下り" target="_blank" class="text-xs bg-gray-100 text-gray-600 border border-gray-300 px-2 py-1 rounded shadow-sm">📍ナビ</a>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg">☰</span>
-                        </li>
-                        <li class="flex items-start gap-2 group/item bg-red-50 p-2 rounded border border-red-200 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-red-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-red-700 mr-2">12:30</strong><span contenteditable="true" class="content-text editable-text font-bold">🍽️ 駅周辺で鮎めし・蕎麦ランチ</span></div>
-                            </div>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg ml-auto">☰</span>
-                        </li>
-                        <li class="flex items-start gap-2 group/item bg-white p-2 rounded border border-gray-100 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-orange-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-orange-700 mr-2">14:00</strong><span contenteditable="true" class="content-text editable-text">岩畳の散策。渋滞前に早めの帰路へ</span></div>
-                            </div>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg ml-auto">☰</span>
-                        </li>
-                    </ul>
-                    <button onclick="addItem('day5-list')" class="mt-3 text-xs font-bold text-orange-600 bg-white px-3 py-2 rounded w-full border border-orange-200 hover:bg-orange-50">+ 行を追加</button>
-                </div>
-            </details>
-
-            <details class="day-section bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <summary class="p-4 bg-orange-50 font-bold cursor-pointer flex justify-between items-center select-none group">
-                    <div class="flex items-center gap-3">
-                        <span class="day-drag-handle text-orange-600 cursor-grab text-xl pr-2">↕</span>
-                        <span class="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded">車</span>
-                        <span class="text-lg text-orange-900"><span class="day-label">Day 6</span>: <span class="day-title editable-text" contenteditable="true">秩父アスレ＆温泉</span></span>
-                    </div>
-                    <span class="arrow transition-transform duration-200 text-orange-600">▼</span>
-                </summary>
-                <div class="p-4">
-                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-3"><div class="progress-fill bg-orange-500 h-2.5 rounded-full" style="width: 0%"></div></div>
-                    <textarea class="w-full text-sm border border-gray-300 rounded p-2 mb-4 bg-yellow-50 focus:outline-none focus:ring-2 focus:ring-orange-400 save-target" rows="2" placeholder="📝 持ち物や予約番号のメモ..."></textarea>
-                    
-                    <div class="bg-gray-50 border border-gray-100 p-3 rounded-lg text-xs md:text-sm mb-4">
-                        <p class="font-bold text-orange-800 mb-1">ℹ️ 詳細情報</p>
-                        <ul class="list-disc list-inside text-gray-600 space-y-1">
-                            <li><strong>FA秩父 料金:</strong> WEB予約でADVコース4,000円/CANOPYコース3,000円。</li>
-                            <li><strong>FA秩父 条件:</strong> 【改定】遊び放題のトレックコース登場(小1＆110cm以上。小学生は18歳以上の保護者同伴必須。手袋必須)。ターザンスイングは小4＆140cm以上から。</li>
-                        </ul>
-                    </div>
-                    
-                    <ul class="sortable-list space-y-2 text-sm" id="day6-list">
-                        <li class="flex items-start gap-2 group/item bg-white p-2 rounded border border-gray-100 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-orange-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-orange-700 mr-2">07:30</strong><span contenteditable="true" class="content-text editable-text">最終日も早めに出発</span></div>
-                            </div>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg ml-auto">☰</span>
-                        </li>
-                        <li class="move-time-item flex items-center gap-2 text-xs text-gray-400 pl-8">
-                            <span contenteditable="true" class="editable-text">⬇️ 移動：車で約1時間20分</span>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg ml-auto">☰</span>
-                        </li>
-                        <li class="flex items-start gap-2 group/item bg-white p-2 rounded border border-gray-100 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-orange-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-orange-700 mr-2">09:00</strong><span contenteditable="true" class="content-text editable-text">FA秩父でトレックコース体験</span></div>
-                            </div>
-                            <a href="https://maps.google.com/?q=フォレストアドベンチャー・秩父" target="_blank" class="text-xs bg-gray-100 text-gray-600 border border-gray-300 px-2 py-1 rounded shadow-sm">📍ナビ</a>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg">☰</span>
-                        </li>
-                        <li class="flex items-start gap-2 group/item bg-red-50 p-2 rounded border border-red-200 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-red-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-red-700 mr-2">12:30</strong><span contenteditable="true" class="content-text editable-text font-bold">🍽️ 秩父名物「わらじカツ丼」等のランチ</span></div>
-                            </div>
-                            <a href="https://maps.google.com/?q=秩父+わらじカツ" target="_blank" class="text-xs bg-white text-red-600 border border-red-300 px-2 py-1 rounded shadow-sm">📍ナビ</a>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg">☰</span>
-                        </li>
-                        <li class="flex items-start gap-2 group/item bg-white p-2 rounded border border-gray-100 shadow-sm">
-                            <input type="checkbox" class="mt-1 w-5 h-5 text-orange-600 rounded cursor-pointer cb-target">
-                            <div class="content-wrap flex-1 flex flex-col justify-center">
-                                <div><strong contenteditable="true" class="time-text editable-text text-orange-700 mr-2">15:30</strong><span contenteditable="true" class="content-text editable-text">「天然温泉 花鳥風月」で手ぶら入浴＆疲労回復</span></div>
-                            </div>
-                            <a href="https://maps.google.com/?q=サイボク+花鳥風月" target="_blank" class="text-xs bg-gray-100 text-gray-600 border border-gray-300 px-2 py-1 rounded shadow-sm">📍ナビ</a>
-                            <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg">☰</span>
-                        </li>
-                    </ul>
-                    <button onclick="addItem('day6-list')" class="mt-3 text-xs font-bold text-orange-600 bg-white px-3 py-2 rounded w-full border border-orange-200 hover:bg-orange-50">+ 行を追加</button>
-                </div>
-            </details>
-        </div>
-
+      <!-- 家族会議用チェックリスト -->
+      <section class="mt-5 mb-4 bg-white rounded-xl shadow-md p-3">
+        <h2 class="text-sm font-semibold text-sky-700 flex items-center gap-2">
+          <span>家族会議チェックリスト</span>
+          <span class="text-[10px] px-2 py-[2px] rounded-full bg-sky-100 text-sky-700">準備タスク</span>
+        </h2>
+        <p class="text-[11px] mt-1 text-slate-600">
+          事前に確認・予約しておきたいことを家族で話し合うためのメモ。チェック状態はこの端末に保存されます。
+        </p>
+        <ul id="todoList" class="mt-2 space-y-1 text-[12px]"></ul>
+        <button
+          id="resetTodo"
+          class="mt-3 w-full text-[11px] py-1.5 rounded-lg border border-sky-300 text-sky-700 bg-sky-50 active:bg-sky-100"
+        >
+          チェックをすべてリセット
+        </button>
+      </section>
     </main>
 
-    <div class="fixed bottom-4 left-0 right-0 flex justify-center z-50">
-        <button onclick="copySchedule()" class="bg-teal-800 text-white font-bold py-3 px-8 rounded-full shadow-lg border border-teal-600 hover:bg-teal-900 flex items-center gap-2">
-            <span>📋 LINEなどにテキストで共有する</span>
-        </button>
-    </div>
+    <!-- フッター -->
+    <footer class="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-sky-400 to-teal-400 text-white text-[10px] px-3 py-2">
+      <p>
+        料金・営業時間は必ず公式サイト・現地案内で最新情報を再確認してください。表示は2026年8月頃の参考目安です。
+      </p>
+    </footer>
+  </div>
 
-    <script>
-        // ドラッグ＆ドロップと保存機能のセットアップ
-        function initApp() {
-            loadState();
-            
-            // Dayブロックごとの並び替え
-            const daysWrapper = document.getElementById('days-wrapper');
-            new Sortable(daysWrapper, {
-                handle: '.day-drag-handle',
-                animation: 150,
-                onEnd: () => {
-                    updateDayNumbers();
-                    saveState();
-                }
-            });
+  <script>
+    // ---------------- スポットデータ ----------------
 
-            // リスト内の並び替え
-            document.querySelectorAll('.sortable-list').forEach(el => {
-                new Sortable(el, {
-                    handle: '.drag-handle',
-                    animation: 150,
-                    filter: 'a, button, input, textarea, [contenteditable]', // リンクや入力を邪魔しない
-                    preventOnFilter: false,
-                    onEnd: saveState
-                });
-            });
-            attachEventListeners();
-            updateAllProgress();
-        }
+    const spots = [
+      {
+        id: "sakura",
+        name: "ところざわサクラタウン（角川武蔵野ミュージアム）",
+        area: "所沢市 東所沢",
+        image:
+          "https://images.unsplash.com/photo-1526481280695-3c687fd543c0?auto=format&fit=crop&w=800&q=80",
+        description:
+          "ポップカルチャーとアートが融合した複合施設。巨大な石造風の外観が特徴的なミュージアムと、ショップ・レストラン・イベントスペースが集まるスポット。",
+        highlights: [
+          "本棚劇場など写真映えする空間が多く、子どもも大人も楽しめる",
+          "ほぼ完全屋内で、猛暑日でも涼しく過ごせる",
+          "角川食堂やカフェでランチ・休憩がしやすい"
+        ],
+        transport: {
+          type: "電車＋徒歩",
+          route:
+            "東狭山ヶ丘 → 狭山ヶ丘駅（西武池袋線）→ 秋津駅…徒歩…新秋津駅（JR武蔵野線）→ 東所沢駅 → 徒歩でサクラタウン",
+          time: "約40〜50分＋徒歩10〜15分"
+        },
+        feeReservation: [
+          {
+            label: "角川武蔵野ミュージアム入館料（目安）",
+            detail: "一般1,200円前後〜（展示内容により変動）。オンラインチケットあり。",
+            url: "https://kadcul.com/"
+          },
+          {
+            label: "営業時間（目安）",
+            detail: "10:00〜18:00前後（曜日・イベントにより変動）。",
+            url: "https://kadcul.com/access"
+          }
+        ],
+        mapUrl:
+          "https://www.google.com/maps/search/?api=1&query=ところざわサクラタウン",
+        foods: [
+          {
+            name: "角川食堂",
+            description: "館内レストラン。和洋折衷のメニューで家族向け。",
+            image:
+              "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80",
+            mapUrl:
+              "https://www.google.com/maps/search/?api=1&query=角川食堂 東所沢"
+          },
+          {
+            name: "武蔵野うどん うどきち",
+            description: "コシの強い武蔵野うどんが人気。子どもも食べやすい味。",
+            image:
+              "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+            mapUrl:
+              "https://www.google.com/maps/search/?api=1&query=うどきち 所沢"
+          }
+        ]
+      },
+      {
+        id: "seibuen",
+        name: "西武園ゆうえんち＆プール",
+        area: "所沢市 山口",
+        image:
+          "https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf?auto=format&fit=crop&w=800&q=80",
+        description:
+          "昭和レトロな街並みとアトラクションが楽しめる遊園地。夏季は大型プールがオープンし、家族で一日中遊べるスポット。",
+        highlights: [
+          "プールと遊園地をセットで楽しめる夏休み定番スポット",
+          "所沢から近く、移動時間が短いので子ども連れに優しい",
+          "夕方のショーやライトアップで納涼気分を味わえる"
+        ],
+        transport: {
+          type: "電車",
+          route:
+            "東狭山ヶ丘 → 狭山ヶ丘駅（西武池袋線）→ 西所沢駅（西武狭山線）→ 西武球場前駅（レオライナー）→ 西武園ゆうえんち駅",
+          time: "約30〜40分"
+        },
+        feeReservation: [
+          {
+            label: "夏満喫切符（プール＋ゆうえんち）",
+            detail:
+              "お盆期間は大人5,000円台・小人4,000円台のセット券が販売されることが多い。詳細は公式サイトで要確認。",
+            url: "https://www.seibu-en.jp/"
+          },
+          {
+            label: "プール営業期間・営業時間（目安）",
+            detail: "9:00〜17:00前後。お盆期間は混雑しやすいので早めの入園推奨。",
+            url: "https://www.seibu-en.jp/pool/"
+          }
+        ],
+        mapUrl:
+          "https://www.google.com/maps/search/?api=1&query=西武園ゆうえんち",
+        foods: [
+          {
+            name: "喫茶ビクトリヤ",
+            description: "昭和レトロな雰囲気の喫茶店。ナポリタンやプリンなどが人気。",
+            image:
+              "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=800&q=80",
+            mapUrl:
+              "https://www.google.com/maps/search/?api=1&query=喫茶ビクトリヤ 西武園"
+          },
+          {
+            name: "夕陽の丘プレイランド周辺の屋台",
+            description: "軽食やスナック類が多く、子どもと食べ歩きにぴったり。",
+            image:
+              "https://images.unsplash.com/photo-1504753791519-9c054b0475b9?auto=format&fit=crop&w=800&q=80",
+            mapUrl:
+              "https://www.google.com/maps/search/?api=1&query=西武園ゆうえんち 夕陽の丘"
+          }
+        ]
+      },
+      {
+        id: "gaikaku",
+        name: "首都圏外郭放水路（地下神殿）",
+        area: "春日部市",
+        image:
+          "https://images.unsplash.com/photo-1526481280695-3c687fd543c0?auto=format&fit=crop&w=800&q=80",
+        description:
+          "世界最大級の地下放水路。高さ約18mの巨大な柱が並ぶ調圧水槽が“地下神殿”と呼ばれる人気スポットで、防災ツーリズムとして見学コースが用意されている。",
+        highlights: [
+          "調圧水槽の圧倒的スケール感を間近で体感できる",
+          "地下は気温約20℃で非常に涼しく、猛暑日に最適",
+          "防災コンシェルジュによる解説で、首都圏を守る仕組みが学べる"
+        ],
+        transport: {
+          type: "レンタカー",
+          route:
+            "東狭山ヶ丘 → 関越道・外環道などを利用して春日部市・龍Q館周辺へ",
+          time: "約1時間強"
+        },
+        feeReservation: [
+          {
+            label: "地下神殿コース（基本コース）",
+            detail:
+              "約55分・1人1,200円前後。階段約100段の昇り降りあり。事前予約制。",
+            url: "https://gaikaku.jp/"
+          }
+        ],
+        mapUrl:
+          "https://www.google.com/maps/search/?api=1&query=首都圏外郭放水路 龍Q館",
+        foods: [
+          {
+            name: "地下神殿カレー（龍Q館）",
+            description: "見学施設内で提供されるご当地カレー。防災ツーリズムの記念に。",
+            image:
+              "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80",
+            mapUrl:
+              "https://www.google.com/maps/search/?api=1&query=龍Q館 春日部 カレー"
+          },
+          {
+            name: "春日部駅周辺のカフェ・定食屋",
+            description: "駅近くに家族向けの飲食店が多数。ランチに便利。",
+            image:
+              "https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=800&q=80",
+            mapUrl:
+              "https://www.google.com/maps/search/?api=1&query=春日部駅 カフェ"
+          }
+        ]
+      },
+      {
+        id: "sakitama",
+        name: "さきたま古墳公園＆さきたま史跡の博物館",
+        area: "行田市",
+        image:
+          "https://images.unsplash.com/photo-1526481280695-3c687fd543c0?auto=format&fit=crop&w=800&q=80",
+        description:
+          "国指定特別史跡「埼玉古墳群」を中心とした歴史公園とミュージアム。古墳出土品や国宝級の資料が展示され、古代ロマンを感じられるスポット。",
+        highlights: [
+          "丸墓山古墳に登って古墳群を一望できる",
+          "博物館は空調が効いており、夏でも快適に見学可能",
+          "埴輪作り体験など、子ども向けの体験プログラムもある"
+        ],
+        transport: {
+          type: "レンタカー",
+          route: "東狭山ヶ丘 → 圏央道などを利用して行田市・さきたま古墳公園へ",
+          time: "約1〜1.5時間"
+        },
+        feeReservation: [
+          {
+            label: "博物館観覧料（目安）",
+            detail: "一般200円・高校生・学生100円・中学生以下無料。",
+            url: "https://sakitama-museum.jp/"
+          }
+        ],
+        mapUrl:
+          "https://www.google.com/maps/search/?api=1&query=さきたま古墳公園",
+        foods: [
+          {
+            name: "かねつき堂",
+            description: "ゼリーフライ・ふらい焼きそばなど行田B級グルメの名店。",
+            image:
+              "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80",
+            mapUrl:
+              "https://www.google.com/maps/search/?api=1&query=かねつき堂 行田"
+          }
+        ]
+      },
+      {
+        id: "nagatoro",
+        name: "長瀞ラインくだり＆岩畳",
+        area: "長瀞町",
+        image:
+          "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80",
+        description:
+          "荒川を木造和船で下る川下りと、奇岩が並ぶ岩畳の景観が楽しめる長瀞エリア。夏でも川風が涼しく、家族で自然を満喫できる。",
+        highlights: [
+          "船頭さんのガイド付きで、渓谷美とスリルを楽しめる",
+          "岩畳の上を歩きながら、川辺で涼むことができる",
+          "かき氷や豚みそ丼など、秩父グルメも豊富"
+        ],
+        transport: {
+          type: "レンタカー",
+          route: "東狭山ヶ丘 → 関越道・花園IC経由で長瀞町へ（朝7時台出発推奨）",
+          time: "約1.5時間"
+        },
+        feeReservation: [
+          {
+            label: "長瀞ラインくだり乗船料（繁忙期目安）",
+            detail: "大人2,200円・子ども1,100円。荒天・増水時は運休あり。",
+            url: "https://www.chichibu-railway.co.jp/"
+          }
+        ],
+        mapUrl:
+          "https://www.google.com/maps/search/?api=1&query=長瀞ラインくだり",
+        foods: [
+          {
+            name: "阿佐美冷蔵",
+            description: "天然氷のかき氷で有名な老舗。夏の定番スポット。",
+            image:
+              "https://images.unsplash.com/photo-1504753791519-9c054b0475b9?auto=format&fit=crop&w=800&q=80",
+            mapUrl:
+              "https://www.google.com/maps/search/?api=1&query=阿佐美冷蔵 長瀞"
+          },
+          {
+            name: "豚みそ丼専門店 有隣",
+            description: "秩父名物豚みそ丼の人気店。ボリューム満点で家族向け。",
+            image:
+              "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80",
+            mapUrl:
+              "https://www.google.com/maps/search/?api=1&query=豚みそ丼 有隣 秩父"
+          }
+        ]
+      },
+      {
+        id: "forest",
+        name: "フォレストアドベンチャー・秩父",
+        area: "秩父市 ミューズパーク",
+        image:
+          "https://images.unsplash.com/photo-1500534314211-0a24cd03f2c0?auto=format&fit=crop&w=800&q=80",
+        description:
+          "森の中でハーネスを付けて木から木へ渡る本格アスレチック。高さも難易度も高めで、大人も本気で楽しめる国内最大級のコース。",
+        highlights: [
+          "最長約100m超のジップスライドで森の上を滑走できる",
+          "森の中なので直射日光を避けつつアクティブに遊べる",
+          "秩父ミューズパーク内にあり、周辺散策もセットで楽しめる"
+        ],
+        transport: {
+          type: "レンタカー",
+          route: "東狭山ヶ丘 → 秩父ミューズパーク（朝7〜8時台出発推奨）",
+          time: "約1.5時間"
+        },
+        feeReservation: [
+          {
+            label: "利用料金（目安）",
+            detail: "60分3,000円・90分4,000円・120分5,000円前後。予約サイトで最新料金を確認。",
+            url: "https://foret-aventure.jp/park/fa-chichibu/"
+          },
+          {
+            label: "利用条件",
+            detail: "小学1年生以上・身長110cm以上（一部コースは小学4年生・140cm以上推奨）。",
+            url: "https://foret-aventure.jp/park/fa-chichibu/"
+          }
+        ],
+        mapUrl:
+          "https://www.google.com/maps/search/?api=1&query=フォレストアドベンチャー秩父",
+        foods: [
+          {
+            name: "PICA秩父 BBQレストラン",
+            description: "BBQスタイルでしっかり食べられる。アクティビティ後のランチに最適。",
+            image:
+              "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+            mapUrl:
+              "https://www.google.com/maps/search/?api=1&query=PICA秩父"
+          }
+        ]
+      },
+      {
+        id: "hashidate",
+        name: "橋立鍾乳洞",
+        area: "秩父市 上影森",
+        image:
+          "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80",
+        description:
+          "秩父の山中にある鍾乳洞。狭い通路や急な階段を進みながら、自然が作り出した造形を間近で見られるスポット。夏でも洞内はひんやりと涼しい。",
+        highlights: [
+          "天然のクーラーのような涼しさで、猛暑日にぴったり",
+          "鍾乳石や独特の地形を探検気分で楽しめる",
+          "長瀞・秩父エリアの他スポットと組み合わせやすい立地"
+        ],
+        transport: {
+          type: "レンタカー",
+          route: "東狭山ヶ丘 → 秩父市上影森（長瀞・秩父エリアと同方向）",
+          time: "約1.5時間"
+        },
+        feeReservation: [
+          {
+            label: "入洞料（目安）",
+            detail: "大人200円・小人100円前後。現地窓口で支払い。",
+            url: ""
+          }
+        ],
+        mapUrl:
+          "https://www.google.com/maps/search/?api=1&query=橋立鍾乳洞",
+        foods: [
+          {
+            name: "秩父そば店（こぶしやなど）",
+            description: "秩父市内のそば店で、山の幸を使ったメニューが楽しめる。",
+            image:
+              "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=800&q=80",
+            mapUrl:
+              "https://www.google.com/maps/search/?api=1&query=秩父 そば こぶしや"
+          }
+        ]
+      },
+      {
+        id: "shinrinkoen",
+        name: "国営武蔵丘陵森林公園",
+        area: "滑川町",
+        image:
+          "https://images.unsplash.com/photo-1500534314211-0a24cd03f2c0?auto=format&fit=crop&w=800&q=80",
+        description:
+          "広大な敷地に森・花畑・サイクリングコース・アスレチックなどがある国営公園。木陰が多く、夏でも比較的過ごしやすい。",
+        highlights: [
+          "サイクリングやアスレチックで子どもと一緒に体を動かせる",
+          "季節の花畑が美しく、写真撮影にも向いている",
+          "早朝開園日には涼しい時間帯に散策できる"
+        ],
+        transport: {
+          type: "レンタカー",
+          route: "東狭山ヶ丘 → 関越道東松山IC経由で森林公園へ",
+          time: "約1時間"
+        },
+        feeReservation: [
+          {
+            label: "入園料（目安）",
+            detail: "大人450円・65歳以上210円・中学生以下無料。",
+            url: "https://www.shinrinkoen.jp/"
+          }
+        ],
+        mapUrl:
+          "https://www.google.com/maps/search/?api=1&query=国営武蔵丘陵森林公園",
+        foods: [
+          {
+            name: "園内レストラン・売店",
+            description: "軽食やソフトクリームなど、散策の合間に立ち寄れる。",
+            image:
+              "https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=800&q=80",
+            mapUrl:
+              "https://www.google.com/maps/search/?api=1&query=武蔵丘陵森林公園 レストラン"
+          }
+        ]
+      },
+      {
+        id: "saiboku",
+        name: "サイボク天然温泉 花鳥風月",
+        area: "日高市",
+        image:
+          "https://images.unsplash.com/photo-1519821172141-b5d8cbd123f2?auto=format&fit=crop&w=800&q=80",
+        description:
+          "豚のテーマパーク「サイボク」敷地内にある日帰り温泉。豊富な湧出量のナトリウム塩化物泉で、温まりの湯・美肌の湯として人気。",
+        highlights: [
+          "大露天風呂・炭酸泉・サウナなど設備が充実",
+          "温泉とサイボクのレストラン・ショップをセットで楽しめる",
+          "帰路前に立ち寄れば、旅の疲れをしっかり癒せる"
+        ],
+        transport: {
+          type: "レンタカー",
+          route: "東狭山ヶ丘 → 日高市サイボク（一般道で約40〜50分）",
+          time: "約40〜50分"
+        },
+        feeReservation: [
+          {
+            label: "入館料（目安）",
+            detail:
+              "大人平日1,080円・土日祝1,280円／小人平日650円・土日祝750円前後。",
+            url: "https://www.saiboku.co.jp/kachofugetsu/"
+          }
+        ],
+        mapUrl:
+          "https://www.google.com/maps/search/?api=1&query=サイボク天然温泉 花鳥風月",
+        foods: [
+          {
+            name: "サイボクレストラン",
+            description: "銘柄豚を使ったとんかつ・ハム・ソーセージなどが楽しめる。",
+            image:
+              "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+            mapUrl:
+              "https://www.google.com/maps/search/?api=1&query=サイボク レストラン"
+          }
+        ]
+      }
+    ];
 
-        // Day番号の再計算
-        function updateDayNumbers() {
-            document.querySelectorAll('.day-label').forEach((el, index) => {
-                el.textContent = 'Day ' + (index + 1);
-            });
-        }
+    // ---------------- Dayデータ（初期モデルコース） ----------------
 
-        // イベントリスナーの付与
-        function attachEventListeners() {
-            document.querySelectorAll('.cb-target').forEach(cb => {
-                cb.removeEventListener('change', handleCheckboxChange);
-                cb.addEventListener('change', handleCheckboxChange);
-            });
-            document.querySelectorAll('.save-target,.editable-text').forEach(el => {
-                el.removeEventListener('input', saveState);
-                el.addEventListener('input', saveState);
-            });
-        }
+    const days = [
+      { day: 1, date: "8/11", spotId: "sakura" },
+      { day: 2, date: "8/12", spotId: "seibuen" },
+      { day: 3, date: "8/13", spotId: "gaikaku" },
+      { day: 4, date: "8/14", spotId: "sakitama" },
+      { day: 5, date: "8/15", spotId: "nagatoro" },
+      { day: 6, date: "8/16", spotId: "forest" }
+    ];
 
-        // チェックボックス変更時の処理
-        function handleCheckboxChange(e) {
-            if (e.target.checked) e.target.setAttribute('checked', 'checked');
-            else e.target.removeAttribute('checked');
-            updateProgress(e.target.closest('.day-section'));
-            saveState();
-        }
+    // ---------------- チェックリスト ----------------
 
-        // プログレスバーの更新
-        function updateProgress(daySection) {
-            if (!daySection) return;
-            const checkboxes = daySection.querySelectorAll('input[type="checkbox"]');
-            const checked = daySection.querySelectorAll('input[type="checkbox"]:checked');
-            const fill = daySection.querySelector('.progress-fill');
-            if (checkboxes.length === 0) return;
-            const percentage = (checked.length / checkboxes.length) * 100;
-            if (fill) fill.style.width = percentage + '%';
-        }
+    const todoItems = [
+      {
+        id: "todo-forest-limit",
+        text: "フォレストアドベンチャー秩父の身長・年齢制限を公式サイトで確認する"
+      },
+      {
+        id: "todo-forest-reserve",
+        text: "フォレストアドベンチャー秩父の希望時間帯を予約サイト（じゃらん・asoview等）で予約する"
+      },
+      {
+        id: "todo-gaikaku-course",
+        text: "首都圏外郭放水路の見学コース内容・料金を公式サイトで確認する"
+      },
+      {
+        id: "todo-gaikaku-reserve",
+        text: "首都圏外郭放水路見学会の予約ページから希望日時を予約する"
+      },
+      {
+        id: "todo-sakitama-haniwa",
+        text: "さきたま史跡の博物館のはにわ作り体験の実施日・予約方法を確認し、電話予約する"
+      },
+      {
+        id: "todo-seibuen-ticket",
+        text: "西武園ゆうえんちの夏季チケット（夏満喫切符など）の内容・購入方法を確認する"
+      },
+      {
+        id: "todo-nagatoro-line",
+        text: "長瀞ラインくだりの当日営業状況（増水・渇水による運休情報）を公式サイトやSNSで確認する"
+      },
+      {
+        id: "todo-saiboku-coupon",
+        text: "サイボク天然温泉 花鳥風月の割引券・クーポン有無を確認し、必要なら事前購入する"
+      },
+      {
+        id: "todo-rentacar",
+        text: "レンタカーの車種・受け取り場所・保険内容を家族で相談し、8/13〜16の予約を確定する"
+      },
+      {
+        id: "todo-heat-goods",
+        text: "熱中症対策グッズ（帽子・日傘・冷感タオル・飲料・保冷バッグなど）を準備する"
+      }
+    ];
 
-        function updateAllProgress() {
-            document.querySelectorAll('.day-section').forEach(section => updateProgress(section));
-        }
+    // ---------------- DOM参照 ----------------
 
-        // 新しい行の追加
-        window.addItem = function(listId) {
-            const list = document.getElementById(listId);
-            const isTeal = listId.includes('day1') || listId.includes('day2');
-            const colorClass = isTeal? 'teal' : 'orange';
-            const li = document.createElement('li');
-            li.className = "flex items-start gap-2 group/item bg-white p-2 rounded border border-gray-100 shadow-sm";
-            li.innerHTML = `
-                <input type="checkbox" class="mt-1 w-5 h-5 text-${colorClass}-600 rounded cursor-pointer cb-target">
-                <div class="content-wrap flex-1 flex flex-col justify-center">
-                    <div><strong contenteditable="true" class="time-text editable-text text-${colorClass}-700 mr-2">00:00</strong><span contenteditable="true" class="content-text editable-text">新しい予定</span></div>
-                </div>
-                <span class="drag-handle text-gray-300 cursor-grab px-1 text-lg ml-auto">☰</span>
-            `;
-            list.appendChild(li);
-            attachEventListeners();
-            updateProgress(list.closest('.day-section'));
-            saveState();
-        };
+    const dayTabsEl = document.getElementById("dayTabs");
+    const scheduleContainerEl = document.getElementById("scheduleContainer");
+    const spotDetailContainerEl = document.getElementById("spotDetailContainer");
+    const foodContainerEl = document.getElementById("foodContainer");
+    const todoListEl = document.getElementById("todoList");
+    const resetTodoBtn = document.getElementById("resetTodo");
 
-        // LINE等へのテキストコピーツール
-        window.copySchedule = function() {
-            let text = "🚗 埼玉家族旅行スケジュール 🚗\n\n";
-            document.querySelectorAll('.day-section').forEach(day => {
-                const dayLabel = day.querySelector('.day-label').textContent;
-                const title = day.querySelector('.day-title').textContent;
-                text += `■ ${dayLabel}: ${title}\n`;
-                
-                day.querySelectorAll('.sortable-list li').forEach(li => {
-                    if (li.classList.contains('move-time-item')) {
-                        text += `  ${li.textContent.replace('☰', '').trim()}\n`;
-                    } else {
-                        const cb = li.querySelector('input[type="checkbox"]');
-                        if (!cb) return;
-                        const isChecked = cb.checked? '[済]' : '[ ]';
-                        const time = li.querySelector('.time-text')?.textContent || '';
-                        const content = li.querySelector('.content-text')?.textContent || '';
-                        text += `  ${isChecked} ${time} ${content}\n`;
-                    }
-                });
-                const memo = day.querySelector('textarea').value;
-                if (memo) text += `  📝 メモ: ${memo}\n`;
-                text += "\n";
-            });
-            
-            navigator.clipboard.writeText(text).then(() => {
-                alert("スケジュールをコピーしました！\nLINE等のメッセージアプリに貼り付けて共有できます。");
-            }).catch(err => {
-                alert("コピーに失敗しました。");
-            });
-        };
+    let activeDay = 1;
 
-        // ローカルストレージへの保存
-        function saveState() {
-            const state = { daysHtml: document.getElementById('days-wrapper').innerHTML };
-            
-            // テキストエリアの値はinnerHTMLには含まれないため個別に保存
-            const textareas =;
-            document.querySelectorAll('textarea').forEach(ta => textareas.push(ta.value));
-            state.textareas = textareas;
-            
-            localStorage.setItem('saitamaTripSchedule_v5', JSON.stringify(state));
-        }
+    // ---------------- タブ描画 ----------------
 
-        // ローカルストレージからの復元
-        function loadState() {
-            const stateStr = localStorage.getItem('saitamaTripSchedule_v5');
-            if (stateStr) {
-                const state = JSON.parse(stateStr);
-                if (state.daysHtml) {
-                    document.getElementById('days-wrapper').innerHTML = state.daysHtml;
-                    const textareas = document.querySelectorAll('textarea');
-                    if (state.textareas) {
-                        textareas.forEach((ta, i) => ta.value = state.textareas[i] || '');
-                    }
-                }
-            }
-        }
+    function renderTabs() {
+      dayTabsEl.innerHTML = "";
+      days.forEach((d) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className =
+          "flex-shrink-0 px-3 py-2 rounded-full border text-xs font-semibold transition-all " +
+          (d.day === activeDay
+            ? "bg-sky-500 border-sky-500 text-white shadow-sm"
+            : "bg-white border-sky-200 text-sky-700");
+        btn.textContent = `Day ${d.day} (${d.date})`;
+        btn.addEventListener("click", () => {
+          if (activeDay !== d.day) {
+            activeDay = d.day;
+            renderTabs();
+            renderAllForActiveDay();
+          }
+        });
+        dayTabsEl.appendChild(btn);
+      });
+    }
 
-        // 初期状態にリセット
-        window.resetSchedule = function() {
-            if(confirm("予定を初期状態に戻しますか？（メモ等も消去されます）")) {
-                localStorage.removeItem('saitamaTripSchedule_v5');
-                location.reload();
-            }
-        }
+    // ---------------- スケジュールカード描画 ----------------
 
-        document.addEventListener('DOMContentLoaded', initApp);
-    </script>
+    function renderSchedule() {
+      const dayData = days.find((d) => d.day === activeDay);
+      if (!dayData) return;
+      const spot = spots.find((s) => s.id === dayData.spotId);
+      if (!spot) return;
+
+      scheduleContainerEl.classList.add("fade-enter");
+      requestAnimationFrame(() => {
+        scheduleContainerEl.classList.add("fade-enter-active");
+      });
+
+      scheduleContainerEl.innerHTML = "";
+
+      const card = document.createElement("article");
+      card.className = "bg-white rounded-xl shadow-md p-3 text-[12px] space-y-2";
+
+      const titleEl = document.createElement("div");
+      titleEl.innerHTML = `
+        <div class="flex justify-between items-center">
+          <h2 class="text-sm font-semibold text-sky-700">Day ${dayData.day}：${spot.name}</h2>
+          <span class="text-[10px] px-2 py-[2px] rounded-full bg-sky-100 text-sky-700">${dayData.date}</span>
+        </div>
+      `;
+      card.appendChild(titleEl);
+
+      const selectWrapper = document.createElement("div");
+      selectWrapper.className = "mt-2";
+      const label = document.createElement("label");
+      label.className = "text-xs font-semibold text-slate-700";
+      label.textContent = "行き先を選ぶ（1日1スポット）";
+      const select = document.createElement("select");
+      select.className =
+        "mt-1 w-full text-xs border border-sky-300 rounded-lg px-2 py-1 bg-sky-50";
+      spots.forEach((s) => {
+        const opt = document.createElement("option");
+        opt.value = s.id;
+        opt.textContent = s.name;
+        if (s.id === dayData.spotId) opt.selected = true;
+        select.appendChild(opt);
+      });
+      select.addEventListener("change", () => {
+        dayData.spotId = select.value;
+        renderAllForActiveDay();
+      });
+      selectWrapper.appendChild(label);
+      selectWrapper.appendChild(select);
+      card.appendChild(selectWrapper);
+
+      const destEl = document.createElement("div");
+      destEl.innerHTML = `
+        <h3 class="text-xs font-semibold text-slate-700 mt-1">行き先</h3>
+        <p class="mt-1">${spot.name}</p>
+        <p class="mt-1 text-slate-500">エリア：${spot.area}</p>
+      `;
+      card.appendChild(destEl);
+
+      const transportEl = document.createElement("div");
+      transportEl.innerHTML = `
+        <h3 class="text-xs font-semibold text-slate-700 mt-1">移動手段・乗換経路・所要時間</h3>
+        <p class="mt-1"><span class="font-semibold text-teal-700">${spot.transport.type}</span></p>
+        <p class="mt-1">${spot.transport.route}</p>
+        <p class="mt-1 text-slate-500">所要時間目安：${spot.transport.time}</p>
+      `;
+      card.appendChild(transportEl);
+
+      const feeEl = document.createElement("div");
+      feeEl.innerHTML = `
+        <h3 class="text-xs font-semibold text-slate-700 mt-1">料金・事前予約情報（要最新確認）</h3>
+      `;
+      const ulF = document.createElement("ul");
+      ulF.className = "mt-1 list-disc pl-4 space-y-1";
+      spot.feeReservation.forEach((f) => {
+        const li = document.createElement("li");
+        const linkPart = f.url
+          ? `<a href="${f.url}" target="_blank" rel="noopener noreferrer" class="text-sky-600 underline">公式サイト</a>`
+          : "";
+        li.innerHTML = `<span class="font-semibold">${f.label}：</span>${f.detail}${
+          linkPart ? "（" + linkPart + "）" : ""
+        }`;
+        ulF.appendChild(li);
+      });
+      feeEl.appendChild(ulF);
+      card.appendChild(feeEl);
+
+      const mapEl = document.createElement("div");
+      mapEl.innerHTML = `
+        <h3 class="text-xs font-semibold text-slate-700 mt-1">Google Mapリンク</h3>
+        <a href="${spot.mapUrl}" target="_blank" rel="noopener noreferrer" class="mt-1 inline-flex items-center text-sky-600 underline text-xs">
+          地図アプリで開く
+        </a>
+      `;
+      card.appendChild(mapEl);
+
+      scheduleContainerEl.appendChild(card);
+
+      setTimeout(() => {
+        scheduleContainerEl.classList.remove("fade-enter", "fade-enter-active");
+      }, 260);
+    }
+
+    // ---------------- スポット詳細描画 ----------------
+
+    function renderSpotDetail() {
+      const dayData = days.find((d) => d.day === activeDay);
+      if (!dayData) return;
+      const spot = spots.find((s) => s.id === dayData.spotId);
+      if (!spot) return;
+
+      spotDetailContainerEl.classList.add("fade-enter");
+      requestAnimationFrame(() => {
+        spotDetailContainerEl.classList.add("fade-enter-active");
+      });
+
+      spotDetailContainerEl.innerHTML = "";
+
+      const card = document.createElement("article");
+      card.className = "bg-white rounded-xl shadow-md p-3 text-[12px] space-y-2";
+
+      const img = document.createElement("img");
+      img.src = spot.image;
+      img.alt = spot.name;
+      img.className = "w-full h-40 object-cover rounded-lg";
+      card.appendChild(img);
+
+      const titleEl = document.createElement("div");
+      titleEl.innerHTML = `
+        <h2 class="text-sm font-semibold text-sky-700 mt-2">スポット概要・見どころ</h2>
+        <p class="mt-1">${spot.description}</p>
+      `;
+      card.appendChild(titleEl);
+
+      const hlEl = document.createElement("div");
+      hlEl.innerHTML = `<h3 class="text-xs font-semibold text-slate-700 mt-1">見どころ</h3>`;
+      const ul = document.createElement("ul");
+      ul.className = "mt-1 list-disc pl-4 space-y-1";
+      spot.highlights.forEach((h) => {
+        const li = document.createElement("li");
+        li.textContent = h;
+        ul.appendChild(li);
+      });
+      hlEl.appendChild(ul);
+      card.appendChild(hlEl);
+
+      spotDetailContainerEl.appendChild(card);
+
+      setTimeout(() => {
+        spotDetailContainerEl.classList.remove("fade-enter", "fade-enter-active");
+      }, 260);
+    }
+
+    // ---------------- 食事処候補描画 ----------------
+
+    function renderFood() {
+      const dayData = days.find((d) => d.day === activeDay);
+      if (!dayData) return;
+      const spot = spots.find((s) => s.id === dayData.spotId);
+      if (!spot) return;
+
+      foodContainerEl.classList.add("fade-enter");
+      requestAnimationFrame(() => {
+        foodContainerEl.classList.add("fade-enter-active");
+      });
+
+      foodContainerEl.innerHTML = "";
+
+      const card = document.createElement("article");
+      card.className = "bg-white rounded-xl shadow-md p-3 text-[12px] space-y-2";
+
+      const titleEl = document.createElement("div");
+      titleEl.innerHTML = `
+        <h2 class="text-sm font-semibold text-sky-700">食事処候補（画像付き）</h2>
+        <p class="mt-1 text-slate-600">各スポット周辺で立ち寄りやすい飲食店の候補です。混雑状況や営業時間は事前に確認してください。</p>
+      `;
+      card.appendChild(titleEl);
+
+      const list = document.createElement("div");
+      list.className = "mt-2 space-y-2";
+
+      spot.foods.forEach((f) => {
+        const item = document.createElement("div");
+        item.className = "flex gap-2";
+
+        const img = document.createElement("img");
+        img.src = f.image;
+        img.alt = f.name;
+        img.className = "w-20 h-20 object-cover rounded-lg flex-shrink-0";
+
+        const info = document.createElement("div");
+        info.className = "flex-1";
+        info.innerHTML = `
+          <h3 class="text-xs font-semibold text-slate-700">${f.name}</h3>
+          <p class="mt-1">${f.description}</p>
+          <a href="${f.mapUrl}" target="_blank" rel="noopener noreferrer" class="mt-1 inline-flex items-center text-sky-600 underline text-[11px]">
+            Google Mapで場所を確認
+          </a>
+        `;
+
+        item.appendChild(img);
+        item.appendChild(info);
+        list.appendChild(item);
+      });
+
+      card.appendChild(list);
+      foodContainerEl.appendChild(card);
+
+      setTimeout(() => {
+        foodContainerEl.classList.remove("fade-enter", "fade-enter-active");
+      }, 260);
+    }
+
+    // ---------------- ToDoリスト（localStorage） ----------------
+
+    const TODO_STORAGE_KEY = "saitama-trip-todo";
+
+    function loadTodoState() {
+      try {
+        const raw = localStorage.getItem(TODO_STORAGE_KEY);
+        if (!raw) return {};
+        return JSON.parse(raw) || {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveTodoState(state) {
+      try {
+        localStorage.setItem(TODO_STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {}
+    }
+
+    function renderTodoList() {
+      const state = loadTodoState();
+      todoListEl.innerHTML = "";
+      todoItems.forEach((item) => {
+        const li = document.createElement("li");
+        li.className = "flex items-start gap-2";
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.id = item.id;
+        checkbox.className =
+          "mt-[2px] w-4 h-4 rounded border-sky-400 text-sky-500 focus:ring-sky-500";
+        checkbox.checked = !!state[item.id];
+
+        checkbox.addEventListener("change", () => {
+          const newState = loadTodoState();
+          newState[item.id] = checkbox.checked;
+          saveTodoState(newState);
+        });
+
+        const label = document.createElement("label");
+        label.htmlFor = item.id;
+        label.className = "flex-1";
+        label.textContent = item.text;
+
+        li.appendChild(checkbox);
+        li.appendChild(label);
+        todoListEl.appendChild(li);
+      });
+    }
+
+    resetTodoBtn.addEventListener("click", () => {
+      saveTodoState({});
+      renderTodoList();
+    });
+
+    // ---------------- 全体描画 ----------------
+
+    function renderAllForActiveDay() {
+      renderSchedule();
+      renderSpotDetail();
+      renderFood();
+    }
+
+    // ---------------- 初期化 ----------------
+
+    renderTabs();
+    renderAllForActiveDay();
+    renderTodoList();
+  </script>
 </body>
 </html>
