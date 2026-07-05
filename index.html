@@ -10,13 +10,24 @@
     .fade-enter-active { opacity: 1; transform: translateY(0); transition: opacity 0.25s ease, transform 0.25s ease; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    body.large-text .text-\[10px\] { font-size: 13px !important; }
+    body.large-text .text-\[11px\] { font-size: 14px !important; }
+    body.large-text .text-\[12px\] { font-size: 15px !important; }
+    body.large-text .text-xs { font-size: 15px !important; }
+    body.large-text .text-sm { font-size: 17px !important; }
+    body.large-text .text-lg { font-size: 20px !important; }
   </style>
 </head>
 <body class="bg-sky-50 text-slate-800">
   <div class="min-h-screen flex flex-col">
     <!-- ヘッダー -->
     <header class="bg-gradient-to-r from-sky-400 to-teal-400 text-white px-4 pt-4 pb-3 shadow-md">
-      <h1 class="text-lg font-semibold">埼玉家族旅行プラン案内</h1>
+      <div class="flex justify-between items-start gap-2">
+        <h1 class="text-lg font-semibold">埼玉家族旅行プラン案内</h1>
+        <button id="fontSizeToggle" type="button" class="flex-shrink-0 text-[10px] px-2 py-1 rounded-full border border-white/60 bg-white/10 active:bg-white/20">
+          文字を大きく
+        </button>
+      </div>
       <p class="text-xs mt-1">
         お盆（8/11〜16）猛暑＆渋滞を避けて、東狭山ヶ丘拠点で家族4人がゆったり楽しむスマホ用スケジュールSPA
       </p>
@@ -37,9 +48,25 @@
       </div>
     </section>
 
+    <!-- 行き先設定の共有 -->
+    <section class="bg-white shadow-md mx-3 mb-2 rounded-xl p-3">
+      <h2 class="text-sm font-semibold text-sky-700">各Dayの行き先を家族と共有</h2>
+      <p class="text-[11px] mt-1 text-slate-600">
+        プルダウンで行き先を変更したら、下のボタンでリンクを共有すると他の家族の端末にも同じ設定を反映できます。
+      </p>
+      <button id="shareLinkBtn" class="mt-2 w-full text-[11px] py-1.5 rounded-lg border border-teal-300 text-teal-700 bg-teal-50 active:bg-teal-100">
+        共有リンクをコピー
+      </button>
+      <p id="shareStatus" class="mt-1 text-[10px] text-teal-700 h-3"></p>
+      <div id="shareQrWrap" class="mt-2 hidden flex-col items-center">
+        <div id="shareQr"></div>
+        <p class="mt-1 text-[10px] text-slate-500">QRコードを読み取っても同じ設定を開けます</p>
+      </div>
+    </section>
+
     <!-- タブ -->
     <nav class="mx-3 mt-1 mb-2">
-      <div id="dayTabs" class="flex gap-1 overflow-x-auto no-scrollbar text-xs"></div>
+      <div id="dayTabs" role="tablist" class="flex gap-1 overflow-x-auto no-scrollbar text-xs"></div>
     </nav>
 
     <!-- コンテンツ -->
@@ -71,8 +98,32 @@
     </footer>
   </div>
 
+  <script src="./vendor/qrcode.js"></script>
   <script>
-    const imgBase = "/Plan_Guide_2026/images";
+    const imgBase = "./images";
+
+    const IMG_PLACEHOLDER =
+      "data:image/svg+xml;charset=UTF-8," +
+      encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="150" viewBox="0 0 200 150">' +
+          '<rect width="200" height="150" fill="#e0f2fe"/>' +
+          '<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#0369a1">画像準備中</text>' +
+          "</svg>"
+      );
+
+    function withImgFallback(img) {
+      img.addEventListener(
+        "error",
+        () => {
+          img.onerror = null;
+          img.src = IMG_PLACEHOLDER;
+        },
+        { once: true }
+      );
+      return img;
+    }
+
+    const FEE_INFO_LAST_CHECKED = "2026/7/5";
 
     const spots = [
       {
@@ -711,6 +762,206 @@
           reservation: "混雑状況によっては待ち時間が発生するため、公式サイトやSNSで事前確認。",
           packing: "タオル・着替え・スキンケア用品・子ども用の入浴グッズなどを準備。"
         }
+      },
+      {
+        id: "granemio",
+        name: "グランエミオ所沢",
+        area: "所沢市 所沢駅前",
+        images: [],
+        officialUrl: "https://et-ge-tokorozawa.com/grandemio/",
+        description:
+          "西武鉄道と住友商事グループが手がける、所沢駅直結の大型複合商業施設。食物販・アパレル・レストランに加え、3階には芝生広場を備えた屋上庭園「とこにわ」があり、買い物だけでなく休憩・くつろぎの場としても利用できる。",
+        highlights: [
+          "3階屋上庭園「とこにわ」：芝生広場やベンチがあり、買い物の合間に子どもを遊ばせたり休憩したりできる",
+          "1階食物販フロア：「ザ・ガーデン自由が丘」やカルディコーヒーファームなど、お土産・惣菜調達に便利な店舗が充実",
+          "所沢駅2階直結の改札からそのまま2階に入館でき、雨に濡れずアクセスできる"
+        ],
+        tips: [
+          "1階は食物販、2階はアパレル、3階はレストラン＋アパレル、4階は学習塾・行政窓口とフロアごとに構成が異なるため、目的地を事前に確認しておくと効率的",
+          "ペット同伴（補助犬除く）は入館不可",
+          "レストラン・カフェ（11:00〜22:30）とショップ（10:00〜21:00）で営業時間が異なるため、閉店間際は個別に確認"
+        ],
+        transportTrain: {
+          route: "東狭山ヶ丘 → 狭山ヶ丘駅（西武池袋線）→ 所沢駅（下り1本・乗換なし）→ 2階直結でグランエミオ所沢へ",
+          time: "狭山ヶ丘駅から所沢駅まで約8〜10分"
+        },
+        transportCar: {
+          route: "東狭山ヶ丘 → 一般道で所沢駅周辺（所沢市くすのき台一丁目）へ（公式の推奨ルート記載なし・地図アプリで要確認）",
+          time: "直線距離約6km、通常走行で15〜25分程度が目安（公式データではない参考値）",
+          depart: "所沢駅周辺は週末・夕方に混雑しやすいため、午前中の早め（9時台）出発を推奨。"
+        },
+        feeReservation: [
+          {
+            label: "入館料",
+            detail: "無料（商業施設）。",
+            url: "https://et-ge-tokorozawa.com/grandemio/guide/"
+          },
+          {
+            label: "営業時間",
+            detail: "ショップ10:00〜21:00、レストラン・カフェ11:00〜22:30（店舗により異なる）。",
+            url: "https://et-ge-tokorozawa.com/grandemio/guide/"
+          },
+          {
+            label: "駐車場（目安）",
+            detail:
+              "昼間（8:00〜22:00）20分ごと100円、夜間60分ごと100円、最大料金は入庫後12時間で1,200円（土日祝を除く）。買い物金額に応じた無料サービスあり。詳細・台数は公式サイトで要確認。",
+            url: "https://et-ge-tokorozawa.com/grandemio/access/"
+          }
+        ],
+        mapUrl: "https://www.google.com/maps/search/?api=1&query=グランエミオ所沢",
+        foods: [],
+        modelCourse: [
+          "09:00 東狭山ヶ丘 出発（車または電車）",
+          "09:10 狭山ヶ丘駅発（電車の場合）／車の場合は所沢方面へ",
+          "09:20〜09:30 所沢駅到着・2階直結でグランエミオ所沢へ入館",
+          "09:30〜10:30 2階アパレル・生活雑貨フロアを見て回る",
+          "10:30〜11:00 3階屋上庭園「とこにわ」で小休憩・子どもを遊ばせる",
+          "11:30〜13:00 3階レストランフロアまたは所沢駅周辺でランチ（検索リンクから店を選ぶ）",
+          "13:00〜14:00 1階食物販フロアでお土産・夕食用の惣菜を購入",
+          "14:00〜14:30 所沢駅から東狭山ヶ丘へ帰路"
+        ],
+        recommendations: {
+          heat: "屋上庭園「とこにわ」で過ごす際は日差しの強い時間帯を避け、こまめな水分補給を。",
+          traffic: "所沢駅周辺は週末・夕方に混雑しやすいため、車の場合は午前早めの出発が安心。",
+          kids: "4階は学習塾・行政窓口フロアのため、子ども連れは主に1〜3階の物販・飲食フロアを中心に回るのがおすすめ。",
+          rain: "屋上庭園は屋外のため雨天時は利用しづらく、その場合は屋内フロア中心の計画に切り替える。",
+          reservation: "商業施設のため予約不要。レストラン利用時は混雑する12時台を避けると安心。",
+          packing: "現金・電子マネー、エコバッグ、折りたたみ傘・帽子を用意しておくとよい。"
+        }
+      },
+      {
+        id: "zouhei",
+        name: "造幣さいたま博物館",
+        area: "さいたま市大宮区",
+        images: [],
+        officialUrl: "https://www.mint.go.jp/enjoy/plant/plant-saitama/plant_visit_museum_saitama.html",
+        description:
+          "造幣局さいたま支局に併設された、お金の歴史や貨幣・勲章の製造工程を無料で学べる博物館。大判・小判、記念貨幣、勲章、オリンピックメダルなど貴重な資料を約1,000点展示している。",
+        highlights: [
+          "大判・小判、記念貨幣、勲章、オリンピック入賞メダルなど約1,000点の実物展示",
+          "千両箱の重さ体験や、持っているお金の「健康診断」ができる機械など子どもも楽しめる体験コンテンツ",
+          "平日限定で、実際に貨幣（プルーフ貨幣）や勲章を作る製造工場の様子をガラス越しに無料・予約不要で見学できる（19名まで）"
+        ],
+        tips: [
+          "休館日は水曜日（毎週）＋年末年始（12/29〜1/3）。訪問前に公式サイトの休館カレンダーを必ず確認する",
+          "製造ラインが稼働する「工場見学」は月・火・木・金曜のみ実施。水・土・日・祝日は展示のみになる可能性が高い",
+          "家族4人（19名以下）は予約不要で当日入館可能。ただし館内に一般車用駐車場はないため車の場合は要注意（下記参照）"
+        ],
+        transportTrain: {
+          route:
+            "東狭山ヶ丘 → 狭山ヶ丘駅（西武池袋線）→ 秋津駅…徒歩…新秋津駅（JR武蔵野線）→ 南浦和駅（JR京浜東北線）→ さいたま新都心駅 → 徒歩約12分で博物館へ",
+          time: "約1時間15分（乗換2回）＋徒歩12分"
+        },
+        transportCar: {
+          route:
+            "東狭山ヶ丘 → 国道463号・国道16号（大宮バイパス）経由でさいたま市大宮区北袋町方面へ。施設に一般車用駐車場はなく、周辺コインパーキングの利用が必要",
+          time: "実測データなし。国道16号・大宮バイパス周辺は週末混雑しやすく、概ね1時間前後を目安に余裕を持って（公式データではない参考値）",
+          depart: "駐車場がないため電車利用を推奨。車の場合は開館(9:00)に合わせ7:30〜8:00頃の出発が無難。"
+        },
+        feeReservation: [
+          {
+            label: "入館料",
+            detail: "無料。",
+            url: "https://www.mint.go.jp/enjoy/plant/plant-saitama/plant_visit_museum_saitama.html"
+          },
+          {
+            label: "開館時間・休館日",
+            detail: "9:00〜16:30（最終入館16:00）。休館日は水曜日・年末年始（12/29〜1/3）、ほか臨時休館あり。",
+            url: "https://www.mint.go.jp/enjoy/plant/plant-saitama/plant_visit_museum_saitama.html"
+          },
+          {
+            label: "工場見学（プルーフ貨幣製造ライン）",
+            detail: "月・火・木・金曜のみ実施、無料・予約不要（19名まで）。20名以上の団体は2か月前から要予約。",
+            url: "https://www.mint.go.jp/enjoy/plant/plant-saitama/plant_visit_saitama.html"
+          }
+        ],
+        mapUrl: "https://www.google.com/maps/search/?api=1&query=造幣さいたま博物館",
+        foods: [],
+        modelCourse: [
+          "07:50 東狭山ヶ丘 出発、徒歩で狭山ヶ丘駅へ",
+          "08:00 西武池袋線 狭山ヶ丘駅発（秋津方面）",
+          "08:25頃 新秋津駅発（JR武蔵野線）、南浦和駅で京浜東北線に乗換",
+          "09:00頃 さいたま新都心駅着、徒歩約12分で博物館へ",
+          "09:15〜10:45 館内見学（展示＋体験コーナー、平日なら工場見学も）",
+          "11:00〜12:00 周辺（けやきひろば・新都心公園など）で休憩・散策",
+          "12:00〜13:00 さいたま新都心駅周辺でランチ（検索リンクから店を選ぶ）",
+          "13:30 東狭山ヶ丘へ帰路"
+        ],
+        recommendations: {
+          heat: "駅から博物館まで徒歩12分の屋外移動があるため、帽子・水分補給を忘れずに。",
+          traffic: "施設に一般車用駐車場がなく周辺道路も混みやすいため、電車利用を基本に。",
+          kids: "千両箱の重さ体験やお金シャワーフォトスポットは混み合うことがあるため、開館直後の利用がおすすめ。",
+          rain: "館内展示は屋内なので雨天でも楽しめるが、駅からの徒歩12分区間は濡れるため折りたたみ傘を持参。",
+          reservation: "家族4人（19名以下）は予約不要。工場見学は水・土・日・祝日は稼働していない場合がある点に注意。",
+          packing: "歩きやすい靴・水分・折りたたみ傘を準備。"
+        }
+      },
+      {
+        id: "kingqueen",
+        name: "温泉バルコニー キング&クイーン",
+        area: "所沢市北中",
+        images: [],
+        officialUrl: "https://king-and-queen.site/",
+        description:
+          "2024年9月開業の「関東最大級」を謳う日帰り温浴施設。地下1,300mから湧出する天然温泉の内湯・露天風呂に加え、3種のサウナと3種の水風呂、2タイプの岩盤浴、屋上の有料エリア「Sky High」を備える。",
+        highlights: [
+          "地下1,300mから湧く天然温泉の露天「温浴バルコニー」と、屋上ととのいエリアからの開放的な眺め",
+          "富士山溶岩ロウリュウサウナ・塩サウナ・ハーブスチームサウナなど3種のサウナ＋3種の水風呂",
+          "2タイプの岩盤浴と、有料エリア「Sky High」のバレルサウナ・テントサウナ"
+        ],
+        tips: [
+          "タオル類は持参が必要（レンタルは別料金）",
+          "岩盤浴・Sky Highは未就学児は利用不可。小学生の岩盤浴利用は大人の同伴が必須",
+          "身長120cm以上または7歳以上の子どもは男女混浴不可のため、家族で入浴エリアが分かれる時間帯がある"
+        ],
+        transportTrain: {
+          route:
+            "東狭山ヶ丘 → 狭山ヶ丘駅（西武池袋線）→ 小手指駅（1駅）→ 小手指駅北口から無料送迎バス（新所沢駅・所沢駅からも運行）",
+          time: "狭山ヶ丘駅から小手指駅まで約3分＋送迎バス10〜15分（待ち時間別、時刻表は公式サイトで要確認）"
+        },
+        transportCar: {
+          route: "東狭山ヶ丘 → 所沢市北中方面へ一般道で移動（無料駐車場あり、収容台数は情報源により差異があり要確認）",
+          time: "圏央道入間ICから約15分・関越道三芳スマートICから約20分が公式目安。東狭山ヶ丘発の一般道所要時間は不明、10〜20分程度と推測",
+          depart: "土日は周辺が混雑しやすいため、開館直後（平日9:00・土日祝6:00）を狙い8:30〜9:00頃の出発を推奨。"
+        },
+        feeReservation: [
+          {
+            label: "入館料（中学生以上）",
+            detail: "平日950円・土日祝1,100円。朝風呂（土日祝6:00〜8:00）1,000円。小学生350円、3歳以下無料。",
+            url: "https://king-and-queen.site/"
+          },
+          {
+            label: "岩盤浴",
+            detail: "平日1,100円・土日祝1,200円（小学生は平日・土日祝とも350円）。岩盤浴のみの利用は不可、入館料が別途必要。",
+            url: "https://king-and-queen.site/"
+          },
+          {
+            label: "営業時間",
+            detail:
+              "平日9:00〜翌1:00、金曜・祝前日9:00〜翌2:00、土曜6:00〜翌2:00、日曜6:00〜翌1:00。年中無休。",
+            url: "https://king-and-queen.site/"
+          }
+        ],
+        mapUrl: "https://www.google.com/maps/search/?api=1&query=温泉バルコニー キング%26クイーン 所沢市北中2-271",
+        foods: [],
+        modelCourse: [
+          "08:40 東狭山ヶ丘 出発（車または電車）",
+          "09:00頃 施設到着・受付・ロッカー確認",
+          "09:20〜12:00 温泉・露天バルコニー・サウナ＆水風呂でゆったり（岩盤浴は小学生の同伴を忘れずに）",
+          "12:00〜13:00 館内レストランで昼食",
+          "13:00〜15:30 岩盤浴・休憩処でゆったり過ごす",
+          "15:30〜15:50 着替え・チェックアウト",
+          "16:00 施設発、東狭山ヶ丘へ帰路",
+          "18:00 夕食・翌日の予定確認"
+        ],
+        recommendations: {
+          heat: "屋外の温浴バルコニーや駐車場からの移動時は日差しが強いため、帽子・水分補給を徹底。",
+          traffic: "週末は周辺道路が混雑しやすいため、開館直後を狙って早めの出発を心掛ける。",
+          kids: "岩盤浴・Sky Highは未就学児利用不可、7歳以上/身長120cm以上は混浴不可のため事前に家族で確認しておく。",
+          rain: "屋外エリアは雨天でも利用できる場合が多いが足元が滑りやすくなるため注意し、公式サイトで当日の営業状況を確認。",
+          reservation: "通常利用に予約は不要だが、週末は混雑しやすいため開館直後の来場か公式SNSで混雑状況を確認。",
+          packing: "タオル類は持参必須（レンタルは別料金の場合あり）。フェイスタオル・バスタオルと着替えを準備。"
+        }
       }
     ];
 
@@ -747,8 +998,139 @@
     const strategyToggle = document.getElementById("strategyToggle");
     const strategyContent = document.getElementById("strategyContent");
     const strategyIcon = document.getElementById("strategyIcon");
+    const shareLinkBtn = document.getElementById("shareLinkBtn");
+    const shareStatusEl = document.getElementById("shareStatus");
+    const shareQrWrapEl = document.getElementById("shareQrWrap");
+    const shareQrEl = document.getElementById("shareQr");
+    const fontSizeToggle = document.getElementById("fontSizeToggle");
 
-    let activeDay = 1;
+    const FONT_SIZE_STORAGE_KEY = "saitama-trip-large-text";
+
+    function applyFontSizePreference() {
+      const isLarge = localStorage.getItem(FONT_SIZE_STORAGE_KEY) === "1";
+      document.body.classList.toggle("large-text", isLarge);
+      fontSizeToggle.textContent = isLarge ? "文字を標準に" : "文字を大きく";
+      fontSizeToggle.setAttribute("aria-pressed", isLarge ? "true" : "false");
+    }
+
+    fontSizeToggle.addEventListener("click", () => {
+      const isLarge = document.body.classList.contains("large-text");
+      try {
+        localStorage.setItem(FONT_SIZE_STORAGE_KEY, isLarge ? "0" : "1");
+      } catch (e) {}
+      applyFontSizePreference();
+    });
+
+    applyFontSizePreference();
+
+    const DAYS_STORAGE_KEY = "saitama-trip-days";
+    const validSpotIds = new Set(spots.map((s) => s.id));
+
+    function loadDaysOverrides() {
+      try {
+        const raw = localStorage.getItem(DAYS_STORAGE_KEY);
+        if (!raw) return {};
+        return JSON.parse(raw) || {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveDaysOverrides() {
+      const map = {};
+      days.forEach((d) => {
+        map[d.day] = d.spotId;
+      });
+      try {
+        localStorage.setItem(DAYS_STORAGE_KEY, JSON.stringify(map));
+      } catch (e) {}
+    }
+
+    function applyDaysOverrides(map) {
+      if (!map) return;
+      days.forEach((d) => {
+        const spotId = map[d.day];
+        if (spotId && validSpotIds.has(spotId)) {
+          d.spotId = spotId;
+        }
+      });
+    }
+
+    const SPARE_DAY_NUMBER = 7;
+
+    function getOtherDaysUsingSpot(spotId, excludeDayNumber) {
+      return days.filter((d) => d.spotId === spotId && d.day !== excludeDayNumber);
+    }
+
+    function loadDaysFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const map = {};
+      let found = false;
+      days.forEach((d) => {
+        const spotId = params.get("d" + d.day);
+        if (spotId) {
+          map[d.day] = spotId;
+          found = true;
+        }
+      });
+      return found ? map : null;
+    }
+
+    function buildShareUrl() {
+      const params = new URLSearchParams();
+      days.forEach((d) => {
+        params.set("d" + d.day, d.spotId);
+      });
+      return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+    }
+
+    async function copyShareLink() {
+      const url = buildShareUrl();
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(url);
+        } else {
+          const textarea = document.createElement("textarea");
+          textarea.value = url;
+          textarea.style.position = "fixed";
+          textarea.style.opacity = "0";
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand("copy");
+          document.body.removeChild(textarea);
+        }
+        shareStatusEl.textContent = "リンクをコピーしました！家族に送ってください。";
+      } catch (e) {
+        shareStatusEl.textContent = url;
+      }
+
+      shareQrEl.innerHTML = "";
+      shareQrWrapEl.classList.remove("hidden");
+      shareQrWrapEl.classList.add("flex");
+      if (typeof QRCode !== "undefined") {
+        new QRCode(shareQrEl, { text: url, width: 120, height: 120 });
+      }
+    }
+
+    shareLinkBtn.addEventListener("click", copyShareLink);
+
+    const urlDaysMap = loadDaysFromUrl();
+    if (urlDaysMap) {
+      applyDaysOverrides(urlDaysMap);
+      saveDaysOverrides();
+      window.history.replaceState(null, "", window.location.pathname);
+    } else {
+      applyDaysOverrides(loadDaysOverrides());
+    }
+
+    function findTodayDay() {
+      const now = new Date();
+      const todayLabel = `${now.getMonth() + 1}/${now.getDate()}`;
+      const match = days.find((d) => d.date === todayLabel);
+      return match ? match.day : null;
+    }
+
+    let activeDay = findTodayDay() || 1;
 
     strategyToggle.addEventListener("click", () => {
       const isHidden = strategyContent.classList.toggle("hidden");
@@ -766,6 +1148,9 @@
             ? "bg-sky-500 border-sky-500 text-white shadow-sm"
             : "bg-white border-sky-200 text-sky-700");
         btn.textContent = d.day === 7 ? `予備日 (${d.date})` : `Day ${d.day} (${d.date})`;
+        btn.setAttribute("role", "tab");
+        btn.setAttribute("aria-selected", d.day === activeDay ? "true" : "false");
+        btn.setAttribute("tabindex", d.day === activeDay ? "0" : "-1");
         btn.addEventListener("click", () => {
           if (activeDay !== d.day) {
             activeDay = d.day;
@@ -810,19 +1195,45 @@
       const select = document.createElement("select");
       select.className =
         "mt-1 w-full text-xs border border-sky-300 rounded-lg px-2 py-1 bg-sky-50";
+      const isSpareDay = dayData.day === SPARE_DAY_NUMBER;
       spots.forEach((s) => {
         const opt = document.createElement("option");
         opt.value = s.id;
-        opt.textContent = s.name;
+        const usedBy = getOtherDaysUsingSpot(s.id, dayData.day);
+        if (usedBy.length > 0 && !isSpareDay) {
+          opt.disabled = true;
+          const usedByLabel = usedBy
+            .map((d) => (d.day === SPARE_DAY_NUMBER ? "予備日" : `Day${d.day}`))
+            .join("・");
+          opt.textContent = `${s.name}（${usedByLabel}で使用中）`;
+        } else {
+          opt.textContent = s.name;
+        }
         if (s.id === dayData.spotId) opt.selected = true;
         select.appendChild(opt);
       });
       select.addEventListener("change", () => {
         dayData.spotId = select.value;
+        saveDaysOverrides();
+        shareStatusEl.textContent = "";
+        shareQrWrapEl.classList.add("hidden");
+        shareQrWrapEl.classList.remove("flex");
         renderAllForActiveDay();
       });
       selectWrapper.appendChild(label);
       selectWrapper.appendChild(select);
+
+      if (isSpareDay) {
+        const duplicateDays = getOtherDaysUsingSpot(dayData.spotId, dayData.day);
+        if (duplicateDays.length > 0) {
+          const dupLabel = duplicateDays.map((d) => `Day${d.day}`).join("・");
+          const warningEl = document.createElement("p");
+          warningEl.className = "mt-1 text-[11px] text-amber-600";
+          warningEl.textContent = `⚠ この行き先は${dupLabel}と重複しています。`;
+          selectWrapper.appendChild(warningEl);
+        }
+      }
+
       card.appendChild(selectWrapper);
 
       const destEl = document.createElement("div");
@@ -854,7 +1265,10 @@
       card.appendChild(transportEl);
 
       const feeEl = document.createElement("div");
-      feeEl.innerHTML = `<h3 class="text-xs font-semibold text-slate-700 mt-1">料金・事前予約情報（要最新確認）</h3>`;
+      feeEl.innerHTML = `
+        <h3 class="text-xs font-semibold text-slate-700 mt-1">料金・事前予約情報（要最新確認）</h3>
+        <p class="text-[10px] text-slate-400 mt-[2px]">情報確認日：${FEE_INFO_LAST_CHECKED}時点</p>
+      `;
       const ulF = document.createElement("ul");
       ulF.className = "mt-1 list-disc pl-4 space-y-1";
       spot.feeReservation.forEach((f) => {
@@ -905,16 +1319,28 @@
       const card = document.createElement("article");
       card.className = "bg-white rounded-xl shadow-md p-3 text-[12px] space-y-2";
 
-      const imgWrap = document.createElement("div");
-      imgWrap.className = "flex gap-2 overflow-x-auto no-scrollbar";
-      spot.images.forEach((src) => {
-        const img = document.createElement("img");
-        img.src = src;
-        img.alt = spot.name;
-        img.className = "w-48 h-32 object-cover rounded-lg flex-shrink-0";
-        imgWrap.appendChild(img);
-      });
-      card.appendChild(imgWrap);
+      if (spot.images.length > 0) {
+        const imgWrap = document.createElement("div");
+        imgWrap.className = "flex gap-2 overflow-x-auto no-scrollbar";
+        spot.images.forEach((src) => {
+          const img = document.createElement("img");
+          img.src = src;
+          img.alt = spot.name;
+          img.className = "w-48 h-32 object-cover rounded-lg flex-shrink-0";
+          imgWrap.appendChild(withImgFallback(img));
+        });
+        card.appendChild(imgWrap);
+      } else if (spot.officialUrl) {
+        const officialWrap = document.createElement("div");
+        officialWrap.className = "border border-sky-100 rounded-lg p-2 bg-sky-50 text-[11px]";
+        officialWrap.innerHTML = `
+          <p class="text-slate-600">写真は未掲載です。最新の写真・詳細情報は公式サイトでご確認ください。</p>
+          <a href="${spot.officialUrl}" target="_blank" rel="noopener noreferrer" class="mt-1 inline-flex items-center text-sky-600 underline">
+            公式サイトを見る
+          </a>
+        `;
+        card.appendChild(officialWrap);
+      }
 
       const titleEl = document.createElement("div");
       titleEl.innerHTML = `
@@ -968,6 +1394,7 @@
       card.appendChild(recEl);
 
       const encodedName = encodeURIComponent(spot.name);
+      const encodedArea = encodeURIComponent(spot.area);
       const searchEl = document.createElement("div");
       searchEl.innerHTML = `
         <h3 class="text-xs font-semibold text-slate-700 mt-2">周辺の飲食店を検索</h3>
@@ -981,17 +1408,17 @@
              class="text-sky-600 underline">
              Google Mapsで「${spot.name} 周辺 飲食店」を検索
           </a>
-          <a href="https://tabelog.com/saitama/A1100/A110000/RC/cond01/?LstRange=SF&sw=${encodedName}"
+          <a href="https://tabelog.com/saitama/rstLst/?sw=${encodedArea}"
              target="_blank"
              rel="noopener noreferrer"
              class="text-sky-600 underline">
-             食べログで「${spot.name}」周辺を検索
+             食べログで「${spot.area}」周辺を検索
           </a>
-          <a href="https://r.gnavi.co.jp/area/jp/rs/?fw=${encodedName}"
+          <a href="https://r.gnavi.co.jp/area/jp/rs/?fw=${encodedArea}"
              target="_blank"
              rel="noopener noreferrer"
              class="text-sky-600 underline">
-             ぐるなびで「${spot.name}」周辺を検索
+             ぐるなびで「${spot.area}」周辺を検索
           </a>
         </div>
       `;
@@ -1009,6 +1436,10 @@
       if (!dayData) return;
       const spot = spots.find((s) => s.id === dayData.spotId);
       if (!spot) return;
+      if (spot.foods.length === 0) {
+        foodContainerEl.innerHTML = "";
+        return;
+      }
 
       foodContainerEl.classList.add("fade-enter");
       requestAnimationFrame(() => {
@@ -1041,6 +1472,7 @@
         img.src = f.image;
         img.alt = f.name;
         img.className = "w-20 h-20 object-cover rounded-lg flex-shrink-0";
+        withImgFallback(img);
 
         const info = document.createElement("div");
         info.className = "flex-1";
@@ -1156,6 +1588,7 @@
     }
 
     resetTodoBtn.addEventListener("click", () => {
+      if (!window.confirm("チェックリストの状態をすべてリセットします。よろしいですか？")) return;
       saveTodoState({});
       renderTodoList();
     });
