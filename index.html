@@ -182,16 +182,16 @@
         mapUrl: "https://www.google.com/maps/search/?api=1&query=ところざわサクラタウン",
         foods: [
           {
-            name: "（例）角川食堂",
-            description: "館内レストラン。実際に行きたい店をここに設定してください。",
+            name: "角川食堂",
+            description: "サクラタウン本棟2階のレストラン。所沢・三富の地場野菜を中心にした定食・カレーが中心で、メニューは定期的に変わる。",
             image: `${imgBase}/sakura-food-1.jpg`,
-            mapUrl: "https://www.google.com/maps/search/?api=1&query=角川食堂 東所沢"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=角川食堂 ところざわサクラタウン"
           },
           {
-            name: "（例）東所沢周辺カフェ",
-            description: "東所沢駅周辺のカフェなどを、検索して選んでください。",
+            name: "武蔵利休",
+            description: "本棟2階の和風カフェ。天皇杯受賞歴のある狭山茶の製造元が運営し、お茶と和スイーツが楽しめる。",
             image: `${imgBase}/sakura-food-2.jpg`,
-            mapUrl: "https://www.google.com/maps/search/?api=1&query=東所沢 カフェ"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=武蔵利休 ところざわサクラタウン"
           }
         ],
         modelCourse: [
@@ -201,6 +201,21 @@
           "12:00 館内レストラン・カフェでランチ（検索リンクから店を選ぶ）",
           "13:30 展示エリア・ショップ巡り",
           "15:30 カフェで休憩・写真撮影",
+          "17:00 東狭山ヶ丘へ帰宅",
+          "19:00 夕食・翌日の予定確認"
+        ],
+        modelCourseAm: [
+          "08:00 東狭山ヶ丘 出発（車または電車）",
+          "09:00 サクラタウン到着・館内散策",
+          "09:30 角川武蔵野ミュージアム入館・本棚劇場など見学",
+          "11:30 ショップ・展示エリアを見て回る",
+          "12:00 館内レストラン・カフェでランチ",
+          "12:30 昼食後、午後の目的地へ移動"
+        ],
+        modelCoursePm: [
+          "13:00 午前の目的地からサクラタウンへ移動・到着",
+          "13:30 角川武蔵野ミュージアム入館・本棚劇場など見学",
+          "15:30 ショップ・カフェで休憩・写真撮影",
           "17:00 東狭山ヶ丘へ帰宅",
           "19:00 夕食・翌日の予定確認"
         ],
@@ -215,20 +230,23 @@
       },
       {
         id: "seibuen",
-        name: "西武園ゆうえんち＆プール",
+        name: "西武園ゆうえんちプール",
         area: "所沢市 山口",
         images: [`${imgBase}/seibuen-1.jpg`, `${imgBase}/seibuen-2.jpg`, `${imgBase}/seibuen-3.jpg`],
         description:
-          "昭和レトロな街並みとアトラクションが楽しめる遊園地。夏季は大型プールがオープンし、家族で一日中遊べるスポット。",
+          "西武園ゆうえんち内にある夏季限定のプールエリア。波のプール・流れるプール・こどもプール・おふねのプール・急流すべり台など複数のプールがあり、家族で一日楽しめる。2026年は6/27〜9/23営業（7/18〜8/31は毎日営業）で、お盆期間（8/8〜16）は特定日料金が適用される。",
         highlights: [
-          "プールと遊園地をセットで楽しめる夏休み定番スポット",
-          "所沢から近く、移動時間が短いので子ども連れに優しい",
-          "夕方のショーやライトアップで納涼気分を味わえる"
+          "流れるプール・波のプール（水深最大1m）でゆったり浮き輪遊び",
+          "大回転！急流すべり台などスリルのあるウォータースライダー",
+          "こどもプール（水深30cm）・おふねのプール（水深50cm）で小さい子も安心して遊べる"
         ],
         tips: [
-          "お盆期間は非常に混雑するため、開園時間に合わせて早めに入園するのがおすすめ",
-          "プール利用時は熱中症対策と日焼け対策をしっかり行う",
-          "有料席やチケットは事前予約・事前購入が安心"
+          "再入場不可のため、1日プールで過ごす前提で持ち物を準備する",
+          "飲食物の持ち込みは不可。売店（ビーチキッチン等）で軽食・かき氷を購入する",
+          "2m×2m以内のテントは持ち込み可（強風時は使用不可）。浮き輪・エアーマット・ゴムボートもサイズ規定内でOK（貸し出しなし）",
+          "更衣室は男性がテント内（シャワーなし）、女性が建物内（シャワーあり）。混雑時は手狭なので、水着を着てから来園するのも一案",
+          "ロッカーは有料（小・中・大の3サイズ）、ドライヤーも有料（5分100円）なので小銭を用意",
+          "小学3年生までは16歳以上の保護者の同伴が必要"
         ],
         transportTrain: {
           route:
@@ -242,48 +260,77 @@
         },
         feeReservation: [
           {
-            label: "夏満喫切符（プール＋ゆうえんち）",
-            detail: "大人5,000円台・小人4,000円台のセット券が多い。詳細は公式サイトで要確認。",
-            url: "https://www.seibu-en.jp/"
+            label: "プール入場料（お盆特定日 8/8〜16）",
+            detail: "大人3,700円／中高生3,200円／小学生2,500円／未就学児2,000円",
+            url: "https://www.seibuen-amusement-park.jp/seibuenpool/index.html"
           },
           {
-            label: "プール営業期間・営業時間（目安）",
-            detail: "9:00〜17:00前後。お盆期間は混雑しやすいので早めの入園推奨。",
-            url: "https://www.seibu-en.jp/pool/"
+            label: "プール入場料（通常期）",
+            detail: "大人3,400円／中高生2,900円／小学生2,200円／未就学児1,500円",
+            url: "https://www.seibuen-amusement-park.jp/seibuenpool/index.html"
+          },
+          {
+            label: "営業期間・時間",
+            detail: "2026年6/27(土)〜9/23(水・祝)。7/18(土)〜8/31(月)は毎日営業、9:00〜17:00（最終入場16:00）",
+            url: "https://www.seibuen-amusement-park.jp/seibuenpool/index.html"
+          },
+          {
+            label: "プールトクトクパス（西武鉄道）",
+            detail: "電車利用者向けの割引きっぷ。事前のデジタル購入が便利",
+            url: "https://www.seiburailway.jp/railway/ticket/specialticket/pool_tokutoku_digital/"
+          },
+          {
+            label: "有料席・パドック（休憩スペース）",
+            detail:
+              "波のプール横（平日5,000円/土休日8,000円・定員6名）、流れるプールサイド（平日7,000円/土休日9,000円・定員5名、デッキチェア+パラソル付）、パドック（平日3,000円/土休日4,000円・定員6名）など。当日12:00までWeb予約、以降は現地窓口で残席販売",
+            url: "https://www.seibuen-amusement-park.jp/47948/index.html"
+          },
+          {
+            label: "園内フード（軽食・売店）",
+            detail:
+              "カレーライス・焼きそば・フライドポテト・かき氷などをビーチキッチン・宇明家・ミルクホール等の売店で購入可能。飲食物の持ち込みは不可。",
+            url: "https://www.seibuen-amusement-park.jp/food/index.html"
+          },
+          {
+            label: "プールのご利用案内（持ち物・テント・持ち込み禁止物など）",
+            detail: "テント・浮き輪のサイズ規定、更衣室・ロッカー、持ち込み禁止物の詳細ルール",
+            url: "https://www.seibuen-amusement-park.jp/pool/guide/index.html"
           }
         ],
         mapUrl: "https://www.google.com/maps/search/?api=1&query=西武園ゆうえんち",
-        foods: [
-          {
-            name: "（例）園内レストラン",
-            description: "西武園ゆうえんち内の飲食店を、検索して選んでください。",
-            image: `${imgBase}/seibuen-food-1.jpg`,
-            mapUrl: "https://www.google.com/maps/search/?api=1&query=西武園ゆうえんち レストラン"
-          },
-          {
-            name: "（例）軽食スタンド",
-            description: "園内のフードスタンドなど、実際に使う店を設定してください。",
-            image: `${imgBase}/seibuen-food-2.jpg`,
-            mapUrl: "https://www.google.com/maps/search/?api=1&query=西武園ゆうえんち フード"
-          }
-        ],
+        foods: [],
         modelCourse: [
           "08:00 東狭山ヶ丘 出発（車または電車）",
-          "08:30〜09:00 西武園ゆうえんち到着・入園",
-          "09:00〜12:00 プールで遊ぶ（休憩・水分補給をこまめに）",
-          "12:00〜13:00 園内レストラン・軽食でランチ",
-          "13:00〜16:00 昭和レトロ街並み・アトラクションを楽しむ",
-          "16:00〜17:00 お土産購入・写真撮影",
-          "17:30 東狭山ヶ丘へ帰宅",
+          "08:30〜09:00 西武園ゆうえんちプール到着・更衣室で着替え・ロッカーに荷物を預ける",
+          "09:00〜12:00 流れるプール・波のプールでゆったり遊ぶ",
+          "12:00〜13:00 売店（ビーチキッチン等）でランチ",
+          "13:00〜16:00 ウォータースライダー・こどもプール・おふねのプールで遊ぶ",
+          "16:00〜16:30 着替え・忘れ物確認",
+          "17:00 東狭山ヶ丘へ帰宅",
+          "19:00 夕食・翌日の予定確認"
+        ],
+        modelCourseAm: [
+          "08:00 東狭山ヶ丘 出発（車または電車）",
+          "08:30〜09:00 西武園ゆうえんちプール到着・更衣室で着替え・ロッカーに荷物を預ける",
+          "09:00〜11:30 流れるプール・波のプールでゆったり遊ぶ",
+          "11:30〜12:30 売店（ビーチキッチン等）でランチ",
+          "12:30 昼食後、退場して午後の目的地へ移動（再入場不可のため戻らない前提で）"
+        ],
+        modelCoursePm: [
+          "13:00 午前の目的地から西武園ゆうえんちプールへ移動・到着",
+          "13:20 更衣室で着替え・ロッカーに荷物を預ける",
+          "13:30〜16:00 ウォータースライダー・こどもプール・おふねのプールで遊ぶ",
+          "16:00〜16:30 着替え・忘れ物確認",
+          "17:00 東狭山ヶ丘へ帰宅",
           "19:00 夕食・翌日の予定確認"
         ],
         recommendations: {
-          heat: "プール利用時は直射日光が強いので、帽子・日焼け止め・ラッシュガードなど必須。",
-          traffic: "お盆期間は周辺道路が混みやすいので、開園前到着を意識した早め出発が安心。",
-          kids: "水遊び中はこまめな休憩と水分補給を徹底。迷子対策として集合場所を決めておく。",
-          rain: "雨天時はプールが厳しい場合あり。屋内中心の別スポット（サクラタウンなど）を代替案に。",
-          reservation: "チケットは事前購入が安心。有料席・ロッカーなども事前情報をチェック。",
-          packing: "水着・タオル・着替え・サンダル・日焼け止め・防水スマホケースなどを準備。"
+          heat: "プールサイドは直射日光が強いので、ラッシュガード・日焼け止め（ウォータープルーフ）・帽子・サングラスは必須。木陰は波のプールと流れるプールの間の遊歩道沿いが取りやすい。",
+          traffic: "お盆期間は駐車場・周辺道路が混みやすい。駐車場は開園1時間前から入庫可能なので、日陰の場所取りも兼ねて早めの到着がおすすめ。",
+          kids: "小学3年生以下は保護者の同伴が必要。こどもプール・おふねのプールなど浅いプールから利用するのがおすすめ。",
+          rain: "荒天・強風時はプールの営業中止やテント使用不可になることがあるため、公式サイトの当日情報を必ず確認。",
+          reservation: "有料席・パドックは当日12:00までWeb予約（アソビュー）が確実。入場券は西武鉄道の「プールトクトクパス」等の事前購入がスムーズ。",
+          packing: "水着・タオル（多め）・サンダル・防水バッグ・着替え、2m×2m以内のテント（強風時不可）、ロッカー/ドライヤー用の小銭（ドライヤーは5分100円）。飲食物の持ち込みは不可。"
         }
       },
       {
@@ -328,16 +375,10 @@
         mapUrl: "https://www.google.com/maps/search/?api=1&query=首都圏外郭放水路 龍Q館",
         foods: [
           {
-            name: "（例）春日部駅周辺ランチ",
-            description: "春日部駅周辺の飲食店を、検索して選んでください。",
+            name: "食堂 秀子（春日部市場内）",
+            description: "地元で人気の食堂。かきフライ定食などが評判で、春日部市観光協会の「地下神殿カレー」など放水路おもてなしメニューの取扱店にもなっている。",
             image: `${imgBase}/gaikaku-food-1.jpg`,
-            mapUrl: "https://www.google.com/maps/search/?api=1&query=春日部駅 ランチ"
-          },
-          {
-            name: "（例）カフェ・軽食",
-            description: "見学前後に立ち寄りたいカフェを、実際の店名で設定してください。",
-            image: `${imgBase}/gaikaku-food-2.jpg`,
-            mapUrl: "https://www.google.com/maps/search/?api=1&query=春日部 カフェ"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=食堂 秀子 春日部市場"
           }
         ],
         modelCourse: [
@@ -348,6 +389,21 @@
           "12:00 春日部駅周辺へ移動・ランチ（検索リンクから店を選ぶ）",
           "14:00 周辺散策・カフェ休憩",
           "16:00 東狭山ヶ丘へ帰宅",
+          "18:00 夕食・翌日の予定確認"
+        ],
+        modelCourseAm: [
+          "07:30 東狭山ヶ丘 出発（レンタカー推奨）",
+          "09:00 龍Q館到着・受付・展示見学",
+          "10:00 地下神殿コース開始（階段約100段の昇り降り）",
+          "11:00 見学終了・写真撮影・防災展示再確認",
+          "11:30 春日部駅周辺へ移動・ランチ",
+          "12:30 昼食後、午後の目的地へ移動"
+        ],
+        modelCoursePm: [
+          "13:00 午前の目的地から龍Q館・地下神殿へ移動・到着",
+          "13:30 受付・地下神殿コース見学（階段約100段の昇り降り）",
+          "15:00 見学終了・春日部駅周辺で散策・カフェ休憩",
+          "16:30 東狭山ヶ丘へ帰宅",
           "18:00 夕食・翌日の予定確認"
         ],
         recommendations: {
@@ -401,16 +457,16 @@
         mapUrl: "https://www.google.com/maps/search/?api=1&query=さきたま古墳公園",
         foods: [
           {
-            name: "（例）行田B級グルメ店",
-            description: "ゼリーフライ・ふらいなどの店を、検索して選んでください。",
+            name: "かねつき堂",
+            description: "行田名物ゼリーフライの人気店。忍城のすぐそばにあり観光ついでに立ち寄りやすい。ゼリーフライは1人前2個220円とリーズナブル。",
             image: `${imgBase}/sakitama-food-1.jpg`,
-            mapUrl: "https://www.google.com/maps/search/?api=1&query=行田 ゼリーフライ"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=かねつき堂 行田"
           },
           {
-            name: "（例）行田市内そば・うどん店",
-            description: "軽めのランチに使いたい店を、実際の店名で設定してください。",
+            name: "駒形屋",
+            description: "地元で50年以上愛される老舗。ゼリーフライは毎朝手作りで、発売当初から変わらない味わい。",
             image: `${imgBase}/sakitama-food-2.jpg`,
-            mapUrl: "https://www.google.com/maps/search/?api=1&query=行田 そば うどん"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=駒形屋 行田 ゼリーフライ"
           }
         ],
         modelCourse: [
@@ -418,6 +474,20 @@
           "09:30 さきたま古墳公園到着・丸墓山古墳など散策",
           "11:00 公園内で休憩・写真撮影",
           "12:00 行田市内でランチ（ゼリーフライ・ふらいなど）",
+          "13:30 さきたま史跡の博物館見学",
+          "15:00 はにわ作り体験（予約している場合）",
+          "16:30 東狭山ヶ丘へ帰宅",
+          "18:00 夕食・翌日の予定確認"
+        ],
+        modelCourseAm: [
+          "08:00 東狭山ヶ丘 出発（レンタカー推奨）",
+          "09:30 さきたま古墳公園到着・丸墓山古墳など散策",
+          "11:00 公園内で休憩・写真撮影",
+          "11:30 行田市内でランチ（ゼリーフライ・ふらいなど）",
+          "12:30 昼食後、午後の目的地へ移動"
+        ],
+        modelCoursePm: [
+          "13:00 午前の目的地からさきたま史跡の博物館へ移動・到着",
           "13:30 さきたま史跡の博物館見学",
           "15:00 はにわ作り体験（予約している場合）",
           "16:30 東狭山ヶ丘へ帰宅",
@@ -476,16 +546,16 @@
         mapUrl: "https://www.google.com/maps/search/?api=1&query=長瀞ラインくだり",
         foods: [
           {
-            name: "（例）かき氷店",
-            description: "長瀞駅周辺のかき氷店を、検索して選んでください。",
+            name: "豚みそ丼専門店 有隣",
+            description: "長瀞駅から宝登山神社方面へ徒歩2分。秩父鉄道直営で、秘伝のみそだれに漬け込んだ豚肉を炙り上げる豚みそ丼の名店。",
             image: `${imgBase}/nagatoro-food-1.jpg`,
-            mapUrl: "https://www.google.com/maps/search/?api=1&query=長瀞 かき氷"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=豚みそ丼専門店 有隣 長瀞"
           },
           {
-            name: "（例）豚みそ丼店",
-            description: "秩父名物豚みそ丼の店を、実際の店名で設定してください。",
+            name: "寳TERAS（ほうテラス）",
+            description: "宝登山神社の大鳥居近くにあるリゾート感のある店舗。秩父の老舗味噌屋「新井武平商店」の味噌を使った豚みそ丼が人気。",
             image: `${imgBase}/nagatoro-food-2.jpg`,
-            mapUrl: "https://www.google.com/maps/search/?api=1&query=秩父 豚みそ丼"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=寳TERAS 長瀞"
           }
         ],
         modelCourse: [
@@ -498,6 +568,22 @@
           "14:00 周辺散策・土産物店巡り",
           "16:00 東狭山ヶ丘へ帰宅（渋滞回避のため少し早め）",
           "18:00 夕食・翌日の予定確認"
+        ],
+        modelCourseAm: [
+          "07:00 東狭山ヶ丘 出発（レンタカー推奨）",
+          "08:30 長瀞到着・岩畳周辺散策",
+          "09:30 ラインくだり受付・乗船",
+          "10:30 下船後、川辺散策・写真撮影",
+          "11:30 かき氷店などで涼みながら休憩",
+          "12:00 昼食後、午後の目的地へ移動"
+        ],
+        modelCoursePm: [
+          "13:00 午前の目的地から長瀞へ移動・到着",
+          "13:30 岩畳周辺散策・写真撮影",
+          "14:30 かき氷店などで涼みながら休憩",
+          "15:30 周辺散策・土産物店巡り",
+          "17:00 東狭山ヶ丘へ帰宅（渋滞回避のため少し早め）",
+          "19:00 夕食・翌日の予定確認"
         ],
         recommendations: {
           heat: "川辺は涼しいが、日差しが強い時間帯もあるので帽子・飲み物必須。",
@@ -558,16 +644,16 @@
         mapUrl: "https://www.google.com/maps/search/?api=1&query=フォレストアドベンチャー秩父",
         foods: [
           {
-            name: "（例）ミューズパーク内カフェ",
-            description: "ミューズパーク内のカフェを、検索して選んでください。",
+            name: "森のカフェ＆ダイニング",
+            description: "ミューズパーク内センターコテージのレストラン。大人1,580円のランチバイキングがあり、アスレチックの後に一気に満腹になれる。",
             image: `${imgBase}/forest-food-1.jpg`,
-            mapUrl: "https://www.google.com/maps/search/?api=1&query=秩父 ミューズパーク カフェ"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=森のカフェ＆ダイニング 秩父ミューズパーク"
           },
           {
-            name: "（例）秩父市内レストラン",
-            description: "アクティビティ後に立ち寄りたい店を、実際の店名で設定してください。",
+            name: "MAPLE BASE",
+            description: "ミューズパーク内のカフェ。秩父産メープルシロップをたっぷりかけた秩父メープルパンケーキが名物で、散策の合間の休憩に。",
             image: `${imgBase}/forest-food-2.jpg`,
-            mapUrl: "https://www.google.com/maps/search/?api=1&query=秩父 レストラン"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=MAPLE BASE 秩父ミューズパーク"
           }
         ],
         modelCourse: [
@@ -578,6 +664,21 @@
           "12:30 ミューズパーク内または秩父市内でランチ",
           "14:00 ミューズパーク散策・展望台など",
           "16:00 東狭山ヶ丘へ帰宅",
+          "18:00 夕食・翌日の予定確認"
+        ],
+        modelCourseAm: [
+          "07:30 東狭山ヶ丘 出発（レンタカー推奨）",
+          "09:00 ミューズパーク到着・受付",
+          "09:30 フォレストアドベンチャー開始（安全講習・ハーネス装着）",
+          "11:30 アスレチック終了・休憩・写真撮影",
+          "12:00 ミューズパーク内でランチ",
+          "12:30 昼食後、午後の目的地へ移動"
+        ],
+        modelCoursePm: [
+          "13:00 午前の目的地からミューズパークへ移動・到着",
+          "13:30 フォレストアドベンチャー開始（安全講習・ハーネス装着、予約時間に注意）",
+          "15:30 アスレチック終了・ミューズパーク散策・展望台など",
+          "16:30 東狭山ヶ丘へ帰宅",
           "18:00 夕食・翌日の予定確認"
         ],
         recommendations: {
@@ -634,16 +735,10 @@
         mapUrl: "https://www.google.com/maps/search/?api=1&query=橋立鍾乳洞",
         foods: [
           {
-            name: "（例）秩父そば店",
-            description: "鍾乳洞帰りに立ち寄りたいそば店を、検索して選んでください。",
+            name: "手打甚太郎",
+            description: "橋立鍾乳洞周辺で評判の手打ちそば店。秩父は良質なそば粉と水に恵まれた「蕎麦の街」で、鍾乳洞見学の後の一杯にちょうどよい。",
             image: `${imgBase}/hashidate-food-1.jpg`,
-            mapUrl: "https://www.google.com/maps/search/?api=1&query=秩父 そば"
-          },
-          {
-            name: "（例）秩父市内カフェ",
-            description: "休憩に使いたいカフェを、実際の店名で設定してください。",
-            image: `${imgBase}/hashidate-food-2.jpg`,
-            mapUrl: "https://www.google.com/maps/search/?api=1&query=秩父 カフェ"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=手打甚太郎 秩父"
           }
         ],
         modelCourse: [
@@ -655,6 +750,22 @@
           "13:30 カフェ休憩・秩父市内散策",
           "15:30 東狭山ヶ丘へ帰宅",
           "17:30 夕食・翌日の予定確認"
+        ],
+        modelCourseAm: [
+          "07:30 東狭山ヶ丘 出発（レンタカー推奨）",
+          "09:00 橋立鍾乳洞到着・入洞",
+          "09:30 洞内探検（階段・狭い通路に注意）",
+          "10:30 出洞・周辺散策・写真撮影",
+          "11:00 秩父市内へ移動・そば店などでランチ",
+          "12:30 昼食後、午後の目的地へ移動"
+        ],
+        modelCoursePm: [
+          "13:00 午前の目的地から橋立鍾乳洞へ移動・到着",
+          "13:30 入洞・洞内探検（階段・狭い通路に注意）",
+          "14:30 出洞・周辺散策・写真撮影",
+          "15:30 秩父市内でカフェ休憩",
+          "17:00 東狭山ヶ丘へ帰宅",
+          "19:00 夕食・翌日の予定確認"
         ],
         recommendations: {
           heat: "洞内は涼しいが、外は暑いので移動時の暑さ対策を忘れずに。",
@@ -703,16 +814,16 @@
         mapUrl: "https://www.google.com/maps/search/?api=1&query=国営武蔵丘陵森林公園",
         foods: [
           {
-            name: "（例）園内レストラン",
-            description: "園内のレストラン・売店を、検索して選んでください。",
+            name: "国営武蔵丘陵森林公園 中央レストラン",
+            description: "中央口から徒歩約5分、入口に最も近いレストラン。ハヤシライスなどの洋食が中心で、無料Wi-Fiあり。",
             image: `${imgBase}/shinrinkoen-food-1.jpg`,
-            mapUrl: "https://www.google.com/maps/search/?api=1&query=武蔵丘陵森林公園 レストラン"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=武蔵丘陵森林公園 中央レストラン"
           },
           {
-            name: "（例）東松山市内ファミレス",
-            description: "帰りに立ち寄りたいファミレスを、実際の店名で設定してください。",
+            name: "中央口売店",
+            description: "中央口すぐの売店。名物の「森林かき氷」など軽食・かき氷を販売しており、散策の合間の休憩に便利。",
             image: `${imgBase}/shinrinkoen-food-2.jpg`,
-            mapUrl: "https://www.google.com/maps/search/?api=1&query=東松山 ファミレス"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=武蔵丘陵森林公園 中央口売店"
           }
         ],
         modelCourse: [
@@ -724,6 +835,21 @@
           "13:30 軽く散策・写真撮影",
           "15:00 東狭山ヶ丘へ帰宅",
           "17:00 夕食・翌日の予定確認"
+        ],
+        modelCourseAm: [
+          "07:30 東狭山ヶ丘 出発（レンタカー推奨）",
+          "08:30 森林公園到着・入園",
+          "09:00 サイクリング・アスレチックなどで遊ぶ",
+          "11:00 花畑・展望エリアなどを散策",
+          "11:30 園内レストラン・売店でランチ",
+          "12:30 昼食後、午後の目的地へ移動"
+        ],
+        modelCoursePm: [
+          "13:00 午前の目的地から森林公園へ移動・到着",
+          "13:30 サイクリング・アスレチックなどで遊ぶ",
+          "15:00 花畑・展望エリアなどを散策・写真撮影",
+          "16:00 東狭山ヶ丘へ帰宅",
+          "18:00 夕食・翌日の予定確認"
         ],
         recommendations: {
           heat: "木陰は多いが、真夏日は暑いので帽子・飲み物・タオル必須。",
@@ -778,16 +904,10 @@
         mapUrl: "https://www.google.com/maps/search/?api=1&query=サイボク天然温泉 花鳥風月",
         foods: [
           {
-            name: "（例）サイボクレストラン",
-            description: "サイボク内のレストランを、検索して選んでください。",
+            name: "レストラン花鳥風月（とんかつ膳）",
+            description: "サイボク自慢のブランド豚「ゴールデンポーク」を使った一番人気メニュー。1日15食限定のリブロースとんかつ膳は昼過ぎに売り切れることも。",
             image: `${imgBase}/saiboku-food-1.jpg`,
-            mapUrl: "https://www.google.com/maps/search/?api=1&query=サイボク レストラン"
-          },
-          {
-            name: "（例）サイボク売店",
-            description: "ハム・ソーセージなどのお土産購入に使いたい売店を設定してください。",
-            image: `${imgBase}/saiboku-food-2.jpg`,
-            mapUrl: "https://www.google.com/maps/search/?api=1&query=サイボク 売店"
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=レストラン花鳥風月 サイボク"
           }
         ],
         modelCourse: [
@@ -798,6 +918,22 @@
           "17:30 サイボクレストランで夕食",
           "19:00 東狭山ヶ丘へ帰宅",
           "20:00 旅の振り返り・翌日の準備"
+        ],
+        modelCourseAm: [
+          "08:30 東狭山ヶ丘 出発（レンタカー推奨）",
+          "09:10 サイボク到着・ショップ・売店を見て回る",
+          "10:00 温泉 花鳥風月入館・入浴・サウナなど",
+          "11:30 温泉を出て休憩・ソフトクリームなど",
+          "12:00 サイボクレストランでランチ",
+          "12:30 昼食後、午後の目的地へ移動"
+        ],
+        modelCoursePm: [
+          "13:00 午前の目的地からサイボクへ移動・到着",
+          "13:40 ショップ・売店を見て回る",
+          "14:30 温泉 花鳥風月入館・入浴・サウナなど",
+          "16:30 温泉を出て休憩・ソフトクリームなど",
+          "17:30 サイボクレストランで夕食",
+          "19:00 東狭山ヶ丘へ帰宅"
         ],
         recommendations: {
           heat: "温泉施設内は涼しいが、屋外移動時は暑さ対策を忘れずに。",
@@ -855,7 +991,20 @@
           }
         ],
         mapUrl: "https://www.google.com/maps/search/?api=1&query=グランエミオ所沢",
-        foods: [],
+        foods: [
+          {
+            name: "SAITAMA 地産地消 BUFFET［Market Terrace］",
+            description: "3階レストランフロア。埼玉西武ライオンズとのコラボで、埼玉県産の食材を使ったビュッフェが楽しめる。",
+            image: `${imgBase}/granemio-food-1.jpg`,
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=SAITAMA 地産地消 BUFFET グランエミオ所沢"
+          },
+          {
+            name: "信州そば処 そじ坊",
+            description: "3階にあるそば処。手軽に座って食べられる和食で、子どもも食べやすいメニューが揃う。",
+            image: `${imgBase}/granemio-food-2.jpg`,
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=信州そば処 そじ坊 グランエミオ所沢"
+          }
+        ],
         modelCourse: [
           "09:00 東狭山ヶ丘 出発（車または電車）",
           "09:10 狭山ヶ丘駅発（電車の場合）／車の場合は所沢方面へ",
@@ -865,6 +1014,22 @@
           "11:30〜13:00 3階レストランフロアまたは所沢駅周辺でランチ（検索リンクから店を選ぶ）",
           "13:00〜14:00 1階食物販フロアでお土産・夕食用の惣菜を購入",
           "14:00〜14:30 所沢駅から東狭山ヶ丘へ帰路"
+        ],
+        modelCourseAm: [
+          "09:00 東狭山ヶ丘 出発、徒歩で狭山ヶ丘駅へ",
+          "09:10 狭山ヶ丘駅発（電車の場合）／車の場合は所沢方面へ",
+          "09:20〜09:30 所沢駅到着・2階直結でグランエミオ所沢へ入館",
+          "09:30〜10:30 2階アパレル・生活雑貨フロアを見て回る",
+          "10:30〜11:00 3階屋上庭園「とこにわ」で小休憩・子どもを遊ばせる",
+          "11:30〜12:30 3階レストランフロアでランチ",
+          "12:30 昼食後、午後の目的地へ移動"
+        ],
+        modelCoursePm: [
+          "13:00 午前の目的地から所沢駅・グランエミオ所沢へ移動・到着",
+          "13:00〜14:00 2階アパレル・生活雑貨フロアを見て回る",
+          "14:00〜14:30 3階屋上庭園「とこにわ」で小休憩・子どもを遊ばせる",
+          "14:30〜15:30 1階食物販フロアでお土産・夕食用の惣菜を購入",
+          "15:30 所沢駅から東狭山ヶ丘へ帰路"
         ],
         recommendations: {
           heat: "屋上庭園「とこにわ」で過ごす際は日差しの強い時間帯を避け、こまめな水分補給を。",
@@ -924,7 +1089,20 @@
           }
         ],
         mapUrl: "https://www.google.com/maps/search/?api=1&query=造幣さいたま博物館",
-        foods: [],
+        foods: [
+          {
+            name: "セラフィーナ ニューヨーク（けやきひろば）",
+            description: "さいたま新都心駅東口・けやきひろば3階の開放的なイタリアン。石窯焼きピザが名物で、少人数から家族での利用にも対応。",
+            image: `${imgBase}/zouhei-food-1.jpg`,
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=セラフィーナ ニューヨーク けやきひろば"
+          },
+          {
+            name: "ブッシュウィック グリル（コクーンシティ）",
+            description: "コクーン2の1階、ガラス張りの明るい店内。ランチタイムはパン食べ放題・ドリンクバー付きで子ども連れにも使いやすい。",
+            image: `${imgBase}/zouhei-food-2.jpg`,
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=ブッシュウィック グリル コクーンシティ"
+          }
+        ],
         modelCourse: [
           "07:50 東狭山ヶ丘 出発、徒歩で狭山ヶ丘駅へ",
           "08:00 西武池袋線 狭山ヶ丘駅発（秋津方面）",
@@ -934,6 +1112,21 @@
           "11:00〜12:00 周辺（けやきひろば・新都心公園など）で休憩・散策",
           "12:00〜13:00 さいたま新都心駅周辺でランチ（検索リンクから店を選ぶ）",
           "13:30 東狭山ヶ丘へ帰路"
+        ],
+        modelCourseAm: [
+          "07:50 東狭山ヶ丘 出発、徒歩で狭山ヶ丘駅へ",
+          "08:00 西武池袋線 狭山ヶ丘駅発（秋津方面）",
+          "08:25頃 新秋津駅発（JR武蔵野線）、南浦和駅で京浜東北線に乗換",
+          "09:00頃 さいたま新都心駅着、徒歩約12分で博物館へ",
+          "09:15〜10:45 館内見学（展示＋体験コーナー、平日なら工場見学も）",
+          "11:00〜12:00 さいたま新都心駅周辺でランチ",
+          "12:00 昼食後、午後の目的地へ移動"
+        ],
+        modelCoursePm: [
+          "13:00 午前の目的地からさいたま新都心駅・博物館へ移動・到着",
+          "13:15〜14:45 館内見学（展示＋体験コーナー、平日なら工場見学も）",
+          "15:00〜16:00 周辺（けやきひろば・新都心公園など）で休憩・散策",
+          "16:30 東狭山ヶ丘へ帰路"
         ],
         recommendations: {
           heat: "駅から博物館まで徒歩12分の屋外移動があるため、帽子・水分補給を忘れずに。",
@@ -991,13 +1184,40 @@
           }
         ],
         mapUrl: "https://www.google.com/maps/search/?api=1&query=温泉バルコニー キング%26クイーン 所沢市北中2-271",
-        foods: [],
+        foods: [
+          {
+            name: "キングアンドクイーンダイニング",
+            description: "館内フードコート。ユッチャン。や代々木一八など話題店とのコラボメニューが集まり、家族それぞれ好みの物を選びやすい。",
+            image: `${imgBase}/kingqueen-food-1.jpg`,
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=温泉バルコニー キング%26クイーン ダイニング"
+          },
+          {
+            name: "ラーメン劇場",
+            description: "館内のラーメン専門フロア。中華蕎麦とみ田・琴平荘など有名店とのコラボラーメンが並ぶ。",
+            image: `${imgBase}/kingqueen-food-2.jpg`,
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=温泉バルコニー キング%26クイーン ラーメン劇場"
+          }
+        ],
         modelCourse: [
           "08:40 東狭山ヶ丘 出発（車または電車）",
           "09:00頃 施設到着・受付・ロッカー確認",
           "09:20〜12:00 温泉・露天バルコニー・サウナ＆水風呂でゆったり（岩盤浴は小学生の同伴を忘れずに）",
           "12:00〜13:00 館内レストランで昼食",
           "13:00〜15:30 岩盤浴・休憩処でゆったり過ごす",
+          "15:30〜15:50 着替え・チェックアウト",
+          "16:00 施設発、東狭山ヶ丘へ帰路",
+          "18:00 夕食・翌日の予定確認"
+        ],
+        modelCourseAm: [
+          "08:40 東狭山ヶ丘 出発（車または電車）",
+          "09:00頃 施設到着・受付・ロッカー確認",
+          "09:20〜12:00 温泉・露天バルコニー・サウナ＆水風呂でゆったり",
+          "12:00〜12:30 館内レストランで昼食",
+          "12:30 昼食後、午後の目的地へ移動（再入館条件は施設に要確認）"
+        ],
+        modelCoursePm: [
+          "13:00 午前の目的地から施設へ移動・到着・受付",
+          "13:20〜15:30 岩盤浴・休憩処でゆったり過ごす（岩盤浴は小学生の同伴を忘れずに）",
           "15:30〜15:50 着替え・チェックアウト",
           "16:00 施設発、東狭山ヶ丘へ帰路",
           "18:00 夕食・翌日の予定確認"
@@ -1059,7 +1279,14 @@
           }
         ],
         mapUrl: "https://www.google.com/maps/search/?api=1&query=狭山スキー場",
-        foods: [],
+        foods: [
+          {
+            name: "D&C! 狭山スキー場店",
+            description: "ゲレンデ内の売店。カレー・ラーメン・から揚げ・クレープ・ホットドッグなど種類豊富で、テーブル席約20席あり。お弁当の持ち込みも可能。",
+            image: `${imgBase}/sayamaski-food-1.jpg`,
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=D%26C! 狭山スキー場"
+          }
+        ],
         modelCourse: [
           "09:00 東狭山ヶ丘 出発（車または電車）",
           "09:30 西武球場前駅到着・徒歩で狭山スキー場へ",
@@ -1069,6 +1296,20 @@
           "15:30 着替え・持ち物確認",
           "16:00 最終受付前に退場準備",
           "16:30 東狭山ヶ丘へ帰路"
+        ],
+        modelCourseAm: [
+          "09:00 東狭山ヶ丘 出発（車または電車）",
+          "09:30 西武球場前駅到着・徒歩で狭山スキー場へ",
+          "10:00 開場・入場、スライダー・水遊びエリアで遊ぶ",
+          "12:00 休憩・昼食（周辺で検索リンクから店を選ぶ）",
+          "12:30 昼食後、午後の目的地へ移動"
+        ],
+        modelCoursePm: [
+          "13:00 午前の目的地から狭山スキー場へ移動・到着",
+          "13:20 入場、スライダー・水遊びエリアで遊ぶ",
+          "14:30 ひんやりエリア（雪遊び、7月中旬以降）で涼む",
+          "15:30 着替え・持ち物確認",
+          "16:00 最終受付前に退場準備・東狭山ヶ丘へ帰路"
         ],
         recommendations: {
           heat: "屋外の水遊びエリアは日差しが強いため、日焼け止め・水分補給を徹底し、ひんやりエリアで涼みながら休憩を挟む。",
@@ -1082,13 +1323,13 @@
     ];
 
     const days = [
-      { day: 1, date: "8/11", spotId: "sakura" },
-      { day: 2, date: "8/12", spotId: "seibuen" },
-      { day: 3, date: "8/13", spotId: "gaikaku" },
-      { day: 4, date: "8/14", spotId: "sakitama" },
-      { day: 5, date: "8/15", spotId: "nagatoro" },
-      { day: 6, date: "8/16", spotId: "forest" },
-      { day: 7, date: "予備日", spotId: "saiboku" }
+      { day: 1, date: "8/11", spotId: "sakura", spotIdPm: null },
+      { day: 2, date: "8/12", spotId: "seibuen", spotIdPm: null },
+      { day: 3, date: "8/13", spotId: "gaikaku", spotIdPm: null },
+      { day: 4, date: "8/14", spotId: "sakitama", spotIdPm: null },
+      { day: 5, date: "8/15", spotId: "nagatoro", spotIdPm: null },
+      { day: 6, date: "8/16", spotId: "forest", spotIdPm: null },
+      { day: 7, date: "予備日", spotId: "saiboku", spotIdPm: null }
     ];
 
     const todoItems = [
@@ -1200,7 +1441,7 @@
     function saveDaysOverrides() {
       const map = {};
       days.forEach((d) => {
-        map[d.day] = d.spotId;
+        map[d.day] = { spotId: d.spotId, spotIdPm: d.spotIdPm || null };
       });
       try {
         localStorage.setItem(DAYS_STORAGE_KEY, JSON.stringify(map));
@@ -1210,17 +1451,42 @@
     function applyDaysOverrides(map) {
       if (!map) return;
       days.forEach((d) => {
-        const spotId = map[d.day];
-        if (spotId && validSpotIds.has(spotId)) {
-          d.spotId = spotId;
-        }
+        const entry = map[d.day];
+        if (!entry) return;
+        // legacy format: map[day] was a plain spotId string before AM/PM support
+        const spotId = typeof entry === "string" ? entry : entry.spotId;
+        const spotIdPm = typeof entry === "string" ? null : entry.spotIdPm;
+        if (spotId && validSpotIds.has(spotId)) d.spotId = spotId;
+        if (spotIdPm && validSpotIds.has(spotIdPm)) d.spotIdPm = spotIdPm;
       });
     }
 
     const SPARE_DAY_NUMBER = 7;
 
-    function getOtherDaysUsingSpot(spotId, excludeDayNumber) {
-      return days.filter((d) => d.spotId === spotId && d.day !== excludeDayNumber);
+    function formatDayLabel(dayNumber) {
+      return dayNumber === SPARE_DAY_NUMBER ? "予備日" : `Day${dayNumber}`;
+    }
+
+    function getOtherUsagesOfSpot(spotId, excludeDayNumber, excludeSlot) {
+      const usages = [];
+      days.forEach((d) => {
+        if (d.spotId === spotId && !(d.day === excludeDayNumber && excludeSlot === "am")) {
+          usages.push({ day: d.day, slot: "am" });
+        }
+        if (d.spotIdPm === spotId && !(d.day === excludeDayNumber && excludeSlot === "pm")) {
+          usages.push({ day: d.day, slot: "pm" });
+        }
+      });
+      return usages;
+    }
+
+    function formatUsageLabel(usages) {
+      return usages.map((u) => formatDayLabel(u.day) + (u.slot === "pm" ? "（午後）" : "")).join("・");
+    }
+
+    function getMunicipality(area) {
+      const m = /^(.+?(?:市|区|町|村))/.exec(area);
+      return m ? m[1] : area;
     }
 
     const TRIP_YEAR = 2026;
@@ -1237,8 +1503,9 @@
       let found = false;
       days.forEach((d) => {
         const spotId = params.get("d" + d.day);
-        if (spotId) {
-          map[d.day] = spotId;
+        const spotIdPm = params.get("d" + d.day + "pm");
+        if (spotId || spotIdPm) {
+          map[d.day] = { spotId, spotIdPm };
           found = true;
         }
       });
@@ -1249,6 +1516,7 @@
       const params = new URLSearchParams();
       days.forEach((d) => {
         params.set("d" + d.day, d.spotId);
+        if (d.spotIdPm) params.set("d" + d.day + "pm", d.spotIdPm);
       });
       return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
     }
@@ -1331,89 +1599,74 @@
       });
     }
 
-    function renderSchedule() {
-      const dayData = days.find((d) => d.day === activeDay);
-      if (!dayData) return;
-      const spot = spots.find((s) => s.id === dayData.spotId);
-      if (!spot) return;
+    function buildClosedDayWarning(dayData, spot) {
+      if (!spot.closedWeekdays) return null;
+      const dateObj = getDateForDay(dayData);
+      if (!dateObj || !spot.closedWeekdays.includes(dateObj.getDay())) return null;
+      const el = document.createElement("p");
+      el.className = "text-[11px] text-red-600 bg-red-50 border border-red-200 rounded-lg p-2";
+      el.textContent = `⚠ ${dayData.date}は定休日（${spot.closedWeekdaysLabel || "定休日"}）にあたるため、休館の可能性があります。日程の変更をご検討ください。`;
+      return el;
+    }
 
-      scheduleContainerEl.classList.add("fade-enter");
-      requestAnimationFrame(() => {
-        scheduleContainerEl.classList.add("fade-enter-active");
-      });
+    function buildDuplicateWarningIfSpare(dayData, slot) {
+      if (dayData.day !== SPARE_DAY_NUMBER) return null;
+      const spotId = slot === "pm" ? dayData.spotIdPm : dayData.spotId;
+      if (!spotId) return null;
+      const usages = getOtherUsagesOfSpot(spotId, dayData.day, slot);
+      if (usages.length === 0) return null;
+      const el = document.createElement("p");
+      el.className = "mt-1 text-[11px] text-amber-600";
+      el.textContent = `⚠ この行き先は${formatUsageLabel(usages)}と重複しています。`;
+      return el;
+    }
 
-      scheduleContainerEl.innerHTML = "";
+    function buildSpotSelect(dayData, slot) {
+      const select = document.createElement("select");
+      select.className = "mt-1 w-full text-xs border border-sky-300 rounded-lg px-2 py-1 bg-sky-50";
+      const isSpareDay = dayData.day === SPARE_DAY_NUMBER;
+      const currentValue = slot === "pm" ? dayData.spotIdPm : dayData.spotId;
 
-      const card = document.createElement("article");
-      card.className = "bg-white rounded-xl shadow-md p-3 text-[12px] space-y-2";
-
-      const titleEl = document.createElement("div");
-      titleEl.innerHTML = `
-        <div class="flex justify-between items-center">
-          <h2 class="text-sm font-semibold text-sky-700">${dayData.day === 7 ? "予備日" : `Day ${dayData.day}`}：${spot.name}</h2>
-          <span class="text-[10px] px-2 py-[2px] rounded-full bg-sky-100 text-sky-700">${dayData.date}</span>
-        </div>
-      `;
-      card.appendChild(titleEl);
-
-      if (spot.closedWeekdays) {
-        const dateObj = getDateForDay(dayData);
-        if (dateObj && spot.closedWeekdays.includes(dateObj.getDay())) {
-          const closedWarnEl = document.createElement("p");
-          closedWarnEl.className = "text-[11px] text-red-600 bg-red-50 border border-red-200 rounded-lg p-2";
-          closedWarnEl.textContent = `⚠ ${dayData.date}は定休日（${spot.closedWeekdaysLabel || "定休日"}）にあたるため、休館の可能性があります。日程の変更をご検討ください。`;
-          card.appendChild(closedWarnEl);
-        }
+      if (slot === "pm") {
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = "-- 選択してください --";
+        select.appendChild(placeholder);
       }
 
-      const selectWrapper = document.createElement("div");
-      selectWrapper.className = "mt-2";
-      const label = document.createElement("label");
-      label.className = "text-xs font-semibold text-slate-700";
-      label.textContent = "行き先を選ぶ（1日1スポット）";
-      const select = document.createElement("select");
-      select.className =
-        "mt-1 w-full text-xs border border-sky-300 rounded-lg px-2 py-1 bg-sky-50";
-      const isSpareDay = dayData.day === SPARE_DAY_NUMBER;
       spots.forEach((s) => {
         const opt = document.createElement("option");
         opt.value = s.id;
-        const usedBy = getOtherDaysUsingSpot(s.id, dayData.day);
-        if (usedBy.length > 0 && !isSpareDay) {
+        const usages = getOtherUsagesOfSpot(s.id, dayData.day, slot);
+        if (usages.length > 0 && !isSpareDay) {
           opt.disabled = true;
-          const usedByLabel = usedBy
-            .map((d) => (d.day === SPARE_DAY_NUMBER ? "予備日" : `Day${d.day}`))
-            .join("・");
-          opt.textContent = `${s.name}（${usedByLabel}で使用中）`;
+          opt.textContent = `${s.name}（${formatUsageLabel(usages)}で使用中）`;
         } else {
           opt.textContent = s.name;
         }
-        if (s.id === dayData.spotId) opt.selected = true;
+        if (s.id === currentValue) opt.selected = true;
         select.appendChild(opt);
       });
+
       select.addEventListener("change", () => {
-        dayData.spotId = select.value;
+        if (slot === "pm") {
+          dayData.spotIdPm = select.value || null;
+        } else {
+          dayData.spotId = select.value;
+        }
         saveDaysOverrides();
         shareStatusEl.textContent = "";
         shareQrWrapEl.classList.add("hidden");
         shareQrWrapEl.classList.remove("flex");
         renderAllForActiveDay();
       });
-      selectWrapper.appendChild(label);
-      selectWrapper.appendChild(select);
 
-      if (isSpareDay) {
-        const duplicateDays = getOtherDaysUsingSpot(dayData.spotId, dayData.day);
-        if (duplicateDays.length > 0) {
-          const dupLabel = duplicateDays.map((d) => `Day${d.day}`).join("・");
-          const warningEl = document.createElement("p");
-          warningEl.className = "mt-1 text-[11px] text-amber-600";
-          warningEl.textContent = `⚠ この行き先は${dupLabel}と重複しています。`;
-          selectWrapper.appendChild(warningEl);
-        }
-      }
+      return select;
+    }
 
-      card.appendChild(selectWrapper);
+    function buildSpotInfoBlock(spot) {
+      const wrap = document.createElement("div");
+      wrap.className = "space-y-2";
 
       const destEl = document.createElement("div");
       destEl.innerHTML = `
@@ -1421,7 +1674,7 @@
         <p class="mt-1">${spot.name}</p>
         <p class="mt-1 text-slate-500">エリア：${spot.area}</p>
       `;
-      card.appendChild(destEl);
+      wrap.appendChild(destEl);
 
       const transportEl = document.createElement("div");
       transportEl.innerHTML = `<h3 class="text-xs font-semibold text-slate-700 mt-1">移動手段・乗換経路・所要時間</h3>`;
@@ -1441,7 +1694,7 @@
         </div>
       `;
       transportEl.appendChild(inner);
-      card.appendChild(transportEl);
+      wrap.appendChild(transportEl);
 
       const feeEl = document.createElement("div");
       feeEl.innerHTML = `
@@ -1464,7 +1717,7 @@
         ulF.appendChild(li);
       });
       feeEl.appendChild(ulF);
-      card.appendChild(feeEl);
+      wrap.appendChild(feeEl);
 
       const mapEl = document.createElement("div");
       mapEl.innerHTML = `
@@ -1476,7 +1729,121 @@
           「${spot.area}」の天気予報を見る
         </a>
       `;
-      card.appendChild(mapEl);
+      wrap.appendChild(mapEl);
+
+      return wrap;
+    }
+
+    function renderSchedule() {
+      const dayData = days.find((d) => d.day === activeDay);
+      if (!dayData) return;
+      const amSpot = spots.find((s) => s.id === dayData.spotId);
+      if (!amSpot) return;
+      const pmSpot = dayData.spotIdPm ? spots.find((s) => s.id === dayData.spotIdPm) : null;
+
+      scheduleContainerEl.classList.add("fade-enter");
+      requestAnimationFrame(() => {
+        scheduleContainerEl.classList.add("fade-enter-active");
+      });
+
+      scheduleContainerEl.innerHTML = "";
+
+      const card = document.createElement("article");
+      card.className = "bg-white rounded-xl shadow-md p-3 text-[12px] space-y-2";
+
+      const titleEl = document.createElement("div");
+      titleEl.innerHTML = `
+        <div class="flex justify-between items-center">
+          <h2 class="text-sm font-semibold text-sky-700">${formatDayLabel(dayData.day)}：${amSpot.name}${pmSpot ? ` ／ ${pmSpot.name}` : ""}</h2>
+          <span class="text-[10px] px-2 py-[2px] rounded-full bg-sky-100 text-sky-700">${dayData.date}</span>
+        </div>
+      `;
+      card.appendChild(titleEl);
+
+      const amClosedWarn = buildClosedDayWarning(dayData, amSpot);
+      if (amClosedWarn) card.appendChild(amClosedWarn);
+
+      const amSelectWrapper = document.createElement("div");
+      amSelectWrapper.className = "mt-2";
+      const amLabel = document.createElement("label");
+      amLabel.className = "text-xs font-semibold text-slate-700";
+      amLabel.textContent = pmSpot ? "午前の行き先を選ぶ" : "行き先を選ぶ";
+      const amSelect = buildSpotSelect(dayData, "am");
+      amSelectWrapper.appendChild(amLabel);
+      amSelectWrapper.appendChild(amSelect);
+      const amDup = buildDuplicateWarningIfSpare(dayData, "am");
+      if (amDup) amSelectWrapper.appendChild(amDup);
+      card.appendChild(amSelectWrapper);
+
+      const pmToggleWrapper = document.createElement("div");
+      pmToggleWrapper.className = "mt-2 flex items-center gap-2";
+      const pmCheckbox = document.createElement("input");
+      pmCheckbox.type = "checkbox";
+      pmCheckbox.id = "pmToggle-" + dayData.day;
+      pmCheckbox.className = "w-4 h-4 rounded border-sky-400 text-sky-500 focus:ring-sky-500";
+      pmCheckbox.checked = !!pmSpot;
+      const pmCheckboxLabel = document.createElement("label");
+      pmCheckboxLabel.htmlFor = pmCheckbox.id;
+      pmCheckboxLabel.className = "text-xs font-semibold text-slate-700";
+      pmCheckboxLabel.textContent = "午後も別の場所に行く";
+      pmToggleWrapper.appendChild(pmCheckbox);
+      pmToggleWrapper.appendChild(pmCheckboxLabel);
+      card.appendChild(pmToggleWrapper);
+
+      const pmSelectWrapper = document.createElement("div");
+      pmSelectWrapper.className = "mt-2";
+      if (!pmCheckbox.checked) pmSelectWrapper.classList.add("hidden");
+      const pmLabel = document.createElement("label");
+      pmLabel.className = "text-xs font-semibold text-slate-700";
+      pmLabel.textContent = "午後の行き先を選ぶ";
+      const pmSelect = buildSpotSelect(dayData, "pm");
+      pmSelectWrapper.appendChild(pmLabel);
+      pmSelectWrapper.appendChild(pmSelect);
+
+      if (pmSpot) {
+        const pmClosedWarn = buildClosedDayWarning(dayData, pmSpot);
+        if (pmClosedWarn) pmSelectWrapper.appendChild(pmClosedWarn);
+        const pmDup = buildDuplicateWarningIfSpare(dayData, "pm");
+        if (pmDup) pmSelectWrapper.appendChild(pmDup);
+        if (getMunicipality(amSpot.area) !== getMunicipality(pmSpot.area)) {
+          const areaWarnEl = document.createElement("p");
+          areaWarnEl.className = "mt-1 text-[11px] text-amber-600";
+          areaWarnEl.textContent = `⚠ 午前（${amSpot.area}）と午後（${pmSpot.area}）でエリアが異なります。移動に時間がかかる可能性があるので余裕を持ったスケジュールにしてください。`;
+          pmSelectWrapper.appendChild(areaWarnEl);
+        }
+      }
+      card.appendChild(pmSelectWrapper);
+
+      pmCheckbox.addEventListener("change", () => {
+        if (!pmCheckbox.checked) {
+          dayData.spotIdPm = null;
+          saveDaysOverrides();
+          shareStatusEl.textContent = "";
+          shareQrWrapEl.classList.add("hidden");
+          shareQrWrapEl.classList.remove("flex");
+          renderAllForActiveDay();
+        } else {
+          pmSelectWrapper.classList.remove("hidden");
+        }
+      });
+
+      const divider = document.createElement("hr");
+      divider.className = "border-slate-100";
+      card.appendChild(divider);
+
+      const amInfoHeader = document.createElement("h3");
+      amInfoHeader.className = "text-xs font-bold text-sky-700";
+      amInfoHeader.textContent = pmSpot ? `午前：${amSpot.name}` : amSpot.name;
+      card.appendChild(amInfoHeader);
+      card.appendChild(buildSpotInfoBlock(amSpot));
+
+      if (pmSpot) {
+        const pmInfoHeader = document.createElement("h3");
+        pmInfoHeader.className = "text-xs font-bold text-sky-700 mt-3";
+        pmInfoHeader.textContent = `午後：${pmSpot.name}`;
+        card.appendChild(pmInfoHeader);
+        card.appendChild(buildSpotInfoBlock(pmSpot));
+      }
 
       scheduleContainerEl.appendChild(card);
 
@@ -1485,21 +1852,16 @@
       }, 260);
     }
 
-    function renderSpotDetail() {
-      const dayData = days.find((d) => d.day === activeDay);
-      if (!dayData) return;
-      const spot = spots.find((s) => s.id === dayData.spotId);
-      if (!spot) return;
-
-      spotDetailContainerEl.classList.add("fade-enter");
-      requestAnimationFrame(() => {
-        spotDetailContainerEl.classList.add("fade-enter-active");
-      });
-
-      spotDetailContainerEl.innerHTML = "";
-
+    function buildSpotDetailCard(spot, slotLabel) {
       const card = document.createElement("article");
       card.className = "bg-white rounded-xl shadow-md p-3 text-[12px] space-y-2";
+
+      if (slotLabel) {
+        const slotHeader = document.createElement("h3");
+        slotHeader.className = "text-xs font-bold text-sky-700";
+        slotHeader.textContent = `${slotLabel}：${spot.name}`;
+        card.appendChild(slotHeader);
+      }
 
       if (spot.images.length > 0) {
         const imgWrap = document.createElement("div");
@@ -1626,36 +1988,41 @@
       `;
       card.appendChild(searchEl);
 
-      spotDetailContainerEl.appendChild(card);
+      return card;
+    }
+
+    function renderSpotDetail() {
+      const dayData = days.find((d) => d.day === activeDay);
+      if (!dayData) return;
+      const amSpot = spots.find((s) => s.id === dayData.spotId);
+      if (!amSpot) return;
+      const pmSpot = dayData.spotIdPm ? spots.find((s) => s.id === dayData.spotIdPm) : null;
+
+      spotDetailContainerEl.classList.add("fade-enter");
+      requestAnimationFrame(() => {
+        spotDetailContainerEl.classList.add("fade-enter-active");
+      });
+
+      spotDetailContainerEl.innerHTML = "";
+      spotDetailContainerEl.appendChild(buildSpotDetailCard(amSpot, pmSpot ? "午前" : null));
+      if (pmSpot) {
+        spotDetailContainerEl.appendChild(buildSpotDetailCard(pmSpot, "午後"));
+      }
 
       setTimeout(() => {
         spotDetailContainerEl.classList.remove("fade-enter", "fade-enter-active");
       }, 260);
     }
 
-    function renderFood() {
-      const dayData = days.find((d) => d.day === activeDay);
-      if (!dayData) return;
-      const spot = spots.find((s) => s.id === dayData.spotId);
-      if (!spot) return;
-      if (spot.foods.length === 0) {
-        foodContainerEl.innerHTML = "";
-        return;
-      }
-
-      foodContainerEl.classList.add("fade-enter");
-      requestAnimationFrame(() => {
-        foodContainerEl.classList.add("fade-enter-active");
-      });
-
-      foodContainerEl.innerHTML = "";
+    function buildFoodCard(spot, slotLabel) {
+      if (spot.foods.length === 0) return null;
 
       const card = document.createElement("article");
       card.className = "bg-white rounded-xl shadow-md p-3 text-[12px] space-y-2";
 
       const titleEl = document.createElement("div");
       titleEl.innerHTML = `
-        <h2 class="text-sm font-semibold text-sky-700">食事処候補（画像付き・例）</h2>
+        <h2 class="text-sm font-semibold text-sky-700">${slotLabel ? `${slotLabel}の` : ""}食事処候補（画像付き・例）</h2>
         <p class="mt-1 text-slate-600">
           ここに表示されている店名・画像は「例」です。実際に行きたい店は、上の検索リンクから探して、
           店名・画像を差し替えて使ってください。
@@ -1692,32 +2059,42 @@
       });
 
       card.appendChild(list);
-      foodContainerEl.appendChild(card);
+      return card;
+    }
+
+    function renderFood() {
+      const dayData = days.find((d) => d.day === activeDay);
+      if (!dayData) return;
+      const amSpot = spots.find((s) => s.id === dayData.spotId);
+      if (!amSpot) return;
+      const pmSpot = dayData.spotIdPm ? spots.find((s) => s.id === dayData.spotIdPm) : null;
+
+      foodContainerEl.classList.add("fade-enter");
+      requestAnimationFrame(() => {
+        foodContainerEl.classList.add("fade-enter-active");
+      });
+
+      foodContainerEl.innerHTML = "";
+
+      const amCard = buildFoodCard(amSpot, pmSpot ? "午前" : null);
+      if (amCard) foodContainerEl.appendChild(amCard);
+      if (pmSpot) {
+        const pmCard = buildFoodCard(pmSpot, "午後");
+        if (pmCard) foodContainerEl.appendChild(pmCard);
+      }
 
       setTimeout(() => {
         foodContainerEl.classList.remove("fade-enter", "fade-enter-active");
       }, 260);
     }
 
-    function renderModelCourse() {
-      const dayData = days.find((d) => d.day === activeDay);
-      if (!dayData) return;
-      const spot = spots.find((s) => s.id === dayData.spotId);
-      if (!spot) return;
-
-      modelCourseContainerEl.classList.add("fade-enter");
-      requestAnimationFrame(() => {
-        modelCourseContainerEl.classList.add("fade-enter-active");
-      });
-
-      modelCourseContainerEl.innerHTML = "";
-
+    function buildModelCourseCard(spot, slotLabel, lines) {
       const card = document.createElement("article");
       card.className = "bg-white rounded-xl shadow-md p-3 text-[12px] space-y-2";
 
       const titleEl = document.createElement("div");
       titleEl.innerHTML = `
-        <h2 class="text-sm font-semibold text-sky-700">詳細モデルコース（東狭山ヶ丘発着）</h2>
+        <h2 class="text-sm font-semibold text-sky-700">${slotLabel ? `${slotLabel}：` : ""}詳細モデルコース（東狭山ヶ丘発着）</h2>
         <p class="mt-1 text-slate-600">
           家族4人（大人2・中学生1・小学生1）を想定した、迷わない1日の流れです。時間帯は目安なので、当日の状況に合わせて調整してください。
         </p>
@@ -1726,14 +2103,35 @@
 
       const ul = document.createElement("ul");
       ul.className = "mt-2 list-disc pl-4 space-y-1";
-      spot.modelCourse.forEach((line) => {
+      lines.forEach((line) => {
         const li = document.createElement("li");
         li.textContent = line;
         ul.appendChild(li);
       });
       card.appendChild(ul);
 
-      modelCourseContainerEl.appendChild(card);
+      return card;
+    }
+
+    function renderModelCourse() {
+      const dayData = days.find((d) => d.day === activeDay);
+      if (!dayData) return;
+      const amSpot = spots.find((s) => s.id === dayData.spotId);
+      if (!amSpot) return;
+      const pmSpot = dayData.spotIdPm ? spots.find((s) => s.id === dayData.spotIdPm) : null;
+
+      modelCourseContainerEl.classList.add("fade-enter");
+      requestAnimationFrame(() => {
+        modelCourseContainerEl.classList.add("fade-enter-active");
+      });
+
+      modelCourseContainerEl.innerHTML = "";
+      if (pmSpot) {
+        modelCourseContainerEl.appendChild(buildModelCourseCard(amSpot, "午前", amSpot.modelCourseAm));
+        modelCourseContainerEl.appendChild(buildModelCourseCard(pmSpot, "午後", pmSpot.modelCoursePm));
+      } else {
+        modelCourseContainerEl.appendChild(buildModelCourseCard(amSpot, null, amSpot.modelCourse));
+      }
 
       setTimeout(() => {
         modelCourseContainerEl.classList.remove("fade-enter", "fade-enter-active");
