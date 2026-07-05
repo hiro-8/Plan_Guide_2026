@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <title>埼玉家族旅行プラン案内SPA（完成版）</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="./manifest.json" />
+  <meta name="theme-color" content="#38bdf8" />
+  <link rel="icon" href="./icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     .fade-enter { opacity: 0; transform: translateY(8px); }
@@ -16,12 +20,17 @@
     body.large-text .text-xs { font-size: 15px !important; }
     body.large-text .text-sm { font-size: 17px !important; }
     body.large-text .text-lg { font-size: 20px !important; }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; }
+      main { margin-bottom: 0 !important; }
+    }
   </style>
 </head>
 <body class="bg-sky-50 text-slate-800">
   <div class="min-h-screen flex flex-col">
     <!-- ヘッダー -->
-    <header class="bg-gradient-to-r from-sky-400 to-teal-400 text-white px-4 pt-4 pb-3 shadow-md">
+    <header class="no-print bg-gradient-to-r from-sky-400 to-teal-400 text-white px-4 pt-4 pb-3 shadow-md">
       <div class="flex justify-between items-start gap-2">
         <h1 class="text-lg font-semibold">埼玉家族旅行プラン案内</h1>
         <button id="fontSizeToggle" type="button" class="flex-shrink-0 text-[10px] px-2 py-1 rounded-full border border-white/60 bg-white/10 active:bg-white/20">
@@ -34,7 +43,7 @@
     </header>
 
     <!-- 旅の基本戦略パネル -->
-    <section class="bg-white shadow-md mx-3 mt-3 mb-2 rounded-xl p-3">
+    <section class="no-print bg-white shadow-md mx-3 mt-3 mb-2 rounded-xl p-3">
       <button id="strategyToggle" class="w-full text-left text-sm font-semibold text-teal-700 flex items-center justify-between">
         <span>旅の基本戦略</span><span id="strategyIcon">＋</span>
       </button>
@@ -49,7 +58,7 @@
     </section>
 
     <!-- 行き先設定の共有 -->
-    <section class="bg-white shadow-md mx-3 mb-2 rounded-xl p-3">
+    <section class="no-print bg-white shadow-md mx-3 mb-2 rounded-xl p-3">
       <h2 class="text-sm font-semibold text-sky-700">各Dayの行き先を家族と共有</h2>
       <p class="text-[11px] mt-1 text-slate-600">
         プルダウンで行き先を変更したら、下のボタンでリンクを共有すると他の家族の端末にも同じ設定を反映できます。
@@ -65,22 +74,27 @@
     </section>
 
     <!-- タブ -->
-    <nav class="mx-3 mt-1 mb-2">
+    <nav class="no-print mx-3 mt-1 mb-2">
       <div id="dayTabs" role="tablist" class="flex gap-1 overflow-x-auto no-scrollbar text-xs"></div>
     </nav>
 
+    <button id="printDayBtn" type="button" class="no-print mx-3 mb-2 text-[11px] py-1.5 px-3 rounded-lg border border-slate-300 text-slate-700 bg-white active:bg-slate-100">
+      🖨 この日の予定を印刷する
+    </button>
+
     <!-- コンテンツ -->
-    <main class="flex-1 mx-3 mb-24">
+    <main id="mainContent" class="flex-1 mx-3 mb-24">
       <section id="scheduleContainer" class="space-y-3"></section>
       <section id="spotDetailContainer" class="space-y-3 mt-3"></section>
       <section id="foodContainer" class="space-y-3 mt-3"></section>
       <section id="modelCourseContainer" class="space-y-3 mt-3"></section>
 
       <!-- 家族会議用チェックリスト -->
-      <section class="mt-5 mb-4 bg-white rounded-xl shadow-md p-3">
+      <section class="no-print mt-5 mb-4 bg-white rounded-xl shadow-md p-3">
         <h2 class="text-sm font-semibold text-sky-700 flex items-center gap-2">
           <span>家族会議チェックリスト</span>
           <span class="text-[10px] px-2 py-[2px] rounded-full bg-sky-100 text-sky-700">準備タスク</span>
+          <span id="todoProgress" class="text-[10px] px-2 py-[2px] rounded-full bg-teal-100 text-teal-700"></span>
         </h2>
         <p class="text-[11px] mt-1 text-slate-600">
           事前に確認・予約しておきたいことを家族で話し合うためのメモ。チェック状態はこの端末に保存されます。
@@ -93,7 +107,7 @@
     </main>
 
     <!-- フッター -->
-    <footer class="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-sky-400 to-teal-400 text-white text-[10px] px-3 py-2">
+    <footer class="no-print fixed bottom-0 left-0 right-0 bg-gradient-to-r from-sky-400 to-teal-400 text-white text-[10px] px-3 py-2">
       <p>料金・営業時間は必ず公式サイト・現地案内で最新情報を再確認してください。表示は2026年8月頃の参考目安です。</p>
     </footer>
   </div>
@@ -867,6 +881,8 @@
         area: "さいたま市大宮区",
         images: [],
         officialUrl: "https://www.mint.go.jp/enjoy/plant/plant-saitama/plant_visit_museum_saitama.html",
+        closedWeekdays: [3],
+        closedWeekdaysLabel: "水曜日（年末年始12/29〜1/3も休館）",
         description:
           "造幣局さいたま支局に併設された、お金の歴史や貨幣・勲章の製造工程を無料で学べる博物館。大判・小判、記念貨幣、勲章、オリンピックメダルなど貴重な資料を約1,000点展示している。",
         highlights: [
@@ -994,6 +1010,74 @@
           reservation: "通常利用に予約は不要だが、週末は混雑しやすいため開館直後の来場か公式SNSで混雑状況を確認。",
           packing: "タオル類は持参必須（レンタルは別料金の場合あり）。フェイスタオル・バスタオルと着替えを準備。"
         }
+      },
+      {
+        id: "sayamaski",
+        name: "狭山スキー場（夏季営業）",
+        area: "所沢市 上山口",
+        images: [],
+        officialUrl: "https://sayamaski.jp/",
+        description:
+          "西武鉄道グループが運営する屋内外型のスキー場。冬季はスキー・スノーボードが楽しめるが、4月下旬〜9月下旬の夏季営業期間中はロングスライダーや水遊びエリアを備えた夏限定の遊び場になる。8月の訪問はこの夏季営業が対象。",
+        highlights: [
+          "スリルエリアのロングスライダー・ファミリースライダーや、ずぶぬれエリアの水遊びアイテムで思い切り遊べる",
+          "7月中旬以降オープンの「ひんやりエリア」では、真夏でも実際の雪に触れて遊べる",
+          "西武球場前駅から徒歩圏内とアクセスが良い"
+        ],
+        tips: [
+          "お盆期間は「特定日」料金になる可能性が高いため、訪問前に公式サイトの料金カレンダーで確認する",
+          "施設に専用駐車場はないため、車の場合は近隣（西武ライオンズ球場駐車場等）の空き状況を事前に確認する",
+          "「ひんやりエリア」の雪遊びは7月中旬以降のオープンのため、時期により内容が変わる可能性がある"
+        ],
+        transportTrain: {
+          route:
+            "東狭山ヶ丘 → 狭山ヶ丘駅（西武池袋線）→ 西所沢駅（西武狭山線に乗り換え）→ 西武球場前駅 → 改札正面の階段を上がってすぐ",
+          time: "乗り換え1回、狭山ヶ丘駅から20〜30分程度が目安"
+        },
+        transportCar: {
+          route:
+            "東狭山ヶ丘 → 関越道所沢ICまたは圏央道入間IC経由で所沢市上山口へ（専用駐車場はなく近隣駐車場を利用）",
+          time: "関越道所沢ICから約12km（通常時30分）、圏央道入間ICから約10km（通常時20分）",
+          depart: "専用駐車場がなく周辺駐車場が混雑する可能性があるため、午前中の早い時間帯の到着を推奨。"
+        },
+        feeReservation: [
+          {
+            label: "入場料（夏季営業、目安）",
+            detail:
+              "大人（中学生以上）平日1,500円・土日祝1,600円・特定日1,900円。子ども（3歳〜小学生）平日1,300円・土日祝1,400円・特定日1,700円。2歳以下無料。",
+            url: "https://sayamaski.jp/price.html"
+          },
+          {
+            label: "営業期間・営業時間",
+            detail: "4月25日〜9月27日、10:00〜17:00（最終受付16:00）。",
+            url: "https://sayamaski.jp/"
+          },
+          {
+            label: "有料席（任意）",
+            detail: "ゲレンデ有料席：平日3,300円・土日祝5,500円・特定日6,600円。館内有料席：平日・土日祝2,200円・特定日3,300円。",
+            url: "https://sayamaski.jp/price.html"
+          }
+        ],
+        mapUrl: "https://www.google.com/maps/search/?api=1&query=狭山スキー場",
+        foods: [],
+        modelCourse: [
+          "09:00 東狭山ヶ丘 出発（車または電車）",
+          "09:30 西武球場前駅到着・徒歩で狭山スキー場へ",
+          "10:00 開場・入場、スライダー・水遊びエリアで遊ぶ",
+          "12:00 休憩・昼食（周辺で検索リンクから店を選ぶ）",
+          "13:00 ひんやりエリア（雪遊び、7月中旬以降）で涼む",
+          "15:30 着替え・持ち物確認",
+          "16:00 最終受付前に退場準備",
+          "16:30 東狭山ヶ丘へ帰路"
+        ],
+        recommendations: {
+          heat: "屋外の水遊びエリアは日差しが強いため、日焼け止め・水分補給を徹底し、ひんやりエリアで涼みながら休憩を挟む。",
+          traffic: "専用駐車場がないため、車の場合は周辺駐車場の混雑に注意。電車利用が安心。",
+          kids: "水遊び・スライダーエリアは子どもに人気で混雑しやすいため、開場直後の利用がおすすめ。",
+          rain: "屋外の水遊びエリアは雨天時利用しづらい場合があるため、事前に公式サイト・SNSで営業状況を確認。",
+          reservation: "通常入場に予約は不要。お盆期間中は「特定日」料金になる可能性が高いため事前に料金カレンダーを確認。",
+          packing: "水着・着替え・タオル・サンダル・日焼け止めを準備。"
+        }
       }
     ];
 
@@ -1026,6 +1110,7 @@
     const foodContainerEl = document.getElementById("foodContainer");
     const modelCourseContainerEl = document.getElementById("modelCourseContainer");
     const todoListEl = document.getElementById("todoList");
+    const todoProgressEl = document.getElementById("todoProgress");
     const resetTodoBtn = document.getElementById("resetTodo");
     const strategyToggle = document.getElementById("strategyToggle");
     const strategyContent = document.getElementById("strategyContent");
@@ -1035,6 +1120,50 @@
     const shareQrWrapEl = document.getElementById("shareQrWrap");
     const shareQrEl = document.getElementById("shareQr");
     const fontSizeToggle = document.getElementById("fontSizeToggle");
+    const printDayBtn = document.getElementById("printDayBtn");
+
+    printDayBtn.addEventListener("click", () => {
+      window.print();
+    });
+
+    const mainContentEl = document.getElementById("mainContent");
+    let touchStartX = null;
+    let touchStartY = null;
+
+    function goToAdjacentDay(direction) {
+      const idx = days.findIndex((d) => d.day === activeDay);
+      if (idx === -1) return;
+      const newIdx = idx + direction;
+      if (newIdx < 0 || newIdx >= days.length) return;
+      activeDay = days[newIdx].day;
+      renderTabs();
+      renderAllForActiveDay();
+    }
+
+    mainContentEl.addEventListener(
+      "touchstart",
+      (e) => {
+        const t = e.touches[0];
+        touchStartX = t.clientX;
+        touchStartY = t.clientY;
+      },
+      { passive: true }
+    );
+
+    mainContentEl.addEventListener(
+      "touchend",
+      (e) => {
+        if (touchStartX === null) return;
+        const t = e.changedTouches[0];
+        const dx = t.clientX - touchStartX;
+        const dy = t.clientY - touchStartY;
+        touchStartX = null;
+        touchStartY = null;
+        if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+        goToAdjacentDay(dx < 0 ? 1 : -1);
+      },
+      { passive: true }
+    );
 
     const FONT_SIZE_STORAGE_KEY = "saitama-trip-large-text";
 
@@ -1092,6 +1221,14 @@
 
     function getOtherDaysUsingSpot(spotId, excludeDayNumber) {
       return days.filter((d) => d.spotId === spotId && d.day !== excludeDayNumber);
+    }
+
+    const TRIP_YEAR = 2026;
+
+    function getDateForDay(dayData) {
+      const m = /^(\d{1,2})\/(\d{1,2})$/.exec(dayData.date);
+      if (!m) return null;
+      return new Date(TRIP_YEAR, Number(m[1]) - 1, Number(m[2]));
     }
 
     function loadDaysFromUrl() {
@@ -1219,6 +1356,16 @@
       `;
       card.appendChild(titleEl);
 
+      if (spot.closedWeekdays) {
+        const dateObj = getDateForDay(dayData);
+        if (dateObj && spot.closedWeekdays.includes(dateObj.getDay())) {
+          const closedWarnEl = document.createElement("p");
+          closedWarnEl.className = "text-[11px] text-red-600 bg-red-50 border border-red-200 rounded-lg p-2";
+          closedWarnEl.textContent = `⚠ ${dayData.date}は定休日（${spot.closedWeekdaysLabel || "定休日"}）にあたるため、休館の可能性があります。日程の変更をご検討ください。`;
+          card.appendChild(closedWarnEl);
+        }
+      }
+
       const selectWrapper = document.createElement("div");
       selectWrapper.className = "mt-2";
       const label = document.createElement("label");
@@ -1321,9 +1468,12 @@
 
       const mapEl = document.createElement("div");
       mapEl.innerHTML = `
-        <h3 class="text-xs font-semibold text-slate-700 mt-1">Google Mapリンク</h3>
+        <h3 class="text-xs font-semibold text-slate-700 mt-1">Google Mapリンク・天気予報</h3>
         <a href="${spot.mapUrl}" target="_blank" rel="noopener noreferrer" class="mt-1 inline-flex items-center text-sky-600 underline text-xs">
           地図アプリで開く
+        </a>
+        <a href="https://weather.yahoo.co.jp/weather/search/?p=${encodeURIComponent(spot.area)}" target="_blank" rel="noopener noreferrer" class="mt-1 flex items-center text-sky-600 underline text-xs">
+          「${spot.area}」の天気予報を見る
         </a>
       `;
       card.appendChild(mapEl);
@@ -1608,6 +1758,12 @@
       } catch (e) {}
     }
 
+    function updateTodoProgress() {
+      const state = loadTodoState();
+      const doneCount = todoItems.filter((item) => !!state[item.id]).length;
+      todoProgressEl.textContent = `${doneCount}/${todoItems.length} 完了`;
+    }
+
     function renderTodoList() {
       const state = loadTodoState();
       todoListEl.innerHTML = "";
@@ -1626,6 +1782,7 @@
           const newState = loadTodoState();
           newState[item.id] = checkbox.checked;
           saveTodoState(newState);
+          updateTodoProgress();
         });
 
         const label = document.createElement("label");
@@ -1637,6 +1794,7 @@
         li.appendChild(label);
         todoListEl.appendChild(li);
       });
+      updateTodoProgress();
     }
 
     resetTodoBtn.addEventListener("click", () => {
@@ -1655,6 +1813,12 @@
     renderTabs();
     renderAllForActiveDay();
     renderTodoList();
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(() => {});
+      });
+    }
   </script>
 </body>
 </html>
