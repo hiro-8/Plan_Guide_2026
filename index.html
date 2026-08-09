@@ -14,12 +14,17 @@
     .fade-enter-active { opacity: 1; transform: translateY(0); transition: opacity 0.25s ease, transform 0.25s ease; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    body.large-text .text-\[10px\] { font-size: 13px !important; }
-    body.large-text .text-\[11px\] { font-size: 14px !important; }
-    body.large-text .text-\[12px\] { font-size: 15px !important; }
-    body.large-text .text-xs { font-size: 15px !important; }
-    body.large-text .text-sm { font-size: 17px !important; }
-    body.large-text .text-lg { font-size: 20px !important; }
+    /* 本文の基本サイズを底上げ（旧: 10〜12px は小さすぎたため） */
+    .text-\[10px\] { font-size: 13px !important; line-height: 1.6 !important; }
+    .text-\[11px\] { font-size: 14px !important; line-height: 1.6 !important; }
+    .text-\[12px\] { font-size: 15px !important; line-height: 1.6 !important; }
+    .text-xs { font-size: 14px !important; line-height: 1.6 !important; }
+    body.large-text .text-\[10px\] { font-size: 16px !important; }
+    body.large-text .text-\[11px\] { font-size: 17px !important; }
+    body.large-text .text-\[12px\] { font-size: 18px !important; }
+    body.large-text .text-xs { font-size: 18px !important; }
+    body.large-text .text-sm { font-size: 19px !important; }
+    body.large-text .text-lg { font-size: 22px !important; }
     @media print {
       .no-print { display: none !important; }
       body { background: white !important; }
@@ -28,7 +33,7 @@
   </style>
 </head>
 <body class="bg-sky-50 text-slate-800">
-  <div class="min-h-screen flex flex-col">
+  <div class="min-h-screen flex flex-col max-w-2xl mx-auto w-full">
     <!-- ヘッダー -->
     <header class="no-print bg-gradient-to-r from-sky-400 to-teal-400 text-white px-4 pt-4 pb-3 shadow-md">
       <div class="flex justify-between items-start gap-2">
@@ -107,7 +112,7 @@
     </main>
 
     <!-- フッター -->
-    <footer class="no-print fixed bottom-0 left-0 right-0 bg-gradient-to-r from-sky-400 to-teal-400 text-white text-[10px] px-3 py-2">
+    <footer class="no-print fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-2xl bg-gradient-to-r from-sky-400 to-teal-400 text-white text-[10px] px-3 py-2">
       <p>料金・営業時間は必ず公式サイト・現地案内で最新情報を再確認してください。表示は2026年8月頃の参考目安です。</p>
     </footer>
   </div>
@@ -1760,7 +1765,8 @@
     const FONT_SIZE_STORAGE_KEY = "saitama-trip-large-text";
 
     function applyFontSizePreference() {
-      const isLarge = localStorage.getItem(FONT_SIZE_STORAGE_KEY) === "1";
+      const stored = localStorage.getItem(FONT_SIZE_STORAGE_KEY);
+      const isLarge = stored === null ? true : stored === "1";
       document.body.classList.toggle("large-text", isLarge);
       fontSizeToggle.textContent = isLarge ? "文字を標準に" : "文字を大きく";
       fontSizeToggle.setAttribute("aria-pressed", isLarge ? "true" : "false");
