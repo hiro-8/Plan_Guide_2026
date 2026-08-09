@@ -29,10 +29,19 @@
       .no-print { display: none !important; }
       body { background: white !important; }
       main { margin-bottom: 0 !important; }
+      /* 「週間予定をまとめて印刷」時は週間一覧だけを表示する */
+      body.print-week-mode #mainContent { display: none !important; }
+      body.print-week-mode #weekOverviewSection {
+        display: block !important;
+        position: static !important;
+        left: auto !important;
+        transform: none !important;
+        width: auto !important;
+      }
     }
   </style>
 </head>
-<body class="bg-sky-50 text-slate-800">
+<body class="bg-sky-50 text-slate-800 overflow-x-hidden">
   <div class="min-h-screen flex flex-col max-w-2xl mx-auto w-full">
     <!-- ヘッダー -->
     <header class="no-print bg-gradient-to-r from-sky-400 to-teal-400 text-white px-4 pt-4 pb-3 shadow-md">
@@ -78,14 +87,30 @@
       </div>
     </section>
 
+    <!-- 週間予定一覧（まとめて編集） -->
+    <section id="weekOverviewSection" class="no-print relative left-1/2 -translate-x-1/2 w-screen px-3 mb-2">
+      <div class="max-w-5xl mx-auto bg-white shadow-md rounded-xl p-3">
+        <h2 class="text-sm font-semibold text-sky-700">週間予定一覧（まとめて編集）</h2>
+        <p class="text-[11px] mt-1 text-slate-600">
+          全日程を一度に見ながら、行き先の変更・入れ替えができます。家族みんなで画面を見て相談するときにご利用ください。
+        </p>
+        <div id="weekOverviewGrid" class="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3"></div>
+      </div>
+    </section>
+
     <!-- タブ -->
     <nav class="no-print mx-3 mt-1 mb-2">
       <div id="dayTabs" role="tablist" class="flex gap-1 overflow-x-auto no-scrollbar text-xs"></div>
     </nav>
 
-    <button id="printDayBtn" type="button" class="no-print mx-3 mb-2 text-[11px] py-1.5 px-3 rounded-lg border border-slate-300 text-slate-700 bg-white active:bg-slate-100">
-      🖨 この日の予定を印刷する
-    </button>
+    <div class="no-print mx-3 mb-2 flex gap-2">
+      <button id="printDayBtn" type="button" class="flex-1 text-[11px] py-1.5 px-3 rounded-lg border border-slate-300 text-slate-700 bg-white active:bg-slate-100">
+        🖨 この日の予定を印刷する
+      </button>
+      <button id="printWeekBtn" type="button" class="flex-1 text-[11px] py-1.5 px-3 rounded-lg border border-slate-300 text-slate-700 bg-white active:bg-slate-100">
+        🖨 週間予定をまとめて印刷
+      </button>
+    </div>
 
     <!-- コンテンツ -->
     <main id="mainContent" class="flex-1 mx-3 mb-24">
@@ -1718,9 +1743,20 @@
     const shareQrEl = document.getElementById("shareQr");
     const fontSizeToggle = document.getElementById("fontSizeToggle");
     const printDayBtn = document.getElementById("printDayBtn");
+    const printWeekBtn = document.getElementById("printWeekBtn");
+    const weekOverviewGridEl = document.getElementById("weekOverviewGrid");
 
     printDayBtn.addEventListener("click", () => {
       window.print();
+    });
+
+    printWeekBtn.addEventListener("click", () => {
+      document.body.classList.add("print-week-mode");
+      window.print();
+    });
+
+    window.addEventListener("afterprint", () => {
+      document.body.classList.remove("print-week-mode");
     });
 
     const mainContentEl = document.getElementById("mainContent");
@@ -1852,6 +1888,114 @@
       const m = /^(\d{1,2})\/(\d{1,2})$/.exec(dayData.date);
       if (!m) return null;
       return new Date(TRIP_YEAR, Number(m[1]) - 1, Number(m[2]));
+    }
+
+    // ==== 天気予報（Open-Meteo、APIキー不要・登録不要） ====
+    // 座標は各市区町村役場付近の目安値。天気予報の用途としては十分な精度。
+    const WEATHER_COORDS = {
+      所沢市: { lat: 35.7997, lon: 139.4692 },
+      春日部市: { lat: 35.9755, lon: 139.7524 },
+      行田市: { lat: 36.1427, lon: 139.4586 },
+      長瀞町: { lat: 36.115, lon: 139.108 },
+      秩父市: { lat: 35.9926, lon: 139.0836 },
+      滑川町: { lat: 36.0658, lon: 139.3735 },
+      日高市: { lat: 35.9046, lon: 139.3417 },
+      さいたま市: { lat: 35.9066, lon: 139.6236 }
+    };
+
+    const WEATHER_ICON_BY_CODE = {
+      0: "☀️",
+      1: "🌤️",
+      2: "⛅",
+      3: "☁️",
+      45: "🌫️",
+      48: "🌫️",
+      51: "🌦️",
+      53: "🌦️",
+      55: "🌦️",
+      56: "🌦️",
+      57: "🌦️",
+      61: "🌧️",
+      63: "🌧️",
+      65: "🌧️",
+      66: "🌧️",
+      67: "🌧️",
+      71: "🌨️",
+      73: "🌨️",
+      75: "🌨️",
+      77: "🌨️",
+      80: "🌦️",
+      81: "🌦️",
+      82: "🌧️",
+      85: "🌨️",
+      86: "🌨️",
+      95: "⛈️",
+      96: "⛈️",
+      99: "⛈️"
+    };
+
+    function weatherIcon(code) {
+      return WEATHER_ICON_BY_CODE[code] || "🌡️";
+    }
+
+    const weatherByMunicipality = {};
+
+    function formatDateForWeatherApi(dateObj) {
+      const y = dateObj.getFullYear();
+      const m = String(dateObj.getMonth() + 1).padStart(2, "0");
+      const d = String(dateObj.getDate()).padStart(2, "0");
+      return `${y}-${m}-${d}`;
+    }
+
+    async function loadAllWeather() {
+      const entries = Object.entries(WEATHER_COORDS);
+      await Promise.all(
+        entries.map(async ([muni, coord]) => {
+          try {
+            const url =
+              `https://api.open-meteo.com/v1/forecast?latitude=${coord.lat}&longitude=${coord.lon}` +
+              `&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max` +
+              `&timezone=Asia%2FTokyo&forecast_days=16`;
+            const res = await fetch(url);
+            if (!res.ok) return;
+            const data = await res.json();
+            const byDate = {};
+            data.daily.time.forEach((dateStr, i) => {
+              byDate[dateStr] = {
+                code: data.daily.weathercode[i],
+                tmax: Math.round(data.daily.temperature_2m_max[i]),
+                tmin: Math.round(data.daily.temperature_2m_min[i]),
+                pop: data.daily.precipitation_probability_max[i]
+              };
+            });
+            weatherByMunicipality[muni] = byDate;
+          } catch (e) {
+            // オフライン等で取得できない場合は天気表示を省略するだけにする（他機能には影響させない）
+          }
+        })
+      );
+    }
+
+    function getWeatherForSpotOnDate(spot, dateObj) {
+      if (!dateObj || !spot) return null;
+      const byDate = weatherByMunicipality[getMunicipality(spot.area)];
+      if (!byDate) return null;
+      return byDate[formatDateForWeatherApi(dateObj)] || null;
+    }
+
+    // ==== 行き先の簡易タグ（既存の description/highlights/tips/recommendations から自動判定） ====
+    function getSpotTags(spot) {
+      const text = [spot.description, ...(spot.highlights || []), ...(spot.tips || [])].join(" ");
+      const tags = [];
+      if (spot.bearAlert) tags.push({ icon: "🐻", label: "クマ出没注意エリア" });
+      if (/プール|水遊び|ライン下り|川遊び/.test(text)) tags.push({ icon: "💦", label: "水遊びあり" });
+      if (/完全屋内|屋内中心|地下|洞内|館内/.test(text)) tags.push({ icon: "🏠", label: "屋内中心・涼しい" });
+      if (!/完全屋内/.test(text) && /日差しが強い|炎天|直射日光|屋外/.test(text)) {
+        tags.push({ icon: "🥵", label: "屋外中心・暑さ対策必須" });
+      }
+      const resText = (spot.recommendations && spot.recommendations.reservation) || "";
+      if (/予約/.test(resText) && !/予約不要/.test(resText)) tags.push({ icon: "📅", label: "事前予約推奨" });
+      return tags;
     }
 
     function loadDaysFromUrl() {
@@ -2042,7 +2186,7 @@
       return select;
     }
 
-    function buildSpotInfoBlock(spot) {
+    function buildSpotInfoBlock(spot, dateObj) {
       const wrap = document.createElement("div");
       wrap.className = "space-y-2";
 
@@ -2098,13 +2242,19 @@
       wrap.appendChild(feeEl);
 
       const mapEl = document.createElement("div");
+      const w = dateObj ? getWeatherForSpotOnDate(spot, dateObj) : null;
       mapEl.innerHTML = `
         <h3 class="text-xs font-semibold text-slate-700 mt-1">Google Mapリンク・天気予報</h3>
         <a href="${spot.mapUrl}" target="_blank" rel="noopener noreferrer" class="mt-1 inline-flex items-center text-sky-600 underline text-xs">
           地図アプリで開く
         </a>
+        ${
+          w
+            ? `<p class="mt-1 text-slate-700">${weatherIcon(w.code)} 予想気温 ${w.tmin}〜${w.tmax}℃／降水確率${w.pop}%（${spot.area}の予報）</p>`
+            : ""
+        }
         <a href="https://weather.yahoo.co.jp/weather/search/?p=${encodeURIComponent(spot.area)}" target="_blank" rel="noopener noreferrer" class="mt-1 flex items-center text-sky-600 underline text-xs">
-          「${spot.area}」の天気予報を見る
+          「${spot.area}」の詳しい天気予報を見る
         </a>
       `;
       wrap.appendChild(mapEl);
@@ -2213,14 +2363,14 @@
       amInfoHeader.className = "text-xs font-bold text-sky-700";
       amInfoHeader.textContent = pmSpot ? `午前：${amSpot.name}` : amSpot.name;
       card.appendChild(amInfoHeader);
-      card.appendChild(buildSpotInfoBlock(amSpot));
+      card.appendChild(buildSpotInfoBlock(amSpot, getDateForDay(dayData)));
 
       if (pmSpot) {
         const pmInfoHeader = document.createElement("h3");
         pmInfoHeader.className = "text-xs font-bold text-sky-700 mt-3";
         pmInfoHeader.textContent = `午後：${pmSpot.name}`;
         card.appendChild(pmInfoHeader);
-        card.appendChild(buildSpotInfoBlock(pmSpot));
+        card.appendChild(buildSpotInfoBlock(pmSpot, getDateForDay(dayData)));
       }
 
       scheduleContainerEl.appendChild(card);
@@ -2681,16 +2831,154 @@
       renderTodoList();
     });
 
+    function buildSwapControl(dayData) {
+      const wrap = document.createElement("div");
+      wrap.className = "mt-2";
+      const label = document.createElement("label");
+      label.className = "text-[11px] text-slate-500";
+      label.textContent = "⇄ 他の日と入れ替え";
+      const select = document.createElement("select");
+      select.className = "mt-1 w-full text-[11px] border border-slate-300 rounded-lg px-2 py-1 bg-white";
+
+      const placeholder = document.createElement("option");
+      placeholder.value = "";
+      placeholder.textContent = "-- 入れ替え先の日を選択 --";
+      select.appendChild(placeholder);
+
+      days.forEach((d) => {
+        if (d.day === dayData.day) return;
+        const opt = document.createElement("option");
+        opt.value = String(d.day);
+        const s = spots.find((sp) => sp.id === d.spotId);
+        opt.textContent = `${formatDayLabel(d.day)}（${d.date}）：${s ? s.name : "未設定"}`;
+        select.appendChild(opt);
+      });
+
+      select.addEventListener("change", () => {
+        if (!select.value) return;
+        const otherDay = days.find((d) => d.day === Number(select.value));
+        if (!otherDay) return;
+        const tmpAm = dayData.spotId;
+        const tmpPm = dayData.spotIdPm;
+        dayData.spotId = otherDay.spotId;
+        dayData.spotIdPm = otherDay.spotIdPm;
+        otherDay.spotId = tmpAm;
+        otherDay.spotIdPm = tmpPm;
+        saveDaysOverrides();
+        shareStatusEl.textContent = "";
+        shareQrWrapEl.classList.add("hidden");
+        shareQrWrapEl.classList.remove("flex");
+        renderTabs();
+        renderAllForActiveDay();
+      });
+
+      wrap.appendChild(label);
+      wrap.appendChild(select);
+      return wrap;
+    }
+
+    function buildWeekOverviewCard(dayData) {
+      const amSpot = spots.find((s) => s.id === dayData.spotId);
+      const pmSpot = dayData.spotIdPm ? spots.find((s) => s.id === dayData.spotIdPm) : null;
+
+      const card = document.createElement("div");
+      card.className =
+        "bg-white rounded-xl shadow-md p-3 text-[12px] flex flex-col border " +
+        (dayData.day === activeDay ? "border-sky-400" : "border-transparent");
+
+      const header = document.createElement("div");
+      header.className = "flex justify-between items-start gap-2";
+      const dateBadge = document.createElement("span");
+      dateBadge.className = "text-[10px] px-2 py-[2px] rounded-full bg-sky-100 text-sky-700 font-semibold whitespace-nowrap";
+      dateBadge.textContent = `${formatDayLabel(dayData.day)}（${dayData.date}）`;
+      header.appendChild(dateBadge);
+
+      const dateObj = getDateForDay(dayData);
+      const w = amSpot ? getWeatherForSpotOnDate(amSpot, dateObj) : null;
+      if (w) {
+        const wEl = document.createElement("span");
+        wEl.className = "text-[11px] text-slate-600 whitespace-nowrap";
+        wEl.title = `降水確率${w.pop}%`;
+        wEl.textContent = `${weatherIcon(w.code)} ${w.tmin}〜${w.tmax}℃`;
+        header.appendChild(wEl);
+      }
+      card.appendChild(header);
+
+      if (amSpot) {
+        const nameEl = document.createElement("p");
+        nameEl.className = "mt-1 font-semibold text-slate-800";
+        nameEl.textContent = pmSpot ? `午前：${amSpot.name}` : amSpot.name;
+        card.appendChild(nameEl);
+
+        const tags = getSpotTags(amSpot);
+        if (tags.length > 0) {
+          const tagWrap = document.createElement("div");
+          tagWrap.className = "mt-1 flex flex-wrap gap-1";
+          tags.forEach((t) => {
+            const b = document.createElement("span");
+            b.className = "text-[12px]";
+            b.title = t.label;
+            b.textContent = t.icon;
+            tagWrap.appendChild(b);
+          });
+          card.appendChild(tagWrap);
+        }
+      }
+
+      if (pmSpot) {
+        const pmEl = document.createElement("p");
+        pmEl.className = "mt-1 text-slate-600";
+        pmEl.textContent = `午後：${pmSpot.name}`;
+        card.appendChild(pmEl);
+      }
+
+      const selectLabel = document.createElement("label");
+      selectLabel.className = "mt-2 text-[11px] font-semibold text-slate-700";
+      selectLabel.textContent = "行き先を変更";
+      card.appendChild(selectLabel);
+      card.appendChild(buildSpotSelect(dayData, "am"));
+
+      card.appendChild(buildSwapControl(dayData));
+
+      const detailBtn = document.createElement("button");
+      detailBtn.type = "button";
+      detailBtn.className = "mt-2 text-[11px] text-sky-600 underline text-left";
+      detailBtn.textContent = "詳細を見る・午後の予定を編集 →";
+      detailBtn.addEventListener("click", () => {
+        activeDay = dayData.day;
+        renderTabs();
+        renderAllForActiveDay();
+        scheduleContainerEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+      card.appendChild(detailBtn);
+
+      return card;
+    }
+
+    function renderWeekOverview() {
+      if (!weekOverviewGridEl) return;
+      weekOverviewGridEl.innerHTML = "";
+      days.forEach((d) => {
+        weekOverviewGridEl.appendChild(buildWeekOverviewCard(d));
+      });
+    }
+
     function renderAllForActiveDay() {
       renderSchedule();
       renderSpotDetail();
       renderFood();
       renderModelCourse();
+      renderWeekOverview();
     }
 
     renderTabs();
     renderAllForActiveDay();
     renderTodoList();
+
+    loadAllWeather().then(() => {
+      renderWeekOverview();
+      renderSchedule();
+    });
 
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
