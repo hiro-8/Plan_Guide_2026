@@ -28,7 +28,6 @@
     @media print {
       .no-print { display: none !important; }
       body { background: white !important; }
-      main { margin-bottom: 0 !important; }
       /* 「週間予定をまとめて印刷」時は週間一覧だけを表示する */
       body.print-week-mode #mainContent { display: none !important; }
       body.print-week-mode #weekOverviewSection {
@@ -87,33 +86,39 @@
       </div>
     </section>
 
+    <!-- 表示切り替え（今日の予定 / 週間一覧） -->
+    <div class="no-print mx-3 mt-2 mb-2 flex gap-2" role="tablist" aria-label="表示切り替え">
+      <button id="viewModeDayBtn" type="button" role="tab">📅 今日の予定</button>
+      <button id="viewModeWeekBtn" type="button" role="tab">🗓️ 週間一覧で編集</button>
+    </div>
+
     <!-- 週間予定一覧（まとめて編集） -->
-    <section id="weekOverviewSection" class="no-print relative left-1/2 -translate-x-1/2 w-screen px-3 mb-2">
+    <section id="weekOverviewSection" class="no-print relative left-1/2 -translate-x-1/2 w-screen px-3 mb-2 hidden">
       <div class="max-w-5xl mx-auto bg-white shadow-md rounded-xl p-3">
         <h2 class="text-sm font-semibold text-sky-700">週間予定一覧（まとめて編集）</h2>
         <p class="text-[11px] mt-1 text-slate-600">
           全日程を一度に見ながら、行き先の変更・入れ替えができます。家族みんなで画面を見て相談するときにご利用ください。
         </p>
         <div id="weekOverviewGrid" class="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3"></div>
+        <button id="printWeekBtn" type="button" class="no-print mt-3 w-full text-[11px] py-1.5 px-3 rounded-lg border border-slate-300 text-slate-700 bg-white active:bg-slate-100">
+          🖨 週間予定をまとめて印刷
+        </button>
       </div>
     </section>
 
     <!-- タブ -->
-    <nav class="no-print mx-3 mt-1 mb-2">
+    <nav id="dayViewNav" class="no-print mx-3 mt-1 mb-2">
       <div id="dayTabs" role="tablist" class="flex gap-1 overflow-x-auto no-scrollbar text-xs"></div>
     </nav>
 
-    <div class="no-print mx-3 mb-2 flex gap-2">
-      <button id="printDayBtn" type="button" class="flex-1 text-[11px] py-1.5 px-3 rounded-lg border border-slate-300 text-slate-700 bg-white active:bg-slate-100">
+    <div id="dayViewPrintRow" class="no-print mx-3 mb-2">
+      <button id="printDayBtn" type="button" class="w-full text-[11px] py-1.5 px-3 rounded-lg border border-slate-300 text-slate-700 bg-white active:bg-slate-100">
         🖨 この日の予定を印刷する
-      </button>
-      <button id="printWeekBtn" type="button" class="flex-1 text-[11px] py-1.5 px-3 rounded-lg border border-slate-300 text-slate-700 bg-white active:bg-slate-100">
-        🖨 週間予定をまとめて印刷
       </button>
     </div>
 
     <!-- コンテンツ -->
-    <main id="mainContent" class="flex-1 mx-3 mb-24">
+    <main id="mainContent" class="flex-1 mx-3 mb-4">
       <section id="scheduleContainer" class="space-y-3"></section>
       <section id="spotDetailContainer" class="space-y-3 mt-3"></section>
       <section id="foodContainer" class="space-y-3 mt-3"></section>
@@ -137,7 +142,7 @@
     </main>
 
     <!-- フッター -->
-    <footer class="no-print fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-2xl bg-gradient-to-r from-sky-400 to-teal-400 text-white text-[10px] px-3 py-2">
+    <footer class="no-print bg-gradient-to-r from-sky-400 to-teal-400 text-white text-[10px] px-3 py-2 mx-3 mb-3 rounded-lg">
       <p>料金・営業時間は必ず公式サイト・現地案内で最新情報を再確認してください。表示は2026年8月頃の参考目安です。</p>
     </footer>
   </div>
@@ -1760,6 +1765,42 @@
     });
 
     const mainContentEl = document.getElementById("mainContent");
+    const weekOverviewSectionEl = document.getElementById("weekOverviewSection");
+    const dayViewNavEl = document.getElementById("dayViewNav");
+    const dayViewPrintRowEl = document.getElementById("dayViewPrintRow");
+    const viewModeDayBtn = document.getElementById("viewModeDayBtn");
+    const viewModeWeekBtn = document.getElementById("viewModeWeekBtn");
+
+    const VIEW_TAB_BASE_CLASS = "flex-1 px-3 py-2 rounded-full border text-xs font-semibold transition-all";
+    const VIEW_TAB_ACTIVE_CLASS = VIEW_TAB_BASE_CLASS + " bg-sky-500 border-sky-500 text-white shadow-sm";
+    const VIEW_TAB_INACTIVE_CLASS = VIEW_TAB_BASE_CLASS + " bg-white border-sky-200 text-sky-700";
+
+    let viewMode = "day";
+
+    function applyViewMode() {
+      const isWeek = viewMode === "week";
+      viewModeDayBtn.className = isWeek ? VIEW_TAB_INACTIVE_CLASS : VIEW_TAB_ACTIVE_CLASS;
+      viewModeWeekBtn.className = isWeek ? VIEW_TAB_ACTIVE_CLASS : VIEW_TAB_INACTIVE_CLASS;
+      viewModeDayBtn.setAttribute("aria-selected", String(!isWeek));
+      viewModeWeekBtn.setAttribute("aria-selected", String(isWeek));
+      weekOverviewSectionEl.classList.toggle("hidden", !isWeek);
+      dayViewNavEl.classList.toggle("hidden", isWeek);
+      dayViewPrintRowEl.classList.toggle("hidden", isWeek);
+      mainContentEl.classList.toggle("hidden", isWeek);
+    }
+
+    viewModeDayBtn.addEventListener("click", () => {
+      viewMode = "day";
+      applyViewMode();
+    });
+
+    viewModeWeekBtn.addEventListener("click", () => {
+      viewMode = "week";
+      applyViewMode();
+    });
+
+    applyViewMode();
+
     let touchStartX = null;
     let touchStartY = null;
 
@@ -2946,6 +2987,8 @@
       detailBtn.textContent = "詳細を見る・午後の予定を編集 →";
       detailBtn.addEventListener("click", () => {
         activeDay = dayData.day;
+        viewMode = "day";
+        applyViewMode();
         renderTabs();
         renderAllForActiveDay();
         scheduleContainerEl.scrollIntoView({ behavior: "smooth", block: "start" });
