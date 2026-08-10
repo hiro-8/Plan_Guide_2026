@@ -123,6 +123,7 @@
       <section id="spotDetailContainer" class="space-y-3 mt-3"></section>
       <section id="foodContainer" class="space-y-3 mt-3"></section>
       <section id="modelCourseContainer" class="space-y-3 mt-3"></section>
+      <section id="packingListContainer" class="space-y-3 mt-3"></section>
 
       <!-- 家族会議用チェックリスト -->
       <section class="no-print mt-5 mb-4 bg-white rounded-xl shadow-md p-3">
@@ -271,6 +272,7 @@
         name: "西武園ゆうえんちプール",
         area: "所沢市 山口",
         nearbyCluster: "tokorozawa",
+        rainRisk: true,
         images: [`${imgBase}/seibuen-1.jpg`, `${imgBase}/seibuen-2.jpg`, `${imgBase}/seibuen-3.jpg`],
         description:
           "西武園ゆうえんち内にある夏季限定のプールエリア。波のプール・流れるプール・こどもプール・おふねのプール・急流すべり台など複数のプールがあり、家族で一日楽しめる。2026年は6/27〜9/23営業（7/18〜8/31は毎日営業）で、お盆期間（8/8〜16）は特定日料金が適用される。",
@@ -460,6 +462,7 @@
         name: "さきたま古墳公園＆さきたま史跡の博物館",
         area: "行田市",
         nearbyCluster: "gyoda",
+        rainRisk: true,
         images: [`${imgBase}/sakitama-1.jpg`, `${imgBase}/sakitama-2.jpg`, `${imgBase}/sakitama-3.jpg`],
         description:
           "国指定特別史跡「埼玉古墳群」を中心とした歴史公園とミュージアム。古墳出土品や国宝級の資料が展示され、古代ロマンを感じられるスポット。",
@@ -549,6 +552,7 @@
         name: "長瀞ラインくだり＆岩畳",
         area: "長瀞町",
         nearbyCluster: "nagatoro",
+        rainRisk: true,
         images: [`${imgBase}/nagatoro-1.jpg`, `${imgBase}/nagatoro-2.jpg`, `${imgBase}/nagatoro-3.jpg`],
         description:
           "荒川を木造和船で下る川下りと、奇岩が並ぶ岩畳の景観が楽しめる長瀞エリア。夏でも川風が涼しく、家族で自然を満喫できる。",
@@ -645,6 +649,7 @@
         name: "フォレストアドベンチャー・秩父",
         area: "秩父市 ミューズパーク",
         nearbyCluster: "chichibu",
+        rainRisk: true,
         images: [`${imgBase}/forest-1.jpg`, `${imgBase}/forest-2.jpg`, `${imgBase}/forest-3.jpg`],
         description:
           "森の中でハーネスを付けて木から木へ渡る本格アスレチック。高さも難易度も高めで、大人も本気で楽しめる国内最大級のコース。",
@@ -831,6 +836,7 @@
         name: "国営武蔵丘陵森林公園",
         area: "滑川町",
         nearbyCluster: "namegawa",
+        rainRisk: true,
         images: [`${imgBase}/shinrinkoen-1.jpg`, `${imgBase}/shinrinkoen-2.jpg`, `${imgBase}/shinrinkoen-3.jpg`],
         description:
           "広大な敷地に森・花畑・サイクリングコース・アスレチックなどがある国営公園。木陰が多く、夏でも比較的過ごしやすい。",
@@ -1298,6 +1304,7 @@
         name: "狭山スキー場（夏季営業）",
         area: "所沢市 上山口",
         nearbyCluster: "tokorozawa",
+        rainRisk: true,
         images: [],
         officialUrl: "https://sayamaski.jp/",
         description:
@@ -1381,6 +1388,172 @@
           rain: "屋外の水遊びエリアは雨天時利用しづらい場合があるため、事前に公式サイト・SNSで営業状況を確認。",
           reservation: "通常入場に予約は不要。お盆期間中は「特定日」料金になる可能性が高いため事前に料金カレンダーを確認。",
           packing: "水着・着替え・タオル・サンダル・日焼け止めを準備。"
+        }
+      },
+      {
+        id: "tetsudouhaku",
+        name: "鉄道博物館",
+        area: "さいたま市大宮区",
+        nearbyCluster: "omiya",
+        images: [],
+        officialUrl: "https://www.railway-museum.jp/",
+        closedWeekdays: [2],
+        closedWeekdaysLabel: "火曜日（祝日の場合は営業、年末年始も休館）",
+        description:
+          "JR東日本グループが運営する国内最大級の鉄道博物館。実物車両の展示や運転シミュレーター、鉄道模型ジオラマなど、完全屋内で一日中楽しめる“雨天でも安心”の定番スポット。",
+        highlights: [
+          "新幹線から蒸気機関車まで、実物車両がずらりと並ぶ車両ステーション",
+          "本格的な運転シミュレーター（人気で抽選・整理券制の場合あり）",
+          "大宮駅からニューシャトルで約2分、駅から徒歩1分と好アクセス"
+        ],
+        tips: [
+          "完全屋内型なので、猛暑日や雨の日の“保険プラン”として最適",
+          "人気の運転シミュレーターは整理券・抽選制のことが多いため、開館直後に確認するのがおすすめ",
+          "オンラインチケットの事前購入で当日の窓口待ちを短縮できる"
+        ],
+        transportTrain: {
+          route:
+            "東狭山ヶ丘 → 狭山ヶ丘駅（西武池袋線）→ 秋津駅…徒歩…新秋津駅（JR武蔵野線）→ 大宮駅（JR京浜東北線）→ ニューシャトルで鉄道博物館駅 → 徒歩1分",
+          time: "約1時間15分〜1時間30分（乗換複数）"
+        },
+        transportCar: {
+          route: "東狭山ヶ丘 → 圏央道・関越道等を利用してさいたま市大宮区方面へ（駐車場利用）",
+          time: "約1時間前後（渋滞状況により変動、実測データではない参考値）",
+          depart: "猛暑・雨天いずれでも室内中心のため、午前中到着を目安に余裕を持って出発。"
+        },
+        feeReservation: [
+          {
+            label: "入館料（目安）",
+            detail: "一般1,300〜1,500円・小中高生500〜600円・幼児200〜300円前後。価格改定の可能性があるため要最新確認。オンラインチケット制。",
+            url: "https://www.railway-museum.jp/"
+          },
+          {
+            label: "営業時間",
+            detail: "通常10:00〜17:00（最終入館16:30）。2026年8月8日（土）〜8月16日（日）は10:00〜18:00に延長（最終入館17:30）。",
+            url: "https://www.railway-museum.jp/information/"
+          }
+        ],
+        mapUrl: "https://www.google.com/maps/search/?api=1&query=鉄道博物館 さいたま市大宮区",
+        foods: [
+          {
+            name: "日本食堂",
+            description: "かつての食堂車を再現した館内レストラン。鉄道旅気分を味わいながら食事ができ、子どもにも人気。",
+            image: `${imgBase}/tetsudouhaku-food-1.jpg`,
+            mapUrl: "https://www.google.com/maps/search/?api=1&query=日本食堂 鉄道博物館",
+            officialUrl: "https://www.railway-museum.jp/enjoy/shop.html"
+          }
+        ],
+        modelCourse: [
+          "08:00 東狭山ヶ丘 出発（車または電車）",
+          "09:30 大宮駅到着・ニューシャトルで鉄道博物館駅へ",
+          "10:00 開館・車両ステーション見学",
+          "11:00 運転シミュレーター（整理券・抽選制の場合あり）",
+          "12:30 館内レストラン「日本食堂」でランチ",
+          "14:00 鉄道模型ジオラマ・企画展示を見学",
+          "16:00 ミュージアムショップでお土産",
+          "17:00 大宮駅経由で東狭山ヶ丘へ帰路"
+        ],
+        modelCourseAm: [
+          "08:00 東狭山ヶ丘 出発（車または電車）",
+          "09:30 大宮駅到着・ニューシャトルで鉄道博物館駅へ",
+          "10:00 開館・車両ステーション見学",
+          "11:00 運転シミュレーター（整理券・抽選制の場合あり）",
+          "12:00 館内レストラン「日本食堂」でランチ",
+          "12:30 昼食後、午後の目的地へ移動"
+        ],
+        modelCoursePm: [
+          "13:00 午前の目的地から鉄道博物館へ移動・到着",
+          "13:30 車両ステーション・鉄道模型ジオラマを見学",
+          "15:30 ミュージアムショップでお土産",
+          "16:30 大宮駅経由で東狭山ヶ丘へ帰路",
+          "18:00 夕食・翌日の予定確認"
+        ],
+        recommendations: {
+          heat: "館内は完全空調で涼しい。ニューシャトル駅からの移動はごく短いため熱中症リスクは低いが、駅までの移動は暑さ対策を。",
+          traffic: "ニューシャトル利用なら渋滞の心配はほぼない。車の場合は大宮駅周辺・駐車場の混雑に注意。",
+          kids: "実物車両やシミュレーターが人気で混雑しやすい。人気アトラクションは整理券・抽選制の場合があるので開館直後に確認を。",
+          rain: "完全屋内型の博物館のため、雨天時でも問題なく一日楽しめる“保険プラン”として最適。",
+          reservation: "入館は基本予約不要（オンラインチケット推奨）。一部体験・シミュレーターは当日整理券制の場合あり。",
+          packing: "動きやすい靴・カメラを用意。館内は空調で涼しいので羽織りものがあると温度差対策になる。"
+        }
+      },
+      {
+        id: "kawahaku",
+        name: "埼玉県立川の博物館（かわはく）",
+        area: "大里郡寄居町",
+        nearbyCluster: "nagatoro",
+        images: [],
+        officialUrl: "https://www.river-museum.jp/",
+        closedWeekdays: [1],
+        closedWeekdaysLabel: "月曜日（祝日・振替休日・夏休み期間中は開館、年末年始12/29〜1/3も休館）",
+        description:
+          "荒川をテーマに、川と人との暮らしの関わりを治水・利水・親水の視点で学べる県立博物館。日本最大級の水車や荒川の生き物展示があり、屋外の水遊び広場も備える。",
+        highlights: [
+          "直径24mの日本最大級の水車が目印。荒川の1000分の1模型で流域を一望できる",
+          "荒川に生息する魚や生き物を展示する大水槽コーナー",
+          "屋外の水遊び広場「プレイングリバー」で実際に水遊びができる（夏季）"
+        ],
+        tips: [
+          "館内展示は屋内中心なので、猛暑日や雨の日でも楽しめる",
+          "水遊び広場を利用する場合は着替え・タオルを忘れずに",
+          "最寄り駅からは距離があるため、車での訪問が現実的"
+        ],
+        transportTrain: {
+          route:
+            "東狭山ヶ丘 → 狭山ヶ丘駅（西武池袋線）→ 所沢駅 → 川越市駅（西武新宿線）…徒歩…川越駅（東武東上線）→ 寄居駅 → バス・タクシーで川の博物館へ",
+          time: "約2時間前後＋バス・タクシー（乗換複数、実測データではない参考値）"
+        },
+        transportCar: {
+          route: "東狭山ヶ丘 → 関越道花園ICから寄居町方面へ（長瀞・秩父方面と同ルート上）",
+          time: "約1〜1.5時間（渋滞状況により変動）",
+          depart: "長瀞・秩父方面と同様、朝早めの出発で渋滞・暑さを回避。"
+        },
+        feeReservation: [
+          {
+            label: "入館料",
+            detail: "一般410円（団体240円）・学生200円（団体120円）・中学生以下無料。",
+            url: "https://www.river-museum.jp/"
+          },
+          {
+            label: "営業時間",
+            detail:
+              "通常9:00〜17:00。2026年8月11日（月・祝）〜8月15日（土）・土日祝は9:00〜18:00に延長。月曜休館（夏休み期間中は開館）。",
+            url: "https://www.river-museum.jp/"
+          }
+        ],
+        mapUrl: "https://www.google.com/maps/search/?api=1&query=埼玉県立川の博物館",
+        foods: [],
+        modelCourse: [
+          "07:30 東狭山ヶ丘 出発（レンタカー推奨）",
+          "09:00 川の博物館到着・大水車、荒川大模型を見学",
+          "10:30 大水槽コーナーで荒川の生き物観察",
+          "12:00 屋外休憩スペース・軽食コーナーでランチ",
+          "13:00 プレイングリバーで水遊び（夏季）",
+          "15:00 企画展示・ミュージアムショップ",
+          "16:30 東狭山ヶ丘へ帰路",
+          "18:30 夕食・翌日の予定確認"
+        ],
+        modelCourseAm: [
+          "07:30 東狭山ヶ丘 出発（レンタカー推奨）",
+          "09:00 川の博物館到着・大水車、荒川大模型を見学",
+          "10:30 大水槽コーナーで荒川の生き物観察",
+          "12:00 軽食コーナーでランチ",
+          "12:30 昼食後、午後の目的地へ移動"
+        ],
+        modelCoursePm: [
+          "13:00 午前の目的地から川の博物館へ移動・到着",
+          "13:30 大水車・大水槽コーナーを見学",
+          "14:30 プレイングリバーで水遊び（夏季）",
+          "16:00 東狭山ヶ丘へ帰路",
+          "18:00 夕食・翌日の予定確認"
+        ],
+        recommendations: {
+          heat: "館内は空調完備で涼しい。屋外の水遊び広場・大水車エリアは日差しがあるため、帽子・飲み物を忘れずに。",
+          traffic: "最寄り駅からやや離れているため車利用が現実的。長瀞・秩父方面ほどの渋滞は少なめ。",
+          kids: "荒川の生き物に触れる水槽コーナーや屋外の水遊び広場「プレイングリバー」が子どもに人気。",
+          rain: "館内展示は屋内なので雨天でも楽しめるが、屋外の水遊び広場は利用しづらくなる。",
+          reservation: "通常入館は予約不要。団体利用やイベント時のみ事前確認が必要な場合がある。",
+          packing: "水遊び広場を利用する場合は着替え・タオル・サンダルを。館内見学のみなら歩きやすい靴で十分。"
         }
       }
     ];
@@ -1736,6 +1909,7 @@
     const spotDetailContainerEl = document.getElementById("spotDetailContainer");
     const foodContainerEl = document.getElementById("foodContainer");
     const modelCourseContainerEl = document.getElementById("modelCourseContainer");
+    const packingListContainerEl = document.getElementById("packingListContainer");
     const todoListEl = document.getElementById("todoList");
     const todoProgressEl = document.getElementById("todoProgress");
     const resetTodoBtn = document.getElementById("resetTodo");
@@ -2030,13 +2204,23 @@
       const tags = [];
       if (spot.bearAlert) tags.push({ icon: "🐻", label: "クマ出没注意エリア" });
       if (/プール|水遊び|ライン下り|川遊び/.test(text)) tags.push({ icon: "💦", label: "水遊びあり" });
-      if (/完全屋内|屋内中心|地下|洞内|館内/.test(text)) tags.push({ icon: "🏠", label: "屋内中心・涼しい" });
-      if (!/完全屋内/.test(text) && /日差しが強い|炎天|直射日光|屋外/.test(text)) {
+      const isIndoorText = /完全屋内|屋内中心|地下|洞内|館内/.test(text);
+      if (isIndoorText) tags.push({ icon: "🏠", label: "屋内中心・涼しい" });
+      if (!isIndoorText && /日差しが強い|炎天|直射日光|屋外/.test(text)) {
         tags.push({ icon: "🥵", label: "屋外中心・暑さ対策必須" });
       }
       const resText = (spot.recommendations && spot.recommendations.reservation) || "";
       if (/予約/.test(resText) && !/予約不要/.test(resText)) tags.push({ icon: "📅", label: "事前予約推奨" });
       return tags;
+    }
+
+    // spot.rainRisk（雨天で中止・楽しみが大きく減る屋外中心の行き先に明示的に付与）と
+    // 当日の天気予報（降水確率50%以上 or 雨・雷雨系の天気コード）を組み合わせて判定
+    function isRainRiskForSpotOnDate(spot, dateObj) {
+      if (!spot.rainRisk) return false;
+      const w = getWeatherForSpotOnDate(spot, dateObj);
+      if (!w) return false;
+      return w.pop >= 50 || w.code >= 51;
     }
 
     function loadDaysFromUrl() {
@@ -2148,6 +2332,67 @@
       const el = document.createElement("p");
       el.className = "text-[11px] text-red-600 bg-red-50 border border-red-200 rounded-lg p-2";
       el.textContent = `⚠ ${dayData.date}は定休日（${spot.closedWeekdaysLabel || "定休日"}）にあたるため、休館の可能性があります。日程の変更をご検討ください。`;
+      return el;
+    }
+
+    function buildRainWarningBanner(dayData, spot) {
+      const dateObj = getDateForDay(dayData);
+      if (!isRainRiskForSpotOnDate(spot, dateObj)) return null;
+      const w = getWeatherForSpotOnDate(spot, dateObj);
+
+      const el = document.createElement("div");
+      el.className = "border border-amber-300 bg-amber-50 rounded-lg p-2 text-[11px] text-amber-800 space-y-1";
+
+      const title = document.createElement("p");
+      title.className = "font-semibold";
+      title.textContent = `☔ 雨天警戒：${dayData.date}は降水確率${w.pop}%です`;
+      el.appendChild(title);
+
+      const body = document.createElement("p");
+      body.textContent = `${spot.name}は屋外中心のため、無理せず雨天プランへの変更もご検討ください。`;
+      el.appendChild(body);
+
+      if (spot.recommendations && spot.recommendations.rain) {
+        const rainNote = document.createElement("p");
+        rainNote.className = "text-amber-700";
+        rainNote.textContent = spot.recommendations.rain;
+        el.appendChild(rainNote);
+      }
+
+      const indoorAlternatives = spots
+        .filter((s) => s.id !== spot.id && getSpotTags(s).some((t) => t.icon === "🏠"))
+        .slice(0, 4);
+
+      if (indoorAlternatives.length > 0) {
+        const altWrap = document.createElement("div");
+        altWrap.className = "flex flex-wrap items-center gap-1 mt-1";
+        const label = document.createElement("span");
+        label.textContent = "屋内の代替候補：";
+        altWrap.appendChild(label);
+        indoorAlternatives.forEach((alt) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "underline text-amber-800 active:text-amber-900";
+          btn.textContent = alt.name;
+          btn.addEventListener("click", () => {
+            const isPm = dayData.spotIdPm === spot.id;
+            if (isPm) {
+              dayData.spotIdPm = alt.id;
+            } else {
+              dayData.spotId = alt.id;
+            }
+            saveDaysOverrides();
+            shareStatusEl.textContent = "";
+            shareQrWrapEl.classList.add("hidden");
+            shareQrWrapEl.classList.remove("flex");
+            renderTabs();
+            renderAllForActiveDay();
+          });
+          altWrap.appendChild(btn);
+        });
+        el.appendChild(altWrap);
+      }
+
       return el;
     }
 
@@ -2332,6 +2577,9 @@
       const amClosedWarn = buildClosedDayWarning(dayData, amSpot);
       if (amClosedWarn) card.appendChild(amClosedWarn);
 
+      const amRainWarn = buildRainWarningBanner(dayData, amSpot);
+      if (amRainWarn) card.appendChild(amRainWarn);
+
       const amSelectWrapper = document.createElement("div");
       amSelectWrapper.className = "mt-2";
       const amLabel = document.createElement("label");
@@ -2372,6 +2620,8 @@
       if (pmSpot) {
         const pmClosedWarn = buildClosedDayWarning(dayData, pmSpot);
         if (pmClosedWarn) pmSelectWrapper.appendChild(pmClosedWarn);
+        const pmRainWarn = buildRainWarningBanner(dayData, pmSpot);
+        if (pmRainWarn) pmSelectWrapper.appendChild(pmRainWarn);
         const pmDup = buildDuplicateWarningIfSpare(dayData, "pm");
         if (pmDup) pmSelectWrapper.appendChild(pmDup);
         if (getMunicipality(amSpot.area) !== getMunicipality(pmSpot.area)) {
@@ -2809,6 +3059,38 @@
       }, 260);
     }
 
+    function renderPackingList() {
+      const dayData = days.find((d) => d.day === activeDay);
+      packingListContainerEl.innerHTML = "";
+      if (!dayData) return;
+      const amSpot = spots.find((s) => s.id === dayData.spotId);
+      if (!amSpot) return;
+      const pmSpot = dayData.spotIdPm ? spots.find((s) => s.id === dayData.spotIdPm) : null;
+
+      const amPacking = amSpot.recommendations && amSpot.recommendations.packing;
+      const pmPacking = pmSpot && pmSpot.recommendations && pmSpot.recommendations.packing;
+      if (!amPacking && !pmPacking) return;
+
+      const card = document.createElement("article");
+      card.className = "bg-white rounded-xl shadow-md p-3 text-[12px] space-y-2";
+
+      const title = document.createElement("h2");
+      title.className = "text-sm font-semibold text-sky-700";
+      title.textContent = "🎒 今日の持ち物（自動集約）";
+      card.appendChild(title);
+
+      const buildRow = (label, spot, packing) => {
+        if (!packing) return;
+        const p = document.createElement("p");
+        p.innerHTML = `<span class="font-semibold text-slate-700">${label}${spot.name}：</span>${packing}`;
+        card.appendChild(p);
+      };
+      buildRow(pmSpot ? "午前・" : "", amSpot, amPacking);
+      if (pmSpot) buildRow("午後・", pmSpot, pmPacking);
+
+      packingListContainerEl.appendChild(card);
+    }
+
     const TODO_STORAGE_KEY = "saitama-trip-todo";
 
     function loadTodoState() {
@@ -2943,6 +3225,13 @@
         wEl.textContent = `${weatherIcon(w.code)} ${w.tmin}〜${w.tmax}℃`;
         header.appendChild(wEl);
       }
+      if (amSpot && isRainRiskForSpotOnDate(amSpot, dateObj)) {
+        const warnEl = document.createElement("span");
+        warnEl.className = "text-[12px]";
+        warnEl.title = "雨天警戒：屋外中心の予定＋降水確率が高めです";
+        warnEl.textContent = "⚠️";
+        header.appendChild(warnEl);
+      }
       card.appendChild(header);
 
       if (amSpot) {
@@ -3011,6 +3300,7 @@
       renderSpotDetail();
       renderFood();
       renderModelCourse();
+      renderPackingList();
       renderWeekOverview();
     }
 
