@@ -70,6 +70,45 @@
       </div>
     </section>
 
+    <!-- 拠点周辺のスーパー・夕食スポット -->
+    <section class="no-print bg-white shadow-md mx-3 mb-2 rounded-xl p-3">
+      <button id="baseAreaToggle" class="w-full text-left text-sm font-semibold text-teal-700 flex items-center justify-between">
+        <span>拠点周辺のスーパー・夕食スポット</span><span id="baseAreaIcon">＋</span>
+      </button>
+      <div id="baseAreaContent" class="mt-2 text-[11px] leading-relaxed hidden">
+        <p class="text-slate-600">
+          どの日も基本的に17時頃までに東狭山ヶ丘（拠点）へ戻る想定のため、遠方の目的地でも現地ではなく<strong>拠点から車で約10〜20分圏内</strong>で夕食・翌朝の朝食の買い出しができるお店をまとめました。
+        </p>
+        <h3 class="mt-2 font-semibold text-slate-700">スーパー（夕食・翌朝の朝食の買い出しに）</h3>
+        <ul class="mt-1 list-disc pl-4 space-y-1">
+          <li>
+            <span class="font-semibold">いなげや 所沢狭山ヶ丘店</span>（所沢市若狭1-2938-2、狭山ヶ丘駅西口から徒歩約9分）
+            <a href="https://www.google.com/maps/search/?api=1&query=いなげや 所沢狭山ヶ丘店" target="_blank" rel="noopener noreferrer" class="ml-1 text-sky-600 underline">Google Mapで見る</a>
+          </li>
+          <li>
+            <span class="font-semibold">ヤオコー 所沢椿峰店</span>（所沢市小手指南4-33-12、9:00〜22:00、駐車場85台）
+            <a href="https://www.google.com/maps/search/?api=1&query=ヤオコー 所沢椿峰店" target="_blank" rel="noopener noreferrer" class="ml-1 text-sky-600 underline">Google Mapで見る</a>
+          </li>
+        </ul>
+        <h3 class="mt-2 font-semibold text-slate-700">夕食スポット（拠点付近で外食する場合）</h3>
+        <ul class="mt-1 list-disc pl-4 space-y-1">
+          <li>
+            <span class="font-semibold">サイゼリヤ 狭山ヶ丘店</span>（狭山ヶ丘駅から徒歩圏内）
+            <a href="https://www.google.com/maps/search/?api=1&query=サイゼリヤ 狭山ヶ丘店" target="_blank" rel="noopener noreferrer" class="ml-1 text-sky-600 underline">Google Mapで見る</a>
+          </li>
+          <li>
+            <span class="font-semibold">ガスト 所沢小手指店</span>（小手指駅周辺）
+            <a href="https://www.google.com/maps/search/?api=1&query=ガスト 所沢小手指店" target="_blank" rel="noopener noreferrer" class="ml-1 text-sky-600 underline">Google Mapで見る</a>
+          </li>
+          <li>
+            <span class="font-semibold">丸源ラーメン 所沢北野店</span>（看板メニューは肉そば）
+            <a href="https://www.google.com/maps/search/?api=1&query=丸源ラーメン 所沢北野店" target="_blank" rel="noopener noreferrer" class="ml-1 text-sky-600 underline">Google Mapで見る</a>
+          </li>
+        </ul>
+        <p class="mt-2 text-[10px] text-slate-400">営業時間・価格は変動する場合があります。訪問前に各店舗の公式情報をご確認ください。</p>
+      </div>
+    </section>
+
     <!-- 行き先設定の共有 -->
     <section class="no-print bg-white shadow-md mx-3 mb-2 rounded-xl p-3">
       <h2 class="text-sm font-semibold text-sky-700">各Dayの行き先を家族と共有</h2>
@@ -2052,6 +2091,24 @@
             "春日部市上柳にある道の駅。地元野菜やお弁当などが揃う直売所がある。龍Q館の最寄り南桜井駅から市コミュニティバス「春バス」で約15〜25分。",
           access: "埼玉県春日部市上柳995番地",
           mapUrl: "https://www.google.com/maps/search/?api=1&query=道の駅庄和"
+        },
+        {
+          id: "miyoshi-pa",
+          name: "三芳パーキングエリア（関越自動車道）",
+          category: "道中に立ち寄れるスポット（高速利用）",
+          description:
+            "東狭山ヶ丘から関越道・外環道経由で外郭放水路へ向かう道中にあるPA。レストラン・コンビニ・ガソリンスタンドを備え、レンタカーでの休憩に便利（三芳スマートIC併設）。",
+          access: "関越自動車道 三芳PA（上り線はPasar三芳）",
+          mapUrl: "https://www.google.com/maps/search/?api=1&query=三芳パーキングエリア 関越自動車道"
+        },
+        {
+          id: "iwatsuki-castle-park-kasukabe",
+          name: "岩槻城址公園",
+          category: "道中に立ち寄れるスポット（一般道）",
+          description:
+            "高速道路を使わず国道16号経由で外郭放水路へ向かう場合、道中のさいたま市岩槻区にある県指定文化財の公園。桜の名所として知られ、日本庭園やロマンスカーの車両展示もある。",
+          access: "国道16号沿い、さいたま市岩槻区太田3丁目",
+          mapUrl: "https://www.google.com/maps/search/?api=1&query=岩槻城址公園"
         }
       ],
       gyoda: [
@@ -2088,6 +2145,24 @@
             "利根川沿い・国道122号にある道の駅。羽生市の名物「いがまんじゅう」など土産物や地場野菜を使ったレストランが揃う。",
           access: "埼玉県羽生市上新郷（国道122号沿い、群馬県境近く）",
           mapUrl: "https://www.google.com/maps/search/?api=1&query=道の駅はにゅう"
+        },
+        {
+          id: "sayama-pa",
+          name: "狭山パーキングエリア（圏央道）",
+          category: "道中に立ち寄れるスポット（高速利用）",
+          description:
+            "東狭山ヶ丘から圏央道でさきたま古墳公園方面へ向かう道中、狭山日高IC付近にあるPA。レストラン・売店を備え、レンタカーでの休憩に便利。",
+          access: "圏央道 狭山PA（狭山日高IC付近）",
+          mapUrl: "https://www.google.com/maps/search/?api=1&query=狭山パーキングエリア 圏央道"
+        },
+        {
+          id: "michinoeki-okegawa",
+          name: "道の駅べに花の郷おけがわ",
+          category: "道中に立ち寄れるスポット（一般道）",
+          description:
+            "高速道路を使わず国道17号（上尾道路）経由でさきたま古墳公園方面へ向かう場合の道中にある道の駅。2025年グランドオープンの新しい施設で、駐車場237台と規模が大きい。",
+          access: "埼玉県桶川市大字川田谷4324-1。国道17号上尾道路沿い",
+          mapUrl: "https://www.google.com/maps/search/?api=1&query=道の駅べに花の郷おけがわ"
         }
       ],
       nagatoro: [
@@ -2123,6 +2198,24 @@
           description: "皆野長瀞ICのすぐそばにある道の駅。長瀞・秩父方面への行き帰りに立ち寄りやすい立地。",
           access: "秩父郡皆野町、国道140号「三沢入口」交差点脇。関越道花園ICから約30分",
           mapUrl: "https://www.google.com/maps/search/?api=1&query=道の駅みなの"
+        },
+        {
+          id: "kosaka-sa-nagatoro",
+          name: "高坂サービスエリア（関越自動車道）",
+          category: "道中に立ち寄れるスポット（高速利用）",
+          description:
+            "東狭山ヶ丘から関越道花園IC経由で長瀞へ向かう道中にあるSA。上下線が隣接し徒歩で行き来できるのが特徴。レストラン・ラーメン・うどん・カフェなど飲食店5店とベーカリーを備える。",
+          access: "関越自動車道 高坂SA（花園ICの手前）",
+          mapUrl: "https://www.google.com/maps/search/?api=1&query=高坂サービスエリア"
+        },
+        {
+          id: "michinoeki-ashigakubo-nagatoro",
+          name: "道の駅果樹公園あしがくぼ",
+          category: "道中に立ち寄れるスポット（一般道）",
+          description:
+            "高速道路を使わず国道299号・正丸トンネル経由で長瀞・秩父方面へ向かう場合の道中にある道の駅。西武秩父線芦ヶ久保駅からも徒歩1分と近く、休憩に便利。",
+          access: "埼玉県秩父郡横瀬町大字芦ヶ久保1915-6。国道299号沿い",
+          mapUrl: "https://www.google.com/maps/search/?api=1&query=道の駅果樹公園あしがくぼ"
         }
       ],
       chichibu: [
@@ -2159,6 +2252,24 @@
             "秩父市吉田にある道の駅。手作りロケット「龍勢」の展示館と、地元野菜やゆず胡椒などを扱う直売所「龍勢茶屋」がある。",
           access: "埼玉県秩父市吉田久長32。秩父市街の道の駅「ちちぶ」から国道299号・県道270号経由で約12km",
           mapUrl: "https://www.google.com/maps/search/?api=1&query=道の駅龍勢会館"
+        },
+        {
+          id: "kosaka-sa-chichibu",
+          name: "高坂サービスエリア（関越自動車道）",
+          category: "道中に立ち寄れるスポット（高速利用）",
+          description:
+            "東狭山ヶ丘から関越道花園IC経由で秩父市街へ向かう道中にあるSA。上下線が隣接し徒歩で行き来できるのが特徴。レストラン・ラーメン・うどん・カフェなど飲食店5店とベーカリーを備える。",
+          access: "関越自動車道 高坂SA（花園ICの手前）",
+          mapUrl: "https://www.google.com/maps/search/?api=1&query=高坂サービスエリア"
+        },
+        {
+          id: "michinoeki-ashigakubo-chichibu",
+          name: "道の駅果樹公園あしがくぼ",
+          category: "道中に立ち寄れるスポット（一般道）",
+          description:
+            "高速道路を使わず国道299号・正丸トンネル経由で秩父方面へ向かう場合の道中にある道の駅。西武秩父線芦ヶ久保駅からも徒歩1分と近く、休憩に便利。",
+          access: "埼玉県秩父郡横瀬町大字芦ヶ久保1915-6。国道299号沿い",
+          mapUrl: "https://www.google.com/maps/search/?api=1&query=道の駅果樹公園あしがくぼ"
         }
       ],
       namegawa: [
@@ -2186,6 +2297,15 @@
           description: "吉見町にある道の駅。いちご狩りシーズン以外も地場野菜や特産品が揃う直売所がある。",
           access: "埼玉県比企郡吉見町大字久保田1737。関越道東松山ICから約7km",
           mapUrl: "https://www.google.com/maps/search/?api=1&query=道の駅いちごの里よしみ"
+        },
+        {
+          id: "kosaka-sa-namegawa",
+          name: "高坂サービスエリア（関越自動車道）",
+          category: "道中に立ち寄れるスポット（高速利用）",
+          description:
+            "東狭山ヶ丘から関越道東松山IC経由で森林公園へ向かう道中にあるSA（東松山ICのすぐ手前）。上下線が隣接し徒歩で行き来できる。レストラン・ラーメン・うどん・カフェなど飲食店5店とベーカリーを備える。",
+          access: "関越自動車道 高坂SA（東松山ICの手前）",
+          mapUrl: "https://www.google.com/maps/search/?api=1&query=高坂サービスエリア"
         }
       ],
       hidaka: [
@@ -2230,6 +2350,14 @@
             "日高市周辺に道の駅はないため、比較的近い吉見町の道の駅を紹介。地場野菜や特産品が揃う（サイボクから車で少し足を延ばす距離）。",
           access: "埼玉県比企郡吉見町大字久保田1737",
           mapUrl: "https://www.google.com/maps/search/?api=1&query=道の駅いちごの里よしみ"
+        },
+        {
+          id: "sayama-pa-hidaka",
+          name: "狭山パーキングエリア（圏央道）",
+          category: "道中に立ち寄れるスポット（高速利用）",
+          description: "東狭山ヶ丘から圏央道でサイボク方面へ向かう場合、狭山日高IC付近にあるPA。レストラン・売店を備え、レンタカーでの休憩に便利。",
+          access: "圏央道 狭山PA（狭山日高IC付近）",
+          mapUrl: "https://www.google.com/maps/search/?api=1&query=狭山パーキングエリア 圏央道"
         }
       ],
       omiya: [
@@ -2341,6 +2469,15 @@
             "石畳の小路に昔ながらの駄菓子屋が約20軒並ぶ食べ歩きスポット。せんべい・カルメ焼き・あめ玉など懐かしい味が楽しめ、環境省「かおり風景100選」にも選ばれている。",
           access: "川越市元町2丁目付近。時の鐘から徒歩約5分",
           mapUrl: "https://www.google.com/maps/search/?api=1&query=菓子屋横丁 川越"
+        },
+        {
+          id: "miyoshi-pa-kawagoe",
+          name: "三芳パーキングエリア（関越自動車道）",
+          category: "道中に立ち寄れるスポット（高速利用）",
+          description:
+            "東狭山ヶ丘から関越道川越IC経由で川越市立博物館方面へ向かう道中にあるPA。レストラン・コンビニ・ガソリンスタンドを備え、レンタカーでの休憩に便利（三芳スマートIC併設）。",
+          access: "関越自動車道 三芳PA（川越ICの手前、上り線はPasar三芳）",
+          mapUrl: "https://www.google.com/maps/search/?api=1&query=三芳パーキングエリア 関越自動車道"
         }
       ]
     };
@@ -2398,6 +2535,9 @@
     const strategyToggle = document.getElementById("strategyToggle");
     const strategyContent = document.getElementById("strategyContent");
     const strategyIcon = document.getElementById("strategyIcon");
+    const baseAreaToggle = document.getElementById("baseAreaToggle");
+    const baseAreaContent = document.getElementById("baseAreaContent");
+    const baseAreaIcon = document.getElementById("baseAreaIcon");
     const shareLinkBtn = document.getElementById("shareLinkBtn");
     const shareStatusEl = document.getElementById("shareStatus");
     const shareQrWrapEl = document.getElementById("shareQrWrap");
@@ -2783,6 +2923,11 @@
     strategyToggle.addEventListener("click", () => {
       const isHidden = strategyContent.classList.toggle("hidden");
       strategyIcon.textContent = isHidden ? "＋" : "－";
+    });
+
+    baseAreaToggle.addEventListener("click", () => {
+      const isHidden = baseAreaContent.classList.toggle("hidden");
+      baseAreaIcon.textContent = isHidden ? "＋" : "－";
     });
 
     function renderTabs() {
